@@ -1,0 +1,7 @@
+{
+  "_comment":"this JSON file will be used to handle data communication with the server.",
+  "_commentB":"we will need two fields for each datatype: one for sent data and received data",
+  "_commentC":"JSON does NOT allow comments, these comments are being stored as data",
+  "_commentD":"DELETE THESE COMMENTS ONCE server-controller.json IS IN USE",
+  "exampleClass_carVelocity": 4
+}
