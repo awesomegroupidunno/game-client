@@ -8,4 +8,6 @@
 cmake_minimum_required(VERSION 3.3)
 
 project(game-client)
-add_executable(game-client Main.cpp GameController.cpp GameController.h)
+add_executable(game-client Main.cpp GameController.cpp GameController.h UDPClient.cpp)
+
+add_subdirectory(include/rapidjson-master)
