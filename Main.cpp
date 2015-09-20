@@ -8,7 +8,7 @@ int main()
     //TODO: The following is an idea of how Main.cpp should look
     //Draw window / game screen
     //Initialize ServerModel.json
-    //Initialize game loop / GameController.cpp
+    //Initialize game loop -- calls to GameView and GameController
     //Handle exiting game
     return 0;
 }
