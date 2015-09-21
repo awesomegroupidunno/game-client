@@ -1,6 +1,5 @@
 # game-client
 
-DO NOT DELETE server-model.json
+server-model.json is deleted.
 
-Comments aren't supported in JSON, the comment objects in server-controller.json
-will be deleted after data is implemented
+Changed approach to server communication.
