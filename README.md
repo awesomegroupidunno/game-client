@@ -1,6 +1,5 @@
 # game-client
 
-DO NOT DELETE server-model.json
+Install SDL 2.0
 
-Comments aren't supported in JSON, the comment objects in server-controller.json
-will be deleted after data is implemented
+* https://www.libsdl.org/download-2.0.php
