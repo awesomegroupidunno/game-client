@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include "SDLutil.h"
 
 int SDLTest();
 
@@ -22,14 +23,14 @@ int SDLTest()
 {
     if (SDL_Init(SDL_INIT_VIDEO))
     {
-        std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
+        std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
         return 1;
     }
 
     SDL_Window* window = SDL_CreateWindow("Hello Car Combat!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
     if (window == NULL)
     {
-        std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+        std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
         SDL_Quit();
         return 1;
     }
@@ -38,18 +39,18 @@ int SDLTest()
     if (renderer == NULL)
     {
         SDL_DestroyWindow(window);
-        std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+        std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
         SDL_Quit();
         return 1;
     }
 
-    std::string imagePath = "/home/decker/CLionProjects/game-client/resources/hello.bmp";
+    std::string imagePath = getResourcePath() + "hello.bmp";
     SDL_Surface *bmp = SDL_LoadBMP(imagePath.c_str());
     if (bmp == NULL)
     {
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
-        std::cout << "SDL_LoadBMP Error: " << SDL_GetError() << std::endl;
+        std::cerr << "SDL_LoadBMP Error: " << SDL_GetError() << std::endl;
         SDL_Quit();
         return 1;
     }
@@ -60,7 +61,7 @@ int SDLTest()
     {
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
-        std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+        std::cerr << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
         SDL_Quit();
         return 1;
     }
