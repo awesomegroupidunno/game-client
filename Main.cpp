@@ -43,7 +43,7 @@ int SDLTest()
         return 1;
     }
 
-    std::string imagePath = "/resources/hello.bmp";
+    std::string imagePath = "/home/decker/CLionProjects/game-client/resources/hello.bmp";
     SDL_Surface *bmp = SDL_LoadBMP(imagePath.c_str());
     if (bmp == NULL)
     {
@@ -82,4 +82,6 @@ int SDLTest()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
+    return 0;
 }
