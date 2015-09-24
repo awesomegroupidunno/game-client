@@ -5,6 +5,11 @@
 #include <string>
 #include <SDL.h>
 
+/*
+ * This is supposed to find the project's resource path.
+ * In theory, that should be '{project-dir}/game-client/resources'
+ * However, it's pulling from a weird temp folder for some reason.
+ */
 std::string getResourcePath(const std::string &subDir = "")
 {
     // The location of the base resource path.
