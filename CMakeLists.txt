@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(game-client)
 
-add_executable(game-client Main.cpp GameController.cpp GameController.h include/SDLutil.h)
+add_executable(game-client Main.cpp GameController.cpp GameController.h include/SDLutil.h GameState.cpp Vehicle.cpp Vehicle.h)
 
 # Add header files
 include_directories(include)
