@@ -3,7 +3,7 @@
 //
 #include "Vehicle.cpp"
 
-class GameState {
+class GameState{
     GameState();
     //constructor
     GameState::GameState(){
