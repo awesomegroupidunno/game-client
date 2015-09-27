@@ -5,9 +5,7 @@
  *      For the sake of testing, main has been hardcoded
  *      to initialize GameState and Vehicles.
  */
-#include "GameState.cpp"
-#include "Vehicle.h"
-#include "GameController.h"
+
 
 int main()
 {
@@ -18,11 +16,6 @@ int main()
     /*
      * THE FOLLOWING IS ONLY A TEST OF WHAT THE STRUCTURE SHOULD LOOK LIKE
      */
-    GameState state;
-    GameController gc;
-    Vehicle* player = new Vehicle(50, 50, 100, 0, 0);
-    state.addPlayers(player);
-    gc.replaceGameState(state);
     SdlGameView screen;
     screen.drawView();
     return 0;

@@ -35,7 +35,7 @@ public:
         //TODO: THIS IS FOR TESTING DRAWING VEHICLES
         SdlGameViewAdapter gva;
         int numCars = gva.getVehicles().size();
-        printf("%i\n", numCars);
+        printf("number of cars = %i\n", numCars);
         SDL_Rect* cars = new SDL_Rect[numCars];
 
         // TODO: HELP FIX THIS, CARS AREN'T BEING GRABBED FROM GAMESTATE PROPERLY
@@ -56,26 +56,24 @@ public:
         test.h = 50;
 
         // A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < numCars; ++i) {
                 // Make background white
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
                 // First clear the renderer
                 SDL_RenderClear(renderer);
-            for (int j = 0; j < numCars; j++) {
+
                 printf("ATTEMPTING TO DRAW VEHICLE\n");
                 // Rect color
                 SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
                 // Draw rect
-                SDL_RenderFillRect(renderer, &cars[j]);
-            }
-                SDL_SetRenderDrawColor(renderer, 0, 0, 255, 0);
-                SDL_RenderFillRect(renderer, &cars[0]);
+                SDL_RenderFillRect(renderer, &cars[i]);
+
                 // Update the screen
                 SDL_RenderPresent(renderer);
 
                 // Take a quick break after all that hard work
-                SDL_Delay(1000);
+                SDL_Delay(3000);
         }
 
         // Clean up

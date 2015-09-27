@@ -4,7 +4,6 @@
 
 #include "GameController.h"
 #include "Vehicle.h"
-#include "GameState.cpp"
 #include <iostream>
 #include <vector>
 
@@ -13,8 +12,15 @@
  */
 //constructor
 std::vector<Vehicle*> GameController::getVehicles(){
+    state = getState();
     return state.getPlayers();
 }
-void GameController::replaceGameState(GameState replace){
-    state = replace;
+GameState GameController::replaceState(GameState update){
+    state = update;
+}
+//TODO: TESTS FOR DRAWING GAME, SERVER HANDLES THE GAME STATE LATER
+GameState GameController::getState(){
+    Vehicle* test = new Vehicle(50,50,100,0,0);
+    state.addPlayers(test);
+    return state;
 }

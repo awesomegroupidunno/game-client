@@ -18,7 +18,8 @@ class GameController {
     GameState state;
 public:
     std::vector<Vehicle*> getVehicles();
-    void replaceGameState(GameState replace);
+    GameState replaceState(GameState update);
+    GameState getState();
 };
 
 
