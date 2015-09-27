@@ -3,13 +3,18 @@
 //
 
 #include "GameController.h"
-#include "Vehicle.cpp"
+#include "Vehicle.h"
+#include "GameState.cpp"
+#include <iostream>
+#include <vector>
 
 /*
  * TODO: HANDLE GAME LOGIC
  */
 //constructor
-GameController::GameController(){
-    //TODO: objects affected by player input
-    Vehicle user;       //LOCAL player's vehicle
+std::vector<Vehicle*> GameController::getVehicles(){
+    return state.getPlayers();
+}
+void GameController::replaceGameState(GameState replace){
+    state = replace;
 }

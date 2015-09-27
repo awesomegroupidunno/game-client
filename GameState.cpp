@@ -1,15 +1,18 @@
 //
 // Created by austin4e on 9/20/15.
 //
-#include "Vehicle.cpp"
+#include "Vehicle.h"
+#include <iostream>
+#include <vector>
 
 class GameState{
-    GameState();
-    //constructor
-    GameState::GameState(){
-        //store values and objects needed to update GameState
-        int numPlayers;                 //number of players in current session
-        Vehicle players[numPlayers];    //array of each players vehicle
-        //TODO: populate GameState with containers (powerups, XP zone location, bases, etc.)
+    std::vector<Vehicle*> players;
+public:
+    void addPlayers(Vehicle* add){
+        players.push_back(add);
     }
+    std::vector<Vehicle*> getPlayers(){
+        return players;
+    }
+    //TODO: populate GameState with containers (powerups, XP zone location, bases, etc.)
 };
