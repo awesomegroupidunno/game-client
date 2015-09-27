@@ -37,8 +37,6 @@ public:
         int numCars = gva.getVehicles().size();
         printf("number of cars = %i\n", numCars);
         SDL_Rect* cars = new SDL_Rect[numCars];
-
-        // TODO: HELP FIX THIS, CARS AREN'T BEING GRABBED FROM GAMESTATE PROPERLY
         // Take the vehicles from the vehicle vector
         // Use their values to begin drawing
         printf("SETTING CARS FROM VEHICLE VECTOR\n");
@@ -48,12 +46,6 @@ public:
             cars[i].w = 50;
             cars[i].h = 50;
         }
-
-        SDL_Rect test;
-        test.x = 50;
-        test.y = 50;
-        test.w = 50;
-        test.h = 50;
 
         // A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
         for (int i = 0; i < numCars; ++i) {

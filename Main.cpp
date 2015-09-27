@@ -15,6 +15,7 @@ int main()
     // Handle exiting game
     /*
      * THE FOLLOWING IS ONLY A TEST OF WHAT THE STRUCTURE SHOULD LOOK LIKE
+     * ALSO TESTS DRAWING VEHICLES ON SCREEN
      */
     SdlGameView screen;
     screen.drawView();

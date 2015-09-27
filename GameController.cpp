@@ -8,17 +8,20 @@
 #include <vector>
 
 /*
- * TODO: HANDLE GAME LOGIC
+ * HANDLE GAME LOGIC AND PASSING GAMESTATE
  */
 //constructor
 std::vector<Vehicle*> GameController::getVehicles(){
+    //TODO: Replace getState with replaceState when replaceState is connected to serverside
     state = getState();
     return state.getPlayers();
 }
 GameState GameController::replaceState(GameState update){
+    //TODO: get updated gamestate from serverside
     state = update;
+    return state;
 }
-//TODO: TESTS FOR DRAWING GAME, SERVER HANDLES THE GAME STATE LATER
+//TODO: GetState TESTS FOR DRAWING GAME, SERVER HANDLES WILL NEGATE THIS LATER
 GameState GameController::getState(){
     Vehicle* test = new Vehicle(50,50,100,0,0);
     state.addPlayers(test);
