@@ -32,13 +32,13 @@ public:
             return 1;
         }
 
-        //TODO: THIS IS FOR TESTING GETVEHICLES
+        //TODO: THIS IS FOR TESTING DRAWING VEHICLES
         SdlGameViewAdapter gva;
         int numCars = gva.getVehicles().size();
         printf("%i\n", numCars);
         SDL_Rect* cars = new SDL_Rect[numCars];
 
-        // TODO: THIS IS FOR TESTING DRAW CARS
+        // TODO: HELP FIX THIS, CARS AREN'T BEING GRABBED FROM GAMESTATE PROPERLY
         // Take the vehicles from the vehicle vector
         // Use their values to begin drawing
         printf("SETTING CARS FROM VEHICLE VECTOR\n");
