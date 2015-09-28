@@ -1,6 +1,5 @@
 # game-client
 
-DO NOT DELETE server-model.json
+Install RapidJSON
 
-Comments aren't supported in JSON, the comment objects in server-controller.json
-will be deleted after data is implemented
+* https://github.com/miloyip/rapidjson/

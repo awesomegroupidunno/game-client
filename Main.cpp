@@ -1,14 +1,18 @@
-// Hello World to test CMakeLists.txt
-
 #include <iostream>
+#include "UdpClient.h"
+
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello Car Combat!\n";
-    //TODO: The following is an idea of how Main.cpp should look
-    //Draw window / game screen
-    //Initialize ServerModel.json
-    //Initialize game loop / GameController.cpp
-    //Handle exiting game
-    return 0;
+	NetworkClient* client = new UdpClient;
+	const char* command = "Hello Car Combat!";
+	char* buffer;
+
+	client->connect_to_server("", "");
+	client->send_command(command);
+	client->get_game_state(buffer);
+	client->close_connection();
+	
+	return 0;
 }
