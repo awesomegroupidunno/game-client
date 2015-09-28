@@ -20,5 +20,5 @@ char* JsonEncodeDecode::decode(char* buffer)
 	StringStream ss(buffer);
 	reader.Parse(ss, handler);
 
-	// Return a GameState pointer
+	return buffer;
 }

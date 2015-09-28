@@ -19,6 +19,8 @@ target_link_libraries(game-client ${SDL2_LIBRARY})
 
 # Find RapidJSON
 find_package(RapidJSON)
+include_directories(${RapidJSON_INCLUDE_DIR})
+target_link_libraries(game-client ${RapidJSON_LIBRARY})
 
 # Install
 install(TARGETS game-client RUNTIME DESTINATION ${BUILD_DIR})
