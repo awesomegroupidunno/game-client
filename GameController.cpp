@@ -24,6 +24,8 @@ GameState GameController::replaceState(GameState update){
 //TODO: GetState TESTS FOR DRAWING GAME, SERVER HANDLES WILL NEGATE THIS LATER
 GameState GameController::getState(){
     Vehicle* test = new Vehicle(50,50,100,0,0);
+    Vehicle* test2 = new Vehicle(200, 200, 100, 0, 0);
     state.addPlayers(test);
+	state.addPlayers(test2);
     return state;
 }

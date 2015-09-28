@@ -7,9 +7,21 @@
 #include "SdlGameViewAdapter.h"
 
 class SdlGameView{
-    // Init SDL
+private:
+	SDL_Renderer *renderer;
+	const int carWidth = 50;
+	const int carHeight = 75;
+
 public:
+	void drawVehicle(SDL_Rect* vehicle) {
+		// Rect color
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+		// Draw rect
+		SDL_RenderFillRect(renderer, vehicle);
+	}
+
     int drawView() {
+		// Init SDL
         if (SDL_Init(SDL_INIT_VIDEO)) {
             std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
             return 1;
@@ -24,7 +36,7 @@ public:
         }
 
         // Set renderer to window
-        SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         if (renderer == NULL) {
             SDL_DestroyWindow(window);
             std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
@@ -43,29 +55,43 @@ public:
         for (int i = 0; i < numCars; i++){
             cars[i].x = gva.getVehicles().at(i)->x;
             cars[i].y = gva.getVehicles().at(i)->y;
-            cars[i].w = 50;
-            cars[i].h = 50;
+            cars[i].w = carWidth;
+            cars[i].h = carHeight;
         }
 
         // A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
-        for (int i = 0; i < numCars; ++i) {
-                // Make background white
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		bool gameRunning = true;
+		int tick = 0;
+        while (gameRunning) {
 
-                // First clear the renderer
-                SDL_RenderClear(renderer);
+			// Listen for the exit
+			SDL_Event event;
+			while (SDL_PollEvent(&event))
+			{
+				if (event.type == SDL_QUIT)
+					gameRunning = false;
+			}
 
-                printf("ATTEMPTING TO DRAW VEHICLE\n");
-                // Rect color
-                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
-                // Draw rect
-                SDL_RenderFillRect(renderer, &cars[i]);
+			// Make background white
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-                // Update the screen
-                SDL_RenderPresent(renderer);
+			// First clear the renderer
+			SDL_RenderClear(renderer);
 
-                // Take a quick break after all that hard work
-                SDL_Delay(3000);
+			printf("DRAWING: tick %i\n", tick);
+
+			for (int j = 0; j < numCars; j++) {
+				drawVehicle(&cars[j]);
+			}
+
+			// Update the screen
+			SDL_RenderPresent(renderer);
+
+			// Take a quick break after all that hard work
+			SDL_Delay(40);
+
+			// Next tick
+			tick++;
         }
 
         // Clean up
