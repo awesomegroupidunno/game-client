@@ -1,4 +1,8 @@
 #include "SdlGameView.cpp"
+#include "UdpClient.h"
+
+using namespace std;
+
 /*
  * NOTE: GameState.cpp and Vehicle.h usually would NOT be here.
  *      GameState would usually be set by the server.
@@ -6,18 +10,29 @@
  *      to initialize GameState and Vehicles.
  */
 
-
 int main()
 {
-    // TODO: The following is an idea of how Main.cpp should look
-    // Draw window / game screen
-    // Initialize game loop / GameController.cpp
-    // Handle exiting game
-    /*
-     * THE FOLLOWING IS ONLY A TEST OF WHAT THE STRUCTURE SHOULD LOOK LIKE
-     * ALSO TESTS DRAWING VEHICLES ON SCREEN
-     */
-    SdlGameView screen;
-    screen.drawView();
-    return 0;
+	// TODO: The following is an idea of how Main.cpp should look
+	// Draw window / game screen
+	// Initialize game loop / GameController.cpp
+	// Handle exiting game
+	/*
+	 * THE FOLLOWING IS ONLY A TEST OF WHAT THE STRUCTURE SHOULD LOOK LIKE
+	 * ALSO TESTS DRAWING VEHICLES ON SCREEN
+	 */
+	SdlGameView screen;
+	screen.drawView();
+	return 0;
+}
+
+void client()
+{
+	NetworkClient* client = new UdpClient;
+	const char* command = "Hello Car Combat!";
+	char* buffer;
+
+	client->connect_to_server("", "");
+	client->send_command(command);
+	client->get_game_state(buffer);
+	client->close_connection();
 }
