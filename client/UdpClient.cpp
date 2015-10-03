@@ -13,12 +13,12 @@ int UdpClient::connect_to_server(const char *host, const char *port)
 	char sendline[1000];
 	char recvline[1000];
 
-	sockfd=socket(AF_INET, SOCK_DGRAM, 0);
+	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 
 	bzero(&servaddr, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = inet_addr(host);
-	servaddr.sin_port = htons(32000);
+	servaddr.sin_port = htons((uint16_t) atoi(port));
 
 	while (fgets(sendline, 10000, stdin) != NULL)
 	{
