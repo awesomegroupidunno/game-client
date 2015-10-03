@@ -17,17 +17,17 @@ void run_client()
 	char* buffer;
 	bool connected = true;
 
-	client->connect_to_server("192.168.156.244", "10001");
+	client->connect_to_server("127.0.0.1", "10001");
 
 	while (connected)
 	{
-		client->send_command(command);
-		client->get_game_state(buffer);
+		//client->send_command(command);
+		//client->get_game_state(buffer);
 
 		printf(buffer);
 	}
 
-	client->close_connection();
+	//client->close_connection();
 }
 
 int main()
@@ -40,10 +40,10 @@ int main()
 	 * THE FOLLOWING IS ONLY A TEST OF WHAT THE STRUCTURE SHOULD LOOK LIKE
 	 * ALSO TESTS DRAWING VEHICLES ON SCREEN
 	 */
-	SdlGameView screen;
-	screen.drawView();
+	//SdlGameView screen;
+	//screen.drawView();
 
-	//run_client();
+	run_client();
 
 	return 0;
 }
