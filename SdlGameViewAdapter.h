@@ -6,10 +6,12 @@
 #define GAME_CLIENT_SDLGAMEVIEWADAPTER_H
 
 #include "Vehicle.h"
+#include "GameController.h"
 #include <iostream>
 #include <vector>
 
 class SdlGameViewAdapter{
+    GameController gc;
 public:
     std::vector<Vehicle*> getVehicles();
 };

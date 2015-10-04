@@ -6,7 +6,8 @@
 #define GAME_CLIENT_GAMECONTROLLER_H
 
 #include "Vehicle.h"
-#include "GameState.cpp"
+//#include "GameState.cpp"
+#include "FakeNetworkClient.h"
 #include <iostream>
 #include <vector>
 
@@ -16,10 +17,11 @@ class GameController {
     //TODO: GameController will not actually handle input, but instead be called from
     //TODO: a separate InputAdapter class
     GameState state;
+    FakeNetworkClient networkClient;
 public:
     std::vector<Vehicle*> getVehicles();
     GameState replaceState(GameState update);
-    GameState getState();
+    //GameState getState();
 };
 
 
