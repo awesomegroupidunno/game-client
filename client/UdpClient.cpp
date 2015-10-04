@@ -22,11 +22,12 @@ int UdpClient::connect_to_server(const char *host, const char *port)
 
 	while (fgets(sendline, 10000, stdin) != NULL)
 	{
-		printf(sendline);
 		sendto(sockfd, sendline, strlen(sendline), 0,
 			   (struct sockaddr *) &servaddr, sizeof(servaddr));
+		printf("sent: %s", sendline);
 		n = recvfrom(sockfd, recvline, 10000, 0, NULL, NULL);
 		recvline[n] = 0;
+		printf("rcvd: %s", recvline);
 		fputs(recvline, stdout);
 	}
 

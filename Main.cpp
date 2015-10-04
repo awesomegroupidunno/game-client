@@ -19,13 +19,13 @@ void run_client()
 
 	client->connect_to_server("127.0.0.1", "10001");
 
-	while (connected)
+	/*while (connected)
 	{
 		//client->send_command(command);
 		//client->get_game_state(buffer);
 
 		printf(buffer);
-	}
+	}*/
 
 	//client->close_connection();
 }
