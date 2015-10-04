@@ -34,21 +34,19 @@ int UdpClient::connect_to_server(const char *host, const char *port)
 
 int UdpClient::get_game_state(char *buffer)
 {
-	char recvline[1000];
+	int maxBufferSize = 1000;
+	char recvline[maxBufferSize];
 	ssize_t endPos;
 
-	// Try 100 times to receive from host
+	// Try to receive from host
 	int tries = 0;
-	int maxTries = 100;
+	int maxTries = 3000;
 	bool trying = true;
-	char err[] = "";
 	do
 	{
-		endPos = recv(sockfd, recvline, 1000, MSG_DONTWAIT);
+		endPos = recv(sockfd, recvline, maxBufferSize, MSG_DONTWAIT);
 		if (endPos < 0)
 		{
-			sprintf(err, "receiving from host failed, attempt %i", tries + 1);
-			error(err);
 			tries++;
 			if (tries >= maxTries)
 			{
