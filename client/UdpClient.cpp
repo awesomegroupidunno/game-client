@@ -14,6 +14,11 @@ int UdpClient::connect_to_server(const char *host, const char *port)
 	char recvline[1000];
 
 	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+	if (sockfd < 0)
+	{
+		perror("error opening socket");
+		exit(0);
+	}
 
 	bzero(&servaddr, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
