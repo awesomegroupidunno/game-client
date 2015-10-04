@@ -35,7 +35,7 @@ struct JsonHandler
 class JsonEncodeDecode : public EncodeDecode
 {
 public:
-	const char* encode(const char* command);
+	const char* encode(char *command);
 	char* decode(char* buffer);
 };
 

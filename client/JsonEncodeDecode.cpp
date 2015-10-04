@@ -1,6 +1,6 @@
 #include "JsonEncodeDecode.h"
 
-const char* JsonEncodeDecode::encode(const char* command)
+const char* JsonEncodeDecode::encode(char *command)
 {
 	StringBuffer s;
 	Writer<StringBuffer> writer(s);

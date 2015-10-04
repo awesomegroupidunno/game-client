@@ -4,11 +4,14 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include "NetworkClient.h"
+#include "EncodeDecode.h"
+#include "JsonEncodeDecode.h"
 
 class UdpClient : public NetworkClient
 {

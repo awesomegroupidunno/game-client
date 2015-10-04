@@ -1,9 +1,4 @@
 #include "UdpClient.h"
-#include "EncodeDecode.h"
-#include "JsonEncodeDecode.h"
-#include "FakeServer.h"
-
-#include <arpa/inet.h>
 
 int UdpClient::error(const char *msg)
 {
@@ -13,18 +8,24 @@ int UdpClient::error(const char *msg)
 
 int UdpClient::connect_to_server(const char *host, const char *port)
 {
-	ssize_t n;
-
+	// Open socket
 	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sockfd < 0)
 	{
 		return error("error opening socket");
 	}
 
+	// Set up the socket's destination (the host)
 	bzero(&servaddr, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = inet_addr(host);
 	servaddr.sin_port = htons((uint16_t) atoi(port));
+
+	// Connect to host
+	if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0)
+	{
+		return error("error connecting to host");
+	}
 
 	printf("Connected to host %s through port %s\n", host, port);
 
@@ -36,13 +37,31 @@ int UdpClient::get_game_state(char *buffer)
 	char recvline[1000];
 	ssize_t endPos;
 
-	// Receive from connection
-	endPos = recvfrom(sockfd, recvline, 10000, 0, NULL, NULL);
-	if (endPos < 0)
+	// Try 100 times to receive from host
+	int tries = 0;
+	int maxTries = 100;
+	bool trying = true;
+	char err[] = "";
+	do
 	{
-		return error("error receiving from host");
-	}
+		endPos = recv(sockfd, recvline, 1000, MSG_DONTWAIT);
+		if (endPos < 0)
+		{
+			sprintf(err, "receiving from host failed, attempt %i", tries + 1);
+			error(err);
+			tries++;
+			if (tries >= maxTries)
+			{
+				return error("unable to receive from host");
+			}
+		}
+		else
+		{
+			trying = false;
+		}
+	} while (trying);
 
+	// Set null-terminating character of received data
 	recvline[endPos] = 0;
 
 	printf("rcvd: %s\n", recvline);
@@ -54,9 +73,8 @@ int UdpClient::send_command(char *command)
 {
 	ssize_t err;
 
-	// Send command is in stdin
-	err = sendto(sockfd, command, strlen(command), 0,
-			   (struct sockaddr *) &servaddr, sizeof(servaddr));
+	// Send the command to the host
+	err = send(sockfd, command, strlen(command), 0);
 	if (err < 0)
 	{
 		return error("error sending to host");
@@ -67,28 +85,6 @@ int UdpClient::send_command(char *command)
 	return 0;
 }
 
-/*int UdpClient::send_command(char *command)
-{
-	char sendline[1000];
-	ssize_t err;
-	printf("%s\n", command);
-
-	// Send whatever is in stdin
-	while (fgets(sendline, 10000, stdin) != NULL)
-	{
-		printf("test\n");
-		err = sendto(sockfd, sendline, strlen(sendline), 0,
-					 (struct sockaddr *) &servaddr, sizeof(servaddr));
-		if (err < 0)
-		{
-			return error("error sending to host");
-		}
-
-		printf("%s", sendline);
-	}
-
-	return 0;
-}*/
 
 int UdpClient::close_connection()
 {
