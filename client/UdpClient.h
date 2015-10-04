@@ -18,10 +18,10 @@ class UdpClient : public NetworkClient
 private:
 	int sockfd;
 	struct sockaddr_in servaddr;
-	int error(const char *msg);
+	int error(const char* msg);
 
 public:
-	int connect_to_server(const char *host, const char *port);
+	int connect_to_server(const char* host, const char* port);
 	int send_command(char* command);
 	int get_game_state(char* buffer);
 	int close_connection();
