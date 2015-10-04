@@ -12,21 +12,12 @@
  */
 //constructor
 std::vector<Vehicle*> GameController::getVehicles(){
-    //TODO: Replace getState with replaceState when replaceState is connected to serverside
-    //state = getState();
     state = replaceState(state);
     return state.getPlayers();
 }
 GameState GameController::replaceState(GameState update){
     //TODO: get updated gamestate from serverside
+    //networkClient is currently a FAKE Network Client
+    //networkClient should be replaced by the real network client when it's working
     return networkClient.getState();
 }
-//TODO: GetState TESTS FOR DRAWING GAME, SERVER HANDLES WILL NEGATE THIS LATER, CAN BE DELETED
-/*GameState GameController::getState(){
-    Vehicle* test = new Vehicle(x,50,100,0,0);
-    Vehicle* test2 = new Vehicle(200, 200, 100, 0, 0);
-    x++;
-    state.addPlayers(test);
-	state.addPlayers(test2);
-    return state;
-}*/

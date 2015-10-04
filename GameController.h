@@ -13,15 +13,15 @@
 
 class GameController {
     //TODO: List methods to be used in GameController.cpp
-    //TODO: methods to handle player input will be containers for vehicle methods
-    //TODO: GameController will not actually handle input, but instead be called from
-    //TODO: a separate InputAdapter class
+    //methods to handle player input will be containers for vehicle methods
+    //GameController will not actually handle input, but instead be called from
+    //a separate InputAdapter class
     GameState state;
+    //TODO: REPLACE WITH REAL NETWORK CLIENT LATER
     FakeNetworkClient networkClient;
 public:
     std::vector<Vehicle*> getVehicles();
     GameState replaceState(GameState update);
-    //GameState getState();
 };
 
 
