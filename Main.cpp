@@ -13,11 +13,11 @@ using namespace std;
 void run_client()
 {
 	NetworkClient* client = new UdpClient;
-	char command[] = "{\"Type\":\"GET\",\"Subtype\":\"STATE\",\"UniqueId\":\"4c2d41b2-6a3c-11e5-869a-001d727bbcec\"}";
+	char command[] = "{\"Type\":\"GET\",\"Subtype\":\"STATE\",\"UniqueID\":\"123\"}";
 	char buffer[1000];
 	bool connected = true;
 
-	client->connect_to_server("127.0.0.1", "10001");
+	client->connect_to_server("172.31.1.42", "10001");
 
 	while (connected)
 	{

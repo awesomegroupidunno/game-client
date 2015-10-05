@@ -27,6 +27,12 @@ int UdpClient::connect_to_server(const char* host, const char* port)
 		return error("error connecting to host");
 	}
 
+	// Set up socket to handle timeouts
+	struct timeval tv;
+	tv.tv_sec = 1; // 10 second timeout
+	tv.tv_usec = 0; // not initiating this can cause errors
+	setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char*) &tv, sizeof(struct timeval));
+
 	printf("Connected to host %s through port %s\n", host, port);
 
 	return 0;
@@ -38,26 +44,8 @@ int UdpClient::get_game_state(char* buffer)
 	char recvline[maxBufferSize];
 	ssize_t endPos;
 
-	// Try to receive from host
-	int tries = 0;
-	int maxTries = 5000;
-	bool trying = true;
-	do
-	{
-		endPos = recv(sockfd, recvline, (size_t) maxBufferSize, MSG_DONTWAIT);
-		if (endPos < 0)
-		{
-			tries++;
-			if (tries >= maxTries)
-			{
-				return error("unable to receive from host");
-			}
-		}
-		else
-		{
-			trying = false;
-		}
-	} while (trying);
+	// Receive from host
+	endPos = recv(sockfd, recvline, (size_t) maxBufferSize, 0);
 
 	// Set null-terminating character of received data
 	recvline[endPos] = 0;

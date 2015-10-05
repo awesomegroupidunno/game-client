@@ -22,10 +22,10 @@ char* JsonEncodeDecode::decode(char* buffer)
 	doc.Parse(buffer);
 
 	int pos = 0;
-	static const char* kTypeNames[] = { "Null", "False", "True", "Object", "Array", "String", "Number" };
+	static const char* typeNames[] = { "Null", "False", "True", "Object", "Array", "String", "Number" };
 	for (Value::ConstMemberIterator itr = doc.MemberBegin(); itr != doc.MemberEnd(); ++itr)
 	{
-		pos += sprintf(&buffer[pos], "Type of member %s is %s\n", itr->name.GetString(), kTypeNames[itr->value.GetType()]);
+		pos += sprintf(&buffer[pos], "Type of member %s is %s\n", itr->name.GetString(), typeNames[itr->value.GetType()]);
 	}
 
 	return buffer;
