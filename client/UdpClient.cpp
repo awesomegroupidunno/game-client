@@ -46,6 +46,10 @@ int UdpClient::get_game_state(char* buffer)
 
 	// Receive from host
 	endPos = recv(sockfd, recvline, (size_t) maxBufferSize, 0);
+	if (endPos < 0)
+	{
+		error("error receiving from host");
+	}
 
 	// Set null-terminating character of received data
 	recvline[endPos] = 0;
