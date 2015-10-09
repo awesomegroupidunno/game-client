@@ -10,8 +10,8 @@
 #include <string.h>
 #include <unistd.h>
 #include "NetworkClient.h"
-#include "EncodeDecode.h"
 #include "JsonEncodeDecode.h"
+#include "Listener.h"
 
 class UdpClient : public NetworkClient
 {
@@ -24,6 +24,8 @@ public:
 	int connect_to_server(const char* host, const char* port);
 	int send_command(char* command);
 	int get_game_state(char* buffer);
+	int start_listening(char *buffer);
+	void update(char* buffer);
 	int close_connection();
 };
 

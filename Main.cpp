@@ -13,18 +13,21 @@ using namespace std;
 void run_client()
 {
 	NetworkClient* client = new UdpClient;
-	char command[] = "{\"Type\":\"GET\",\"Subtype\":\"STATE\",\"UniqueID\":\"123\"}";
+	char command[] = "{\"Type\":\"POST\",\"Subtype\":\"TURN\",\"Value\":1.0,\"UniqueID\":\"123\"}";
 	char buffer[1000];
 	bool connected = true;
 
-	client->connect_to_server("172.31.1.42", "10001");
+	client->close_connection();
+
+	client->connect_to_server("127.0.0.1", "10001");
+	client->start_listening(buffer);
 
 	while (connected)
 	{
 		client->send_command(command);
-		client->get_game_state(buffer);
+		sleep(1);
 
-		connected = false;
+		//connected = false;
 	}
 
 	client->close_connection();

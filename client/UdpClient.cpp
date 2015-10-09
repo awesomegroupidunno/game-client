@@ -27,13 +27,7 @@ int UdpClient::connect_to_server(const char* host, const char* port)
 		return error("error connecting to host");
 	}
 
-	// Set up socket to handle timeouts
-	struct timeval tv;
-	tv.tv_sec = 1; // 10 second timeout
-	tv.tv_usec = 0; // not initiating this can cause errors
-	setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char*) &tv, sizeof(struct timeval));
-
-	printf("Connected to host %s through port %s\n", host, port);
+	printf("Connected to host %s through port %s: sockfd %i\n", host, port, sockfd);
 
 	return 0;
 }
@@ -61,6 +55,19 @@ int UdpClient::get_game_state(char* buffer)
 	printf("rcvd:\n%s\n", buffer);
 
 	return 0;
+}
+
+int UdpClient::start_listening(char *buffer)
+{
+	Listener* listener = new Listener;
+	listener->create_listener(sockfd, this);
+
+	return 0;
+}
+
+void UdpClient::update(char* buffer)
+{
+	printf("recv:\n%s\n", buffer);
 }
 
 int UdpClient::send_command(char* command)
