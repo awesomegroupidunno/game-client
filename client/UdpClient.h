@@ -23,8 +23,7 @@ private:
 public:
 	int connect_to_server(const char* host, const char* port);
 	int send_command(char* command);
-	int get_game_state(char* buffer);
-	int start_listening(char *buffer);
+	int start_listening();
 	void update(char* buffer);
 	int close_connection();
 };

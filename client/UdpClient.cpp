@@ -32,44 +32,6 @@ int UdpClient::connect_to_server(const char* host, const char* port)
 	return 0;
 }
 
-int UdpClient::get_game_state(char* buffer)
-{
-	int maxBufferSize = 1000;
-	char recvline[maxBufferSize];
-	ssize_t endPos;
-
-	// Receive from host
-	endPos = recv(sockfd, recvline, (size_t) maxBufferSize, 0);
-	if (endPos < 0)
-	{
-		error("error receiving from host");
-	}
-
-	// Set null-terminating character of received data
-	recvline[endPos] = 0;
-
-	// Decode JSON
-	EncodeDecode* encodeDecode = new JsonEncodeDecode;
-	buffer = encodeDecode->decode(recvline);
-
-	printf("rcvd:\n%s\n", buffer);
-
-	return 0;
-}
-
-int UdpClient::start_listening(char *buffer)
-{
-	Listener* listener = new Listener;
-	listener->create_listener(sockfd, this);
-
-	return 0;
-}
-
-void UdpClient::update(char* buffer)
-{
-	printf("recv:\n%s\n", buffer);
-}
-
 int UdpClient::send_command(char* command)
 {
 	ssize_t err;
@@ -91,6 +53,18 @@ int UdpClient::send_command(char* command)
 	return 0;
 }
 
+int UdpClient::start_listening()
+{
+	Listener* listener = new Listener;
+	listener->create_listener(sockfd, this);
+
+	return 0;
+}
+
+void UdpClient::update(char* buffer)
+{
+	printf("recv (update):\n%s\n", buffer);
+}
 
 int UdpClient::close_connection()
 {

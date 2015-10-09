@@ -1,11 +1,5 @@
 #include "Listener.h"
 
-struct data
-{
-	NetworkClient* client;
-	int sockfd;
-};
-
 void* listen(void* args)
 {
 	struct data* data;
@@ -13,14 +7,13 @@ void* listen(void* args)
 	int maxBufferSize = 1000;
 	char recvline[maxBufferSize];
 	ssize_t endPos;
-
-	printf("thread sockfd: %i\n", data->sockfd);
+	bool conn = true;
 
 	// Listen forever
-	while (true)
+	while (conn)
 	{
 		// Attempt receiving from host
-		endPos = recv(data->sockfd, recvline, (size_t) maxBufferSize, MSG_WAITALL);
+		endPos = recv(data->sockfd, recvline, (size_t) maxBufferSize, 0);
 
 		// Ignore unless a message was received
 		if (endPos >= 0)
@@ -32,22 +25,13 @@ void* listen(void* args)
 			data->client->update(recvline);
 		}
 	}
-}
 
-/*
- *
- * TODO: fix!
- * It will receive once from the server, but stops after that.
- * The loop is still going, it just continually returns a -1 from recv().
- *
- * Also, calling data->client->update() is segfaulting. COOL
- *
- */
+	return NULL;
+}
 
 int Listener::create_listener(int sockfd, NetworkClient* client)
 {
 	// Set data to pass to thread
-	struct data data;
 	data.sockfd = sockfd;
 	data.client = client;
 
@@ -59,9 +43,6 @@ int Listener::create_listener(int sockfd, NetworkClient* client)
 		perror("error creating client thread");
 		return -1;
 	}
-
-	// For some reason, without this an incorrect sockfd value is passed to the thread
-	sleep(1);
 
 	return 0;
 }
