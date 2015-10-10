@@ -1,79 +1,69 @@
 #include "UdpClient.h"
-#include "EncodeDecode.h"
-#include "JsonEncodeDecode.h"
 
-int UdpClient::error(const char *msg)
+int UdpClient::error(const char* msg)
 {
 	perror(msg);
 	return -1;
 }
 
-int UdpClient::connect_to_server(const char *host, const char *port)
+int UdpClient::connect_to_server(const char* host, const char* port)
 {
-	int port_num;
-	struct sockaddr_in serv_addr;
-	struct hostent *server;
-
 	// Open socket
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sockfd < 0)
 	{
-		return error("ERROR: cannot open socket");
+		return error("error opening socket");
 	}
 
-	// Find server
-	server = gethostbyname(host);
-	if (server == NULL)
+	// Set up the socket's destination (the host)
+	bzero(&servaddr, sizeof(servaddr));
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_addr.s_addr = inet_addr(host);
+	servaddr.sin_port = htons((uint16_t) atoi(port));
+
+	// Connect to host
+	if (connect(sockfd, (struct sockaddr*) &servaddr, sizeof(servaddr)) < 0)
 	{
-		return error("ERROR: host not found");
+		return error("error connecting to host");
 	}
 
-	// Get port number
-	port_num = atoi(port);
-
-	// Set the server's address
-	bzero((char *) &serv_addr, sizeof(serv_addr));
-	serv_addr.sin_family = AF_INET;
-	bcopy(server->h_addr, (char *) &serv_addr.sin_addr.s_addr, (size_t) server->h_length);
-	serv_addr.sin_port = htons((uint16_t) port_num);
-
-	// Connect to server
-	if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
-	{
-		return error("ERROR: could not connect");
-	}
+	printf("Connected to host %s through port %s on socket fd %i\n", host, port, sockfd);
 
 	return 0;
 }
 
-int UdpClient::send_command(const char *command)
+int UdpClient::send_command(char* command)
 {
-	// Send encoded command to server
-	EncodeDecode* encodeDecode = new JsonEncodeDecode;
-	command = encodeDecode->encode(command);
+	ssize_t err;
+	const char* sendline;
 
-	if (write(sockfd, command, strlen(command)) < 0)
+	// Encode JSON
+	sendline = encodeDecode->encode(command);
+
+	// Send the command to the host
+	err = send(sockfd, sendline, strlen(sendline), 0);
+	if (err < 0)
 	{
-		return error("ERROR: could not write to socket");
+		return error("error sending to host");
 	}
+
+	printf("sent:\n%s\n", sendline);
 
 	return 0;
 }
 
-int UdpClient::get_game_state(char *buffer)
+int UdpClient::start_listening()
 {
-	// Receive response from server, decode
-	printf("Return message:\n");
-	bzero(buffer, 256);
-	if (read(sockfd, buffer, 255) < 0)
-	{
-		return error("ERROR: could not read from socket");
-	}
+	Listener* listener = new Listener;
+	listener->create_listener(sockfd, this);
 
-	EncodeDecode* encodeDecode = new JsonEncodeDecode;
+	return 0;
+}
+
+void UdpClient::update(char* buffer)
+{
 	buffer = encodeDecode->decode(buffer);
-
-	return 0;
+	printf("recv:\n%s\n", buffer);
 }
 
 int UdpClient::close_connection()
@@ -81,7 +71,7 @@ int UdpClient::close_connection()
 	// Close socket
 	if (close(sockfd) < 0)
 	{
-		return error("ERROR: could not close socket");
+		return error("error closing socket");
 	}
 
 	return 0;

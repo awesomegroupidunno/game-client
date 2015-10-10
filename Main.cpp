@@ -13,21 +13,19 @@ using namespace std;
 void run_client()
 {
 	NetworkClient* client = new UdpClient;
-	const char* command = "Hello Car Combat!";
-	char* buffer;
-	bool connected = true;
+	char command[] = "{\"Type\":\"GET\",\"Subtype\":\"STATE\",\"UniqueID\":\"123\"}";
 
-	client->connect_to_server("192.168.156.244", "10001");
-
-	while (connected)
-	{
-		client->send_command(command);
-		client->get_game_state(buffer);
-
-		printf(buffer);
-	}
-
+	// Close the connection in case it's already open
 	client->close_connection();
+
+	// Connect to server
+	client->connect_to_server("127.0.0.1", "10001");
+
+	// Send a command
+	client->send_command(command);
+
+	// Start up listener thread
+	client->start_listening();
 }
 
 int main()
@@ -40,10 +38,17 @@ int main()
 	 * THE FOLLOWING IS ONLY A TEST OF WHAT THE STRUCTURE SHOULD LOOK LIKE
 	 * ALSO TESTS DRAWING VEHICLES ON SCREEN
 	 */
-	SdlGameView screen;
-	screen.drawView();
+	//SdlGameView screen;
+	//screen.drawView();
 
-	//run_client();
+	// Start up client
+	run_client();
+
+	// Stay connected forever
+	while (true)
+	{
+		sleep(1);
+	}
 
 	return 0;
 }

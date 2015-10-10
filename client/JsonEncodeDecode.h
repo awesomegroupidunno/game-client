@@ -2,8 +2,7 @@
 #define GAME_CLIENT_JSONENCODEDECODE_H
 
 #include <iostream>
-#include "rapidjson/reader.h"
-#include "rapidjson/writer.h"
+#include "rapidjson/document.h"
 #include "EncodeDecode.h"
 
 using namespace std;
@@ -35,7 +34,7 @@ struct JsonHandler
 class JsonEncodeDecode : public EncodeDecode
 {
 public:
-	const char* encode(const char* command);
+	const char* encode(char* command);
 	char* decode(char* buffer);
 };
 

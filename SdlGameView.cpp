@@ -8,7 +8,7 @@
 
 class SdlGameView{
 private:
-	SDL_Renderer *renderer;
+	SDL_Renderer* renderer;
     SdlGameViewAdapter gva;
 	const int carWidth = 50;
 	const int carHeight = 75;
@@ -29,7 +29,7 @@ public:
         }
 
         // Create window
-        SDL_Window *window = SDL_CreateWindow("Hello Car Combat!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
+        SDL_Window* window = SDL_CreateWindow("Hello Car Combat!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
         if (window == NULL) {
             std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
             SDL_Quit();

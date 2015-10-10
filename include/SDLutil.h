@@ -19,7 +19,7 @@ std::string getResourcePath(const std::string &subDir = "")
     if (baseResourcePath.empty())
     {
         // SDL_GetBasePath returns NULL if something goes wrong
-        char *basePath = SDL_GetBasePath();
+        char* basePath = SDL_GetBasePath();
         if (basePath)
         {
             baseResourcePath = basePath;
