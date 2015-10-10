@@ -18,6 +18,8 @@ class UdpClient : public NetworkClient
 private:
 	int sockfd;
 	struct sockaddr_in servaddr;
+	EncodeDecode* encodeDecode = new JsonEncodeDecode;
+
 	int error(const char* msg);
 
 public:

@@ -27,7 +27,7 @@ int UdpClient::connect_to_server(const char* host, const char* port)
 		return error("error connecting to host");
 	}
 
-	printf("Connected to host %s through port %s: sockfd %i\n", host, port, sockfd);
+	printf("Connected to host %s through port %s on socket fd %i\n", host, port, sockfd);
 
 	return 0;
 }
@@ -38,7 +38,6 @@ int UdpClient::send_command(char* command)
 	const char* sendline;
 
 	// Encode JSON
-	EncodeDecode* encodeDecode = new JsonEncodeDecode;
 	sendline = encodeDecode->encode(command);
 
 	// Send the command to the host
@@ -63,7 +62,8 @@ int UdpClient::start_listening()
 
 void UdpClient::update(char* buffer)
 {
-	printf("recv (update):\n%s\n", buffer);
+	buffer = encodeDecode->decode(buffer);
+	printf("recv:\n%s\n", buffer);
 }
 
 int UdpClient::close_connection()

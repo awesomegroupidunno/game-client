@@ -35,8 +35,6 @@ int Listener::create_listener(int sockfd, NetworkClient* client)
 	data.sockfd = sockfd;
 	data.client = client;
 
-	printf("listener sockfd: %i\n", data.sockfd);
-
 	// Create thread
 	if (pthread_create(&listen_thread, NULL, listen, (void*) &data) != 0)
 	{
