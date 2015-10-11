@@ -18,11 +18,12 @@ void run_client()
 	// Connect to server
 	client->connect_to_server("127.0.0.1", "10001");
 
-	// Send a command
-	client->move_command(1);
-
 	// Start up listener thread
 	client->start_listening();
+
+	// Send a command
+	client->move_command(1);
+	client->turn_command(-1);
 
 	// for debugging purposes, prevent from listening for too long
 	sleep(1);

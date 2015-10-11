@@ -47,6 +47,8 @@ int UdpClient::send_command(Command* c)
 		return error("error sending to host");
 	}
 
+	printf("sent:\n%s\n", sendline);
+
 	return 0;
 }
 
