@@ -11,8 +11,9 @@
 #include <vector>
 
 class SdlGameViewAdapter{
-    GameController gc;
+    GameController* gameController;
 public:
+    SdlGameViewAdapter(GameController* gc);
     std::vector<Vehicle*> getVehicles();
 };
 
