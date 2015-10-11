@@ -10,6 +10,7 @@
  * **********************************/
 
 #include <stdio.h>
+#include <math.h>
 #include "FakeNetworkClient.h"
 GameState FakeNetworkClient::getState(){
     return updateState();
@@ -22,22 +23,32 @@ GameState FakeNetworkClient::updateState(){
 
 GameState FakeNetworkClient::nextState(){
     GameState next;
-    Vehicle *test = new Vehicle(x, y, 100, 0, 0);
+    Vehicle *test = new Vehicle(x, y, 100, angle, 0);
     next.addPlayers(test);
-    printf("x: %d y: %d\n", x, y);
-
-    state.addPlayers(test);
-    if(x < 200 && y == 50){
-        x++;
-    }
-    if(x == 200 && y < 200){
-        y++;
-    }
-    if(x > 50 && y == 200){
-        x--;
-    }if(x == 50 && y > 50){
-        y--;
-    }
-    printf("new x: %d new y: %d\n", x, y);
+    printf("vehicle angle: %d\nVehicle X and Y: %d, %d\n", angle, x, y);
     return next;
+}
+void FakeNetworkClient::move(int direction) {
+    if (direction == 1) { //move forward
+        x = cos(angle);
+        y = sin(angle);
+    } else if (direction == -1) { //move reverse
+        int reverseAng = angle;
+        for(int i = 0; i < 180; i++){
+            reverseAng++;
+            if(reverseAng == 360){
+                reverseAng = 0;
+            }
+        }
+        x = cos(reverseAng);
+        y = sin(reverseAng);
+    }
+}
+void FakeNetworkClient::turn(int direction) {
+    angle += direction; //+1 for left (counterclockwise) -1 for right (clockwise)
+    if(angle == 360){
+        angle = 0;
+    }if(angle == -1){
+        angle = 359;
+    }
 }

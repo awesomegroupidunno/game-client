@@ -21,3 +21,11 @@ GameState GameController::replaceState(GameState update){
     //networkClient should be replaced by the real network client when it's working
     return networkClient.getState();
 }
+// passes call to move vehicle to network client
+void GameController::moveVehicle(int direction){
+    networkClient.move(direction);
+}
+// passes call to turn vehicle to network client
+void GameController::turnVehicle(int direction){
+    networkClient.turn(direction);
+}

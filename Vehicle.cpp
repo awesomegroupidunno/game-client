@@ -14,4 +14,3 @@ Vehicle::Vehicle(int cX, int cY, int end, double ang, double vel){
     endurance = end;          //vehicle health
     //TODO: possibly include powerup classes / objects
 }
-//TODO: methods to handle movement, turning, speeding up, braking, etc.

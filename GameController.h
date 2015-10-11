@@ -22,6 +22,8 @@ class GameController {
 public:
     std::vector<Vehicle*> getVehicles();
     GameState replaceState(GameState update);
+    void moveVehicle(int direction);
+    void turnVehicle(int direction);
 };
 
 

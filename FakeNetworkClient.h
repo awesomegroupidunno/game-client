@@ -17,11 +17,14 @@
 class FakeNetworkClient {
     int x = 50;
     int y = 50;
+    double angle = 270.0;
     GameState state;
 public:
     GameState getState();
     GameState updateState();
     GameState nextState();
+    void move(int direction);
+    void turn(int direction);
 };
 
 
