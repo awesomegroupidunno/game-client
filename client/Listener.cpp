@@ -2,8 +2,8 @@
 
 void* listen(void* args)
 {
-	struct data* data;
-	data = (struct data*) args;
+	struct Data* data;
+	data = (struct Data*) args;
 	int maxBufferSize = 1000;
 	char recvline[maxBufferSize];
 	ssize_t endPos;

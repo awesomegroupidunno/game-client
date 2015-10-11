@@ -32,13 +32,13 @@ int UdpClient::connect_to_server(const char* host, const char* port)
 	return 0;
 }
 
-int UdpClient::send_command(char* command)
+int UdpClient::send_command(Command* c)
 {
 	ssize_t err;
 	const char* sendline;
 
 	// Encode JSON
-	sendline = encodeDecode->encode(command);
+	sendline = encodeDecode->encode(c);
 
 	// Send the command to the host
 	err = send(sockfd, sendline, strlen(sendline), 0);
@@ -46,8 +46,6 @@ int UdpClient::send_command(char* command)
 	{
 		return error("error sending to host");
 	}
-
-	printf("sent:\n%s\n", sendline);
 
 	return 0;
 }
@@ -60,10 +58,10 @@ int UdpClient::start_listening()
 	return 0;
 }
 
-void UdpClient::update(char* buffer)
+void UdpClient::update(char* update)
 {
-	buffer = encodeDecode->decode(buffer);
-	printf("recv:\n%s\n", buffer);
+	update = encodeDecode->decode(update);
+	printf("recv:\n%s\n", update);
 }
 
 int UdpClient::close_connection()
@@ -75,4 +73,34 @@ int UdpClient::close_connection()
 	}
 
 	return 0;
+}
+
+/*
+ * Commands
+ */
+
+void UdpClient::move_command(int dir)
+{
+	Command* c = (Command*) malloc(sizeof(Command));
+
+	c->type = "POST";
+	c->subtype = "ACCELERATION";
+	c->value = dir;
+
+	send_command(c);
+
+	delete c;
+}
+
+void UdpClient::turn_command(int dir)
+{
+	Command* c = (Command*) malloc(sizeof(Command));
+
+	c->type = "POST";
+	c->subtype = "TURN";
+	c->value = dir;
+
+	send_command(c);
+
+	delete c;
 }

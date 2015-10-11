@@ -1,8 +1,6 @@
 #include "SdlGameView.cpp"
 #include "UdpClient.h"
 
-using namespace std;
-
 /*
  * NOTE: GameState.cpp and Vehicle.h usually would NOT be here.
  *      GameState would usually be set by the server.
@@ -13,7 +11,6 @@ using namespace std;
 void run_client()
 {
 	NetworkClient* client = new UdpClient;
-	char command[] = "{\"Type\":\"GET\",\"Subtype\":\"STATE\",\"UniqueID\":\"123\"}";
 
 	// Close the connection in case it's already open
 	client->close_connection();
@@ -22,10 +19,14 @@ void run_client()
 	client->connect_to_server("127.0.0.1", "10001");
 
 	// Send a command
-	client->send_command(command);
+	client->move_command(1);
 
 	// Start up listener thread
 	client->start_listening();
+
+	// for debugging purposes, prevent from listening for too long
+	sleep(1);
+	client->close_connection();
 }
 
 int main()

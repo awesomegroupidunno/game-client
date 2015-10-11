@@ -1,26 +1,36 @@
-#include <stdio.h>
 #include "JsonEncodeDecode.h"
 
-const char* JsonEncodeDecode::encode(char* command)
+const char* JsonEncodeDecode::encode(Command* c)
 {
-	/*StringBuffer s;
+	StringBuffer s;
 	Writer<StringBuffer> writer(s);
 
 	writer.StartObject();
-	writer.String("Command");
-	writer.String(command);
+		writer.String("Type");
+		writer.String(c->type);
+		writer.String("Subtype");
+		writer.String(c->subtype);
+		writer.String("Value");
+		writer.Int(c->value);
 	writer.EndObject();
 
-	return s.GetString();*/
-
-	return (const char*) command;
+	return s.GetString();
 }
 
 char* JsonEncodeDecode::decode(char* buffer)
 {
 	Document doc;
-	doc.Parse(buffer);
 
+	// Parse and catch errors
+	if (doc.Parse(buffer).HasParseError())
+	{
+		printf("\n----------\nError (offset %u): %s\n----------\n",
+				(unsigned)doc.GetErrorOffset(),
+				GetParseError_En(doc.GetParseError()));
+		return NULL;
+	}
+
+	// Currently just print out all types in received message
 	int pos = 0;
 	static const char* typeNames[] = { "Null", "False", "True", "Object", "Array", "String", "Number" };
 	for (Value::ConstMemberIterator itr = doc.MemberBegin(); itr != doc.MemberEnd(); ++itr)

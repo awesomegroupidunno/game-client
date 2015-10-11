@@ -7,7 +7,9 @@
 #include <unistd.h>
 #include "NetworkClient.h"
 
-struct data
+class NetworkClient;
+
+struct Data
 {
 	NetworkClient* client;
 	int sockfd;
@@ -17,7 +19,7 @@ class Listener
 {
 private:
 	pthread_t listen_thread;
-	struct data data;
+	struct Data data;
 public:
 	int create_listener(int sockfd, NetworkClient* client);
 };
