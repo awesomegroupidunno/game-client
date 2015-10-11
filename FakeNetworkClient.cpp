@@ -10,9 +10,12 @@
  * **********************************/
 
 #include <stdio.h>
+#include <math.h>
 #include "FakeNetworkClient.h"
-GameState FakeNetworkClient::getState(){
-    return updateState();
+FakeNetworkClient::FakeNetworkClient(){
+    x = 50;
+    y = 50;
+    angle = 180;
 }
 
 GameState FakeNetworkClient::updateState(){
@@ -20,24 +23,49 @@ GameState FakeNetworkClient::updateState(){
     return state;
 }
 
+GameState FakeNetworkClient::getState(){
+    return updateState();
+}
+
 GameState FakeNetworkClient::nextState(){
     GameState next;
-    Vehicle *test = new Vehicle(x, y, 100, 0, 0);
+    printf("%d\n", angle);
+    printf("x:%d y:%d\n", x, y);
+    Vehicle *test = new Vehicle(x, y, 100, angle, 0);
     next.addPlayers(test);
-    printf("x: %d y: %d\n", x, y);
-
-    state.addPlayers(test);
-    if(x < 200 && y == 50){
-        x++;
-    }
-    if(x == 200 && y < 200){
-        y++;
-    }
-    if(x > 50 && y == 200){
-        x--;
-    }if(x == 50 && y > 50){
-        y--;
-    }
-    printf("new x: %d new y: %d\n", x, y);
     return next;
+}
+// calculates movement based on trig and front-facing angle of player vehicle
+void FakeNetworkClient::move(int direction) {
+    double radian = angle*(M_PI/180);
+    double reverseRadian = angle+180;
+    if(reverseRadian > 359){
+        reverseRadian -= 360;
+    }
+    reverseRadian *= (M_PI/180);
+    double trueX = 2*cos(radian);
+    double trueY = 2*sin(radian);
+    if (direction == 1) { //move forward
+        x += trueX;
+        y -= trueY;
+    } else if (direction == -1) { //move reverse
+        trueX = 2*cos(reverseRadian);
+        trueY = 2*sin(reverseRadian);
+        x += trueX;
+        y -= trueY;
+    }
+}
+// turns vehicle angle, 8-axis movement for now, 45degree angles
+void FakeNetworkClient::turn(int direction) {
+    if(direction > 0) {
+        angle += 45;
+    }else{
+        angle -= 45;
+    }
+    if(angle > 315){
+        angle = 0;
+    }
+    if(angle < 0){
+        angle = 315;
+    }
 }

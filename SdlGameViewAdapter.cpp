@@ -9,7 +9,10 @@
 /*
  * communications between SdlGameView and GameController
  */
+SdlGameViewAdapter::SdlGameViewAdapter(GameController* gc) {
+    gameController = gc;
+}
 
 std::vector<Vehicle*> SdlGameViewAdapter::getVehicles(){
-    return gc.getVehicles();
+    return gameController->getVehicles();
 }

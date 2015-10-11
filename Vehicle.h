@@ -8,14 +8,9 @@
 
 class Vehicle{
 public:
-    int x, y;               //coordinates on game board
-    double velocity, frontAngle;      //current angle the vehicle is facing
-    int endurance;          //vehicle health
-    //constants
-    //double ACCEL_RATE = 1.0;     //acceleration rate -- placeholder value
-    //double DECEL_RATE = 0.5;     //deceleration rate -- placeholder value
-    //TODO: methods to handle movement, turning, speeding up, braking, etc.
-    Vehicle(int cX, int cY, int end, double ang, double vel);
+    int x, y, frontAngle, endurance;    //coordinates on game board, front facing angle, health
+    double velocity;                    //current angle the vehicle is facing
+    Vehicle(int cX, int cY, int end, int ang, double vel);
 };
 
 

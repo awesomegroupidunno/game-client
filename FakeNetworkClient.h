@@ -15,13 +15,18 @@
 #include "Vehicle.h"
 
 class FakeNetworkClient {
-    int x = 50;
-    int y = 50;
+private:
+    int x;
+    int y;
+    int angle;
     GameState state;
 public:
+    FakeNetworkClient();
     GameState getState();
     GameState updateState();
     GameState nextState();
+    void move(int direction);
+    void turn(int direction);
 };
 
 

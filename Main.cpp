@@ -1,4 +1,7 @@
-#include "SdlGameView.cpp"
+#include "SdlGameView.h"
+#include "SdlInputAdapter.h"
+#include "SdlGameViewAdapter.h"
+#include "GameController.h"
 #include "UdpClient.h"
 
 /*
@@ -32,17 +35,20 @@ void run_client()
 
 int main()
 {
-	// TODO: The following is an idea of how Main.cpp should look
-	// Draw window / game screen
-	// Initialize game loop / GameController.cpp
-	// Handle exiting game
+	// TODO: The following is an idea of how the main loop should function
+	// Initialize GameView
 	/*
 	 * THE FOLLOWING IS ONLY A TEST OF WHAT THE STRUCTURE SHOULD LOOK LIKE
-	 * ALSO TESTS DRAWING VEHICLES ON SCREEN
+	 * TESTS: Vehicles drawing on screen
 	 */
-	//SdlGameView screen;
-	//screen.drawView();
+	GameController* controller = new GameController;
+	SdlInputAdapter* inputAdapter = new SdlInputAdapter(controller);
+	SdlGameViewAdapter* gameViewAdapter = new SdlGameViewAdapter(controller);
+	SdlGameView screen(gameViewAdapter, inputAdapter);
+	screen.drawView();
 
+	/*
+	// TODO: The following is a test for server connectivity
 	// Start up client
 	run_client();
 
@@ -51,6 +57,7 @@ int main()
 	{
 		sleep(1);
 	}
+	 */
 
 	return 0;
 }
