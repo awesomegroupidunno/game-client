@@ -49,6 +49,10 @@
                 SDL_Event event;
                 while (SDL_PollEvent(&event))
                 {
+                    if (event.type == SDL_KEYDOWN) {
+                        // Listen for new user input
+                        inputAdapter->inputListener(event);
+                    }
                     if (event.type == SDL_QUIT)
                         gameRunning = false;
                 }
@@ -80,9 +84,6 @@
 
                 // Update the screen
                 SDL_RenderPresent(renderer);
-
-                // Listen for new user input
-                inputAdapter->inputListener(event);
 
                 // Take a quick break after all that hard work
                 SDL_Delay(40);
