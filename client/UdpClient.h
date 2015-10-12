@@ -20,6 +20,7 @@ public:
 	int close_connection();
 
 	// Commands
+	void connect_command();
 	void move_command(int dir);
 	void turn_command(int dir);
 };

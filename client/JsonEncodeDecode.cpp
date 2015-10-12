@@ -6,12 +6,22 @@ const char* JsonEncodeDecode::encode(Command* c)
 	Writer<StringBuffer> writer(s);
 
 	writer.StartObject();
-		writer.String("Type");
-		writer.String(c->type);
-		writer.String("Subtype");
-		writer.String(c->subtype);
+
+	writer.String("Type");
+	writer.String(c->type);
+	writer.String("Subtype");
+	writer.String(c->subtype);
+	if (c->numValue != NULL)
+	{
 		writer.String("Value");
-		writer.Int(c->value);
+		writer.Int(c->numValue);
+	}
+	if (c->strValue != NULL)
+	{
+		writer.String("Value");
+		writer.String(c->strValue);
+	}
+
 	writer.EndObject();
 
 	return s.GetString();

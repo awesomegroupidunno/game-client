@@ -81,13 +81,24 @@ int UdpClient::close_connection()
  * Commands
  */
 
+void UdpClient::connect_command()
+{
+	Command* c = (Command*) malloc(sizeof(Command));
+
+	c->type = "POST";
+	c->subtype = "CONNECT";
+	c->strValue = "username";
+
+	send_command(c);
+}
+
 void UdpClient::move_command(int dir)
 {
 	Command* c = (Command*) malloc(sizeof(Command));
 
 	c->type = "POST";
 	c->subtype = "ACCELERATION";
-	c->value = dir;
+	c->numValue = dir;
 
 	send_command(c);
 }
@@ -98,7 +109,7 @@ void UdpClient::turn_command(int dir)
 
 	c->type = "POST";
 	c->subtype = "TURN";
-	c->value = dir;
+	c->numValue = dir;
 
 	send_command(c);
 }

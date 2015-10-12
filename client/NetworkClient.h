@@ -22,6 +22,7 @@ public:
 	virtual int close_connection() = 0;
 
 	// Commands
+	virtual void connect_command() = 0;
 	virtual void move_command(int dir) = 0;
 	virtual void turn_command(int dir) = 0;
 };
