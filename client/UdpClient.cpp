@@ -90,8 +90,6 @@ void UdpClient::move_command(int dir)
 	c->value = dir;
 
 	send_command(c);
-
-	delete c;
 }
 
 void UdpClient::turn_command(int dir)
@@ -103,6 +101,4 @@ void UdpClient::turn_command(int dir)
 	c->value = dir;
 
 	send_command(c);
-
-	delete c;
 }

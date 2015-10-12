@@ -1,12 +1,7 @@
 #ifndef GAME_CLIENT_ENCODEDECODE_H
 #define GAME_CLIENT_ENCODEDECODE_H
 
-struct Command
-{
-	char const* type;
-	char const* subtype;
-	int value;
-};
+#include "Command.h"
 
 class EncodeDecode
 {
