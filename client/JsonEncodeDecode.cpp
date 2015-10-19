@@ -1,6 +1,6 @@
 #include "JsonEncodeDecode.h"
 
-const char* JsonEncodeDecode::encode(Command* c)
+const char* JsonEncodeDecode::encode(Command* c, int mode)
 {
 	StringBuffer s;
 	Writer<StringBuffer> writer(s);
@@ -11,12 +11,12 @@ const char* JsonEncodeDecode::encode(Command* c)
 	writer.String(c->type);
 	writer.String("Subtype");
 	writer.String(c->subtype);
-	if (c->numValue != NULL)
+	if (mode == NUM_MODE)
 	{
 		writer.String("Value");
 		writer.Int(c->numValue);
 	}
-	if (c->strValue != NULL)
+	if (mode == STRING_MODE)
 	{
 		writer.String("Value");
 		writer.String(c->strValue);

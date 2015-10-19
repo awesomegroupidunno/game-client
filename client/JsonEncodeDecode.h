@@ -14,7 +14,7 @@ using namespace rapidjson;
 class JsonEncodeDecode : public EncodeDecode
 {
 public:
-	const char* encode(Command* c);
+	const char* encode(Command* c, int mode);
 	char* decode(char* buffer);
 };
 

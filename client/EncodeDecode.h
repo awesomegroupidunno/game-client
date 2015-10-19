@@ -6,7 +6,7 @@
 class EncodeDecode
 {
 public:
-	virtual const char* encode(Command* c) = 0;
+	virtual const char* encode(Command* c, int mode) = 0;
 	virtual char* decode(char* buffer) = 0;
 };
 

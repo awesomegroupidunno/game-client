@@ -32,13 +32,13 @@ int UdpClient::connect_to_server(const char* host, const char* port)
 	return 0;
 }
 
-int UdpClient::send_command(Command* c)
+int UdpClient::send_command(Command* c, int mode)
 {
 	ssize_t err;
 	const char* sendline;
 
 	// Encode JSON
-	sendline = encodeDecode->encode(c);
+	sendline = encodeDecode->encode(c, mode);
 
 	// Send the command to the host
 	err = send(sockfd, sendline, strlen(sendline), 0);
@@ -89,7 +89,9 @@ void UdpClient::connect_command()
 	c->subtype = "CONNECT";
 	c->strValue = "username";
 
-	send_command(c);
+	send_command(c, STRING_MODE);
+
+	free(c);
 }
 
 void UdpClient::move_command(int dir)
@@ -100,7 +102,9 @@ void UdpClient::move_command(int dir)
 	c->subtype = "ACCELERATION";
 	c->numValue = dir;
 
-	send_command(c);
+	send_command(c, NUM_MODE);
+
+	free(c);
 }
 
 void UdpClient::turn_command(int dir)
@@ -111,5 +115,7 @@ void UdpClient::turn_command(int dir)
 	c->subtype = "TURN";
 	c->numValue = dir;
 
-	send_command(c);
+	send_command(c, NUM_MODE);
+
+	free(c);
 }
