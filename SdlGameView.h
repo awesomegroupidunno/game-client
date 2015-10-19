@@ -28,7 +28,7 @@ public:
     int initGL();
     void exit();
     void drawSquare();
-    void drawVehicle(SDL_Rect* vehicle);
+    void drawVehicle(SDL_Rect* vehicle, double angle);
     int drawView();
 };
 

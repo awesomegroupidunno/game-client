@@ -33,16 +33,21 @@ int SdlGameView::init(){
 int SdlGameView::initGL(){
     // Set our OpenGL attributes.
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    // DO NOT CHANGE!! -- Rendering relies on this version of OpenGL
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     // Create GL context buffer for window
     context = SDL_GL_CreateContext(window);
+    SDL_GL_SetSwapInterval(1);
 
     // Initialize GLEW
     glewExperimental = GL_TRUE;
     glewInit();
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
 
     glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
     glViewport( 0, 0, 640, 480 );
@@ -60,7 +65,7 @@ int SdlGameView::initGL(){
 }
 
 void SdlGameView::drawSquare(){
-    glBegin(GL_POLYGON);
+    glBegin(GL_QUADS);
         glVertex2f(sqr[0][0], sqr[0][1]);
         glVertex2f(sqr[1][0], sqr[1][1]);
         glVertex2f(sqr[2][0], sqr[2][1]);
@@ -68,10 +73,13 @@ void SdlGameView::drawSquare(){
     glEnd();
 }
 
-void SdlGameView::drawVehicle(SDL_Rect *vehicle){
+void SdlGameView::drawVehicle(SDL_Rect *vehicle, double angle){
     // TODO: switch to OpenGL, delete SDL renderer code remnants
     // SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
     // SDL_RenderFillRect(renderer, vehicle);
+    glTranslatef(vehicle->x, vehicle->y, 0);
+    glRotatef(angle, 0, 0, 1);
+    glScalef(vehicle->w/2, vehicle->h/2, 1);
     glColor3f(1.0, 0.0, 0.0);
     drawSquare();
 }
@@ -81,12 +89,12 @@ int SdlGameView::drawView(){
         return 0;
     }
 
-    //loop that draws the game
+    // Rendering loop
     bool gameRunning = true;
     int tick = 0;
     while (gameRunning) {
 
-        // Listen for the exit
+        // Listen for user input
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
@@ -101,6 +109,7 @@ int SdlGameView::drawView(){
         int numCars = gameViewAdapter->getVehicles().size();
         printf("number of cars = %i\n", numCars);
         SDL_Rect* cars = new SDL_Rect[numCars];
+        double angle;
         // Take the vehicles from the vehicle vector
         // Use their values to begin drawing
         printf("SETTING CARS FROM VEHICLE VECTOR\n");
@@ -109,20 +118,20 @@ int SdlGameView::drawView(){
             cars[i].y = gameViewAdapter->getVehicles().at(i)->y;
             cars[i].w = carWidth;
             cars[i].h = carHeight;
+            angle = gameViewAdapter->getVehicles().at(i)->frontAngle;
         }
 
         // Make background white and clear renderer
         // TODO: switch to OpenGL, delete SDL renderer code remnants
         //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         //SDL_RenderClear(renderer);
-        glClearColor(1.0, 1.0, 1.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         printf("DRAWING: tick %i\n", tick);
 
         for (int j = 0; j < numCars; j++) {
             glPushMatrix();
-                drawVehicle(&cars[j]);
+                drawVehicle(&cars[j], angle);
             glPopMatrix();
         }
 
