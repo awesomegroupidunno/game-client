@@ -19,10 +19,14 @@ void run_client()
 	client->close_connection();
 
 	// Connect to server
+//	client->connect_to_server("172.31.1.42", "10001");
 	client->connect_to_server("127.0.0.1", "10001");
 
 	// Start up listener thread
 	client->start_listening();
+
+	// Tell the server we exist
+	client->connect_command();
 
 	// Send a command
 	client->move_command(1);
@@ -41,13 +45,12 @@ int main()
 	 * THE FOLLOWING IS ONLY A TEST OF WHAT THE STRUCTURE SHOULD LOOK LIKE
 	 * TESTS: Vehicles drawing on screen
 	 */
-	GameController* controller = new GameController;
+	/*GameController* controller = new GameController;
 	SdlInputAdapter* inputAdapter = new SdlInputAdapter(controller);
 	SdlGameViewAdapter* gameViewAdapter = new SdlGameViewAdapter(controller);
 	SdlGameView screen(gameViewAdapter, inputAdapter);
-	screen.drawView();
+	screen.drawView();*/
 
-	/*
 	// TODO: The following is a test for server connectivity
 	// Start up client
 	run_client();
@@ -57,7 +60,6 @@ int main()
 	{
 		sleep(1);
 	}
-	 */
 
 	return 0;
 }

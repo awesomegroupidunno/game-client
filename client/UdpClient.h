@@ -14,12 +14,13 @@ private:
 
 public:
 	int connect_to_server(const char* host, const char* port);
-	int send_command(Command* c);
+	int send_command(Command* c, int mode);
 	int start_listening();
 	void update(char* update);
 	int close_connection();
 
 	// Commands
+	void connect_command();
 	void move_command(int dir);
 	void turn_command(int dir);
 };

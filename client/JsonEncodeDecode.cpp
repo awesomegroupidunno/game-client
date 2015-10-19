@@ -1,17 +1,27 @@
 #include "JsonEncodeDecode.h"
 
-const char* JsonEncodeDecode::encode(Command* c)
+const char* JsonEncodeDecode::encode(Command* c, int mode)
 {
 	StringBuffer s;
 	Writer<StringBuffer> writer(s);
 
 	writer.StartObject();
-		writer.String("Type");
-		writer.String(c->type);
-		writer.String("Subtype");
-		writer.String(c->subtype);
+
+	writer.String("Type");
+	writer.String(c->type);
+	writer.String("Subtype");
+	writer.String(c->subtype);
+	if (mode == NUM_MODE)
+	{
 		writer.String("Value");
-		writer.Int(c->value);
+		writer.Int(c->numValue);
+	}
+	if (mode == STRING_MODE)
+	{
+		writer.String("Value");
+		writer.String(c->strValue);
+	}
+
 	writer.EndObject();
 
 	return s.GetString();
