@@ -3,99 +3,153 @@
 //
 #include "SdlGameView.h"
 
-    SdlGameView::SdlGameView(SdlGameViewAdapter* gva, SdlInputAdapter* ia){
+SdlGameView::SdlGameView(SdlGameViewAdapter* gva, SdlInputAdapter* ia){
         gameViewAdapter = gva;
         inputAdapter = ia;
     }
 
-    void SdlGameView::drawVehicle(SDL_Rect *vehicle){
-            // Rect color
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
-            // Draw rect
-            SDL_RenderFillRect(renderer, vehicle);
+int SdlGameView::init(){
+    // Init SDL
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
+        return 0;
+    }
+
+    // Create SDL window with OpenGL
+    window = SDL_CreateWindow("Car Combat", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+    if (window == NULL) {
+        std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        return 0;
+    }
+
+    if(!initGL()){
+        std::cout << "Error: OpenGL with SDL failed to initialize" << std::endl;
+    }
+
+    return 1;
+}
+
+int SdlGameView::initGL(){
+    // Set our OpenGL attributes.
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+    // Create GL context buffer for window
+    context = SDL_GL_CreateContext(window);
+
+    // Initialize GLEW
+    glewExperimental = GL_TRUE;
+    glewInit();
+
+    glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
+    glViewport( 0, 0, 640, 480 );
+    glClear( GL_COLOR_BUFFER_BIT );
+
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity();
+
+    glOrtho(0.0f, 640, 480, 0.0f, -1.0f, 1.0f);
+
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity();
+
+    SDL_GL_SwapWindow(window);
+}
+
+void SdlGameView::drawSquare(){
+    glBegin(GL_POLYGON);
+        glVertex2f(sqr[0][0], sqr[0][1]);
+        glVertex2f(sqr[1][0], sqr[1][1]);
+        glVertex2f(sqr[2][0], sqr[2][1]);
+        glVertex2f(sqr[3][0], sqr[3][1]);
+    glEnd();
+}
+
+void SdlGameView::drawVehicle(SDL_Rect *vehicle){
+    // TODO: switch to OpenGL, delete SDL renderer code remnants
+    // SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+    // SDL_RenderFillRect(renderer, vehicle);
+    glColor3f(1.0, 0.0, 0.0);
+    drawSquare();
+}
+
+int SdlGameView::drawView(){
+    if(!init()){
+        return 0;
+    }
+
+    //loop that draws the game
+    bool gameRunning = true;
+    int tick = 0;
+    while (gameRunning) {
+
+        // Listen for the exit
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_KEYDOWN) {
+                // Listen for new user input
+                inputAdapter->inputListener(event);
+            }
+            if (event.type == SDL_QUIT)
+                gameRunning = false;
         }
 
-    int SdlGameView::drawView(){
-            // Init SDL
-            if (SDL_Init(SDL_INIT_VIDEO)) {
-                std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
-                return 1;
-            }
-
-            // Create window
-            SDL_Window* window = SDL_CreateWindow("Hello Car Combat!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
-            if (window == NULL) {
-                std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
-                SDL_Quit();
-                return 1;
-            }
-
-            // Set renderer to window
-            renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-            if (renderer == NULL) {
-                SDL_DestroyWindow(window);
-                std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-                SDL_Quit();
-                return 1;
-            }
-
-            //TODO: THIS IS FOR TESTING DRAWING VEHICLES
-            // A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
-            bool gameRunning = true;
-            int tick = 0;
-            while (gameRunning) {
-
-                // Listen for the exit
-                SDL_Event event;
-                while (SDL_PollEvent(&event))
-                {
-                    if (event.type == SDL_KEYDOWN) {
-                        // Listen for new user input
-                        inputAdapter->inputListener(event);
-                    }
-                    if (event.type == SDL_QUIT)
-                        gameRunning = false;
-                }
-
-                int numCars = gameViewAdapter->getVehicles().size();
-                printf("number of cars = %i\n", numCars);
-                SDL_Rect* cars = new SDL_Rect[numCars];
-                // Take the vehicles from the vehicle vector
-                // Use their values to begin drawing
-                printf("SETTING CARS FROM VEHICLE VECTOR\n");
-                for (int i = 0; i < numCars; i++){
-                    cars[i].x = gameViewAdapter->getVehicles().at(i)->x;
-                    cars[i].y = gameViewAdapter->getVehicles().at(i)->y;
-                    cars[i].w = carWidth;
-                    cars[i].h = carHeight;
-                }
-
-                // Make background white
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
-                // First clear the renderer
-                SDL_RenderClear(renderer);
-
-                printf("DRAWING: tick %i\n", tick);
-
-                for (int j = 0; j < numCars; j++) {
-                    drawVehicle(&cars[j]);
-                }
-
-                // Update the screen
-                SDL_RenderPresent(renderer);
-
-                // Take a quick break after all that hard work
-                SDL_Delay(40);
-
-                // Next tick
-                tick++;
-            }
-
-            // Clean up
-            SDL_DestroyRenderer(renderer);
-            SDL_DestroyWindow(window);
-            SDL_Quit();
-
-            return 0;
+        int numCars = gameViewAdapter->getVehicles().size();
+        printf("number of cars = %i\n", numCars);
+        SDL_Rect* cars = new SDL_Rect[numCars];
+        // Take the vehicles from the vehicle vector
+        // Use their values to begin drawing
+        printf("SETTING CARS FROM VEHICLE VECTOR\n");
+        for (int i = 0; i < numCars; i++){
+            cars[i].x = gameViewAdapter->getVehicles().at(i)->x;
+            cars[i].y = gameViewAdapter->getVehicles().at(i)->y;
+            cars[i].w = carWidth;
+            cars[i].h = carHeight;
         }
+
+        // Make background white and clear renderer
+        // TODO: switch to OpenGL, delete SDL renderer code remnants
+        //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        //SDL_RenderClear(renderer);
+        glClearColor(1.0, 1.0, 1.0, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        printf("DRAWING: tick %i\n", tick);
+
+        for (int j = 0; j < numCars; j++) {
+            glPushMatrix();
+                drawVehicle(&cars[j]);
+            glPopMatrix();
+        }
+
+        // Update the screen
+        //SDL_RenderPresent(renderer);
+        glFlush();
+        SDL_GL_SwapWindow(window);
+
+        // Take a quick break after all that hard work
+        SDL_Delay(40);
+
+        // Next tick
+        tick++;
+    }
+        // Clean up
+        exit();
+
+        return 0;
+}
+
+void SdlGameView::exit(){
+    // Delete OpenGL context
+    SDL_GL_DeleteContext(context);
+
+    // Destroy window
+    SDL_DestroyWindow(window);
+
+    // Shutdown SDL2
+    SDL_Quit();
+}
