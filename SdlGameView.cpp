@@ -79,7 +79,7 @@ void SdlGameView::drawVehicle(SDL_Rect *vehicle, double angle){
     // SDL_RenderFillRect(renderer, vehicle);
     glTranslatef(vehicle->x, vehicle->y, 0);
     glRotatef(angle, 0, 0, 1);
-    glScalef(vehicle->w/2, vehicle->h/2, 1);
+    glScalef(vehicle->h/2, vehicle->w/2, 1);
     glColor3f(1.0, 0.0, 0.0);
     drawSquare();
 }

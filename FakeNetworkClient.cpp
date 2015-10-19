@@ -15,7 +15,7 @@
 FakeNetworkClient::FakeNetworkClient(){
     x = 50;
     y = 50;
-    angle = 180;
+    angle = 0;
 }
 
 GameState FakeNetworkClient::updateState(){
@@ -38,34 +38,34 @@ GameState FakeNetworkClient::nextState(){
 // calculates movement based on trig and front-facing angle of player vehicle
 void FakeNetworkClient::move(int direction) {
     double radian = angle*(M_PI/180);
-    double reverseRadian = angle+180;
-    if(reverseRadian > 359){
-        reverseRadian -= 360;
+    double reverseAngle = angle+180;
+    if(reverseAngle > 359){
+        reverseAngle -= 360;
     }
-    reverseRadian *= (M_PI/180);
+    double reverseRadian = reverseAngle*(M_PI/180);
     double trueX = 2*cos(radian);
     double trueY = 2*sin(radian);
     if (direction == 1) { //move forward
         x += trueX;
-        y -= trueY;
+        y += trueY;
     } else if (direction == -1) { //move reverse
         trueX = 2*cos(reverseRadian);
         trueY = 2*sin(reverseRadian);
         x += trueX;
-        y -= trueY;
+        y += trueY;
     }
 }
 // turns vehicle angle, 8-axis movement for now, 45degree angles
 void FakeNetworkClient::turn(int direction) {
-    if(direction > 0) {
-        angle += 45;
+    if(direction < 0) {
+        angle ++;
     }else{
-        angle -= 45;
+        angle --;
     }
-    if(angle > 315){
+    if(angle >= 360){
         angle = 0;
     }
     if(angle < 0){
-        angle = 315;
+        angle = 359;
     }
 }
