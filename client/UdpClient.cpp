@@ -1,14 +1,18 @@
 #include "UdpClient.h"
 
-UdpClient::UdpClient(GameState* state)
+UdpClient::UdpClient()
 {
-	this->state = state;
 	this->encodeDecode = new JsonEncodeDecode;
 }
 
 UdpClient::~UdpClient()
 {
 	delete encodeDecode;
+}
+
+void UdpClient::set_controller(GameController* controller)
+{
+	this->controller = controller;
 }
 
 int UdpClient::error(const char* msg)
@@ -77,10 +81,12 @@ void UdpClient::update(char* update)
 	GameState* new_state = encodeDecode->decode(update);
 
 	// Replace old with new
-	delete state;
-	state = new_state;
+	if (new_state != NULL)
+	{
+		controller->update(new_state);
+	}
 
-	printf("recv:\n%s\n", update);
+	//printf("recv:\n%s\n", update);
 }
 
 int UdpClient::close_connection()

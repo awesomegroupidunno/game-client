@@ -3,29 +3,37 @@
 //
 
 #include "GameController.h"
-#include "Vehicle.h"
-#include <iostream>
-#include <vector>
 
 /*
  * HANDLE GAME LOGIC AND PASSING GAMESTATE
  */
-//constructor
-std::vector<Vehicle*> GameController::getVehicles(){
-    state = replaceState(state);
-    return state.getPlayers();
+
+// Constructor
+GameController::GameController(GameState* state, NetworkClient* client)
+{
+	this->state = state;
+	this->client = client;
+	client->set_controller(this);
 }
-GameState GameController::replaceState(GameState update){
-    //TODO: get updated gamestate from serverside
-    //networkClient is currently a FAKE Network Client
-    //networkClient should be replaced by the real network client when it's working
-    return networkClient.getState();
+
+void GameController::update(GameState* new_state)
+{
+	delete state;
+	state = new_state;
 }
+
+std::vector<Vehicle*>* GameController::getVehicles(){
+    return state->getPlayers();
+}
+
 // passes call to move vehicle to network client
-void GameController::moveVehicle(int direction){
-    networkClient.move(direction);
+void GameController::moveVehicle(int direction)
+{
+    client->move_command(direction);
 }
+
 // passes call to turn vehicle to network client
-void GameController::turnVehicle(int direction){
-    networkClient.turn(direction);
+void GameController::turnVehicle(int direction)
+{
+    client->turn_command(direction);
 }

@@ -15,22 +15,22 @@ void SdlInputAdapter::inputListener(SDL_Event event){
                 case SDLK_UP:
                     // handle forward motion
                     gameController->moveVehicle(1);
-                    printf("input up");
+                    printf("input up\n");
                     break;
                 case SDLK_DOWN:
                     // handle reverse motion
                     gameController->moveVehicle(-1);
-                    printf("input down");
+                    printf("input down\n");
                     break;
                 case SDLK_LEFT:
                     // handle turning left
                     gameController->turnVehicle(1);
-                    printf("input left");
+                    printf("input left\n");
                     break;
                 case SDLK_RIGHT:
                     // handle turning right
                     gameController->turnVehicle(-1);
-                    printf("input right");
+                    printf("input right\n");
                     break;
             }
 }

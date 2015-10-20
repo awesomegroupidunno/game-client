@@ -16,7 +16,7 @@ void* listen(void* args)
 		endPos = recv(data->sockfd, recvline, (size_t) maxBufferSize, 0);
 
 		// Ignore unless a message was received
-		if (endPos >= 0)
+		if (endPos > 0)
 		{
 			// Set null-terminating character of received data
 			recvline[endPos] = 0;

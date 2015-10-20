@@ -8,11 +8,13 @@
 class GameState
 {
 private:
-	std::vector<Vehicle*> players;
+	std::vector<Vehicle*>* players;
 
 public:
+	GameState();
+
 	void addPlayer(Vehicle* add);
-	std::vector<Vehicle*> getPlayers();
+	std::vector<Vehicle*>* getPlayers();
 	//TODO: populate GameState with containers (powerups, XP zone location, bases, etc.)
 };
 

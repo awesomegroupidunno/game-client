@@ -6,22 +6,25 @@
 #define GAME_CLIENT_GAMECONTROLLER_H
 
 #include "Vehicle.h"
-//#include "GameState.cpp"
-#include "FakeNetworkClient.h"
 #include <iostream>
 #include <vector>
+#include "NetworkClient.h"
+
+class NetworkClient;
 
 class GameController {
     //TODO: List methods to be used in GameController.cpp
     //methods to handle player input will be containers for vehicle methods
     //GameController will not actually handle input, but instead be called from
     //a separate InputAdapter class
-    GameState state;
-    //TODO: REPLACE WITH REAL NETWORK CLIENT LATER
-    FakeNetworkClient networkClient;
+    GameState* state;
+    NetworkClient* client;
+
 public:
-    std::vector<Vehicle*> getVehicles();
-    GameState replaceState(GameState update);
+	GameController(GameState* state, NetworkClient* client);
+
+	void update(GameState* new_state);
+    std::vector<Vehicle*>* getVehicles();
     void moveVehicle(int direction);
     void turnVehicle(int direction);
 };

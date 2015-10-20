@@ -41,19 +41,26 @@ GameState* JsonEncodeDecode::decode(char* buffer)
 	}
 
 	// Create new GameState
-	GameState* state = new GameState;
+	GameState* state = new GameState();
 
 	// Iterate through JSON document
 	for (Value::ConstMemberIterator itr = doc.MemberBegin(); itr != doc.MemberEnd(); ++itr)
 	{
 		// Grab the updated Vehicles
-		if (itr->name.GetString() == "Vehicles")
+		if (strcmp(itr->name.GetString(), "Vehicles") == 0)
 		{
+			// If Vehicles is not an array, something went wrong
+			if (!itr->value.IsArray())
+			{
+				printf("\n----------\nError: Vehicles array is not array\n----------\n");
+				return NULL;
+			}
+
 			// Iterate through Vehicle array
 			const Value& array = itr->value;
 			for (SizeType i = 0; i < array.Size(); i++)
 			{
-				if (decodeVehicle(state, array[i]) == 0)
+				if (decodeVehicle(state, array[i]) == -1)
 				{
 					printf("\n----------\nError decoding vehicles\n----------\n");
 					return NULL;
@@ -68,7 +75,7 @@ GameState* JsonEncodeDecode::decode(char* buffer)
 int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 {
 	// Vehicle vars
-	int x = NULL, y = NULL, velocity = NULL, angle = NULL, endurance = NULL;
+	int x = 0, y = 0, velocity = 0, angle = 0, endurance = 0;
 
 	// Iterate through JSON vehicle object
 	const char* check;
@@ -76,38 +83,31 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 	{
 		check = itr->name.GetString();
 
-		if (strcmp(check, "X"))
+		if (strcmp(check, "X") == 0)
 		{
 			x = itr->value.GetInt();
 			continue;
 		}
-		if (strcmp(check, "Y"))
+		if (strcmp(check, "Y") == 0)
 		{
 			y = itr->value.GetInt();
 			continue;
 		}
-		if (strcmp(check, "Velocity"))
+		if (strcmp(check, "Velocity") == 0)
 		{
 			velocity = itr->value.GetInt();
 			continue;
 		}
-		if (strcmp(check, "Angle"))
+		if (strcmp(check, "Angle") == 0)
 		{
 			angle = itr->value.GetInt();
 			continue;
 		}
-		if (strcmp(check, "Endurance"))
+		if (strcmp(check, "Endurance") == 0)
 		{
 			endurance = itr->value.GetInt();
 			continue;
 		}
-	}
-
-	// Error checking
-	if (x == NULL || y == NULL || velocity == NULL || angle == NULL || endurance == NULL)
-	{
-		// Return error value
-		return 0;
 	}
 
 	// Create a new Vehicle

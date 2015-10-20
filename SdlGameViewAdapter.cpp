@@ -3,8 +3,6 @@
 //
 
 #include "SdlGameViewAdapter.h"
-#include <iostream>
-#include <vector>
 
 /*
  * communications between SdlGameView and GameController
@@ -13,6 +11,6 @@ SdlGameViewAdapter::SdlGameViewAdapter(GameController* gc) {
     gameController = gc;
 }
 
-std::vector<Vehicle*> SdlGameViewAdapter::getVehicles(){
+std::vector<Vehicle*>* SdlGameViewAdapter::getVehicles(){
     return gameController->getVehicles();
 }

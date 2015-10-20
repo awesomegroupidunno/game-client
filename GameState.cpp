@@ -1,11 +1,16 @@
 #include "GameState.h"
 
-void GameState::addPlayer(Vehicle* add)
+GameState::GameState()
 {
-	players.push_back(add);
+	this->players = new std::vector<Vehicle*>();
 }
 
-std::vector<Vehicle*> GameState::getPlayers()
+void GameState::addPlayer(Vehicle* add)
+{
+	players->push_back(add);
+}
+
+std::vector<Vehicle*>* GameState::getPlayers()
 {
 	return players;
 }

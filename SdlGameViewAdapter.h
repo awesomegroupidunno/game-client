@@ -14,7 +14,7 @@ class SdlGameViewAdapter{
     GameController* gameController;
 public:
     SdlGameViewAdapter(GameController* gc);
-    std::vector<Vehicle*> getVehicles();
+    std::vector<Vehicle*>* getVehicles();
 };
 
 #endif //GAME_CLIENT_SDLGAMEVIEWADAPTER_H

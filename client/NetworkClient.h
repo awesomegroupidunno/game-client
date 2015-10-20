@@ -12,12 +12,19 @@
 #include "JsonEncodeDecode.h"
 #include "Listener.h"
 
+// TODO: fix CMakeLists so we don't need to do file path stuff in includes!
+#include "../GameController.h"
+
+class Listener;
+class GameController;
+
 class NetworkClient
 {
 protected:
-	GameState* state;
+	GameController* controller;
 
 public:
+	virtual void set_controller(GameController* controller) = 0;
 	virtual int connect_to_server(const char* host, const char* port) = 0;
 	virtual int send_command(Command* c, int mode) = 0;
 	virtual int start_listening() = 0;
