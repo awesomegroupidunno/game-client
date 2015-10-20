@@ -42,5 +42,7 @@ int Listener::create_listener(int sockfd, NetworkClient* client)
 		return -1;
 	}
 
+	printf("Listener created\n");
+
 	return 0;
 }

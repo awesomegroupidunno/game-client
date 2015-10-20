@@ -13,9 +13,12 @@ using namespace rapidjson;
 
 class JsonEncodeDecode : public EncodeDecode
 {
+private:
+	int decodeVehicle(GameState* state, const Value& vehicle);
+
 public:
 	const char* encode(Command* c, int mode);
-	char* decode(char* buffer);
+	GameState* decode(char* buffer);
 };
 
 #endif //GAME_CLIENT_JSONENCODEDECODE_H

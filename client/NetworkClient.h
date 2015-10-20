@@ -14,11 +14,14 @@
 
 class NetworkClient
 {
+protected:
+	GameState* state;
+
 public:
 	virtual int connect_to_server(const char* host, const char* port) = 0;
 	virtual int send_command(Command* c, int mode) = 0;
 	virtual int start_listening() = 0;
-	virtual void update(char* buffer) = 0;
+	virtual void update(char* update) = 0;
 	virtual int close_connection() = 0;
 
 	// Commands

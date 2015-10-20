@@ -8,11 +8,14 @@ class UdpClient : public NetworkClient
 private:
 	int sockfd;
 	struct sockaddr_in servaddr;
-	EncodeDecode* encodeDecode = new JsonEncodeDecode;
+	EncodeDecode* encodeDecode;
 
 	int error(const char* msg);
 
 public:
+	UdpClient(GameState* state);
+	~UdpClient();
+
 	int connect_to_server(const char* host, const char* port);
 	int send_command(Command* c, int mode);
 	int start_listening();

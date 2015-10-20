@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(game-client)
 
-add_executable(game-client Main.cpp GameController.cpp GameController.h include/SDLutil.h GameState.cpp Vehicle.cpp Vehicle.h SdlGameView.cpp SdlGameViewAdapter.cpp SdlGameViewAdapter.h client/UdpClient.cpp client/UdpClient.h client/EncodeDecode.h client/JsonEncodeDecode.cpp client/JsonEncodeDecode.h client/NetworkClient.h FakeNetworkClient.cpp FakeNetworkClient.h client/Listener.cpp client/Listener.h SdlInputAdapter.cpp SdlInputAdapter.h SdlGameView.h client/Command.h)
+add_executable(game-client Main.cpp GameController.cpp GameController.h include/SDLutil.h GameState.cpp Vehicle.cpp Vehicle.h SdlGameView.cpp SdlGameViewAdapter.cpp SdlGameViewAdapter.h client/UdpClient.cpp client/UdpClient.h client/EncodeDecode.h client/JsonEncodeDecode.cpp client/JsonEncodeDecode.h client/NetworkClient.h FakeNetworkClient.cpp FakeNetworkClient.h client/Listener.cpp client/Listener.h SdlInputAdapter.cpp SdlInputAdapter.h SdlGameView.h client/Command.h GameState.h)
 
 # Add header files
 include_directories(include client)
@@ -27,10 +27,7 @@ find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIR})
 target_link_libraries(game-client ${GLEW_LIBRARIES})
 
-# Find RapidJSON
+# Link to RapidJSON
 find_package(RapidJSON)
 include_directories(${RapidJSON_INCLUDE_DIR})
 target_link_libraries(game-client ${RapidJSON_LIBRARY})
-
-# Install
-install(TARGETS game-client RUNTIME DESTINATION ${BUILD_DIR})

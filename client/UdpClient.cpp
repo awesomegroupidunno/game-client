@@ -1,5 +1,16 @@
 #include "UdpClient.h"
 
+UdpClient::UdpClient(GameState* state)
+{
+	this->state = state;
+	this->encodeDecode = new JsonEncodeDecode;
+}
+
+UdpClient::~UdpClient()
+{
+	delete encodeDecode;
+}
+
 int UdpClient::error(const char* msg)
 {
 	perror(msg);
@@ -62,7 +73,13 @@ int UdpClient::start_listening()
 
 void UdpClient::update(char* update)
 {
-	update = encodeDecode->decode(update);
+	// Create a new GameState
+	GameState* new_state = encodeDecode->decode(update);
+
+	// Replace old with new
+	delete state;
+	state = new_state;
+
 	printf("recv:\n%s\n", update);
 }
 
@@ -83,7 +100,7 @@ int UdpClient::close_connection()
 
 void UdpClient::connect_command()
 {
-	Command* c = (Command*) malloc(sizeof(Command));
+	Command* c = new Command;
 
 	c->type = "POST";
 	c->subtype = "CONNECT";
@@ -91,12 +108,12 @@ void UdpClient::connect_command()
 
 	send_command(c, STRING_MODE);
 
-	free(c);
+	delete c;
 }
 
 void UdpClient::move_command(int dir)
 {
-	Command* c = (Command*) malloc(sizeof(Command));
+	Command* c = new Command;
 
 	c->type = "POST";
 	c->subtype = "ACCELERATION";
@@ -104,12 +121,12 @@ void UdpClient::move_command(int dir)
 
 	send_command(c, NUM_MODE);
 
-	free(c);
+	delete c;
 }
 
 void UdpClient::turn_command(int dir)
 {
-	Command* c = (Command*) malloc(sizeof(Command));
+	Command* c = new Command;
 
 	c->type = "POST";
 	c->subtype = "TURN";
@@ -117,5 +134,5 @@ void UdpClient::turn_command(int dir)
 
 	send_command(c, NUM_MODE);
 
-	free(c);
+	delete c;
 }

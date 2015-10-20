@@ -11,7 +11,7 @@
 
 #ifndef GAME_CLIENT_FAKENETWORKCLIENT_H
 #define GAME_CLIENT_FAKENETWORKCLIENT_H
-#include "GameState.cpp"
+#include "GameState.h"
 #include "Vehicle.h"
 
 class FakeNetworkClient {

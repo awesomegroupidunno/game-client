@@ -11,12 +11,9 @@
  *      to initialize GameState and Vehicles.
  */
 
-void run_client()
+void run_client(GameState* state)
 {
-	NetworkClient* client = new UdpClient;
-
-	// Close the connection in case it's already open
-	client->close_connection();
+	NetworkClient* client = new UdpClient(state);
 
 	// Connect to server
 //	client->connect_to_server("172.31.1.42", "10001");
@@ -35,6 +32,8 @@ void run_client()
 	// for debugging purposes, prevent from listening for too long
 	sleep(1);
 	client->close_connection();
+
+	delete client;
 }
 
 int main()
@@ -45,6 +44,9 @@ int main()
 	 * THE FOLLOWING IS ONLY A TEST OF WHAT THE STRUCTURE SHOULD LOOK LIKE
 	 * TESTS: Vehicles drawing on screen
 	 */
+
+	GameState* state = new GameState;
+
 	/*GameController* controller = new GameController;
 	SdlInputAdapter* inputAdapter = new SdlInputAdapter(controller);
 	SdlGameViewAdapter* gameViewAdapter = new SdlGameViewAdapter(controller);
@@ -53,13 +55,7 @@ int main()
 
 	// TODO: The following is a test for server connectivity
 	// Start up client
-	run_client();
-
-	// Stay connected forever
-	while (true)
-	{
-		sleep(1);
-	}
+	run_client(state);
 
 	return 0;
 }

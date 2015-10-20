@@ -32,7 +32,7 @@ GameState FakeNetworkClient::nextState(){
     printf("%d\n", angle);
     printf("x:%d y:%d\n", x, y);
     Vehicle *test = new Vehicle(x, y, 100, angle, 0);
-    next.addPlayers(test);
+    next.addPlayer(test);
     return next;
 }
 // calculates movement based on trig and front-facing angle of player vehicle
