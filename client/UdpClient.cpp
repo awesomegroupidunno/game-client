@@ -86,7 +86,7 @@ void UdpClient::update(char* update)
 		controller->update(new_state);
 	}
 
-	//printf("recv:\n%s\n", update);
+	printf("recv:\n%s\n", update);
 }
 
 int UdpClient::close_connection()
