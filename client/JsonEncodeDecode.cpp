@@ -23,8 +23,9 @@ const char* JsonEncodeDecode::encode(Command* c, int mode)
 	}
 
 	writer.EndObject();
-
-	return s.GetString();
+	char *str = (char*)malloc(strlen(s.GetString()) * (sizeof(char)));
+	str = strcpy(str, s.GetString());
+	return str;
 }
 
 GameState* JsonEncodeDecode::decode(char* buffer)

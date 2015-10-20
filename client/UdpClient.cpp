@@ -63,6 +63,7 @@ int UdpClient::send_command(Command* c, int mode)
 	}
 
 	printf("sent:\n%s\n", sendline);
+	delete(sendline);
 
 	return 0;
 }
@@ -86,7 +87,7 @@ void UdpClient::update(char* update)
 		controller->update(new_state);
 	}
 
-	printf("recv:\n%s\n", update);
+	//printf("recv:\n%s\n", update);
 }
 
 int UdpClient::close_connection()
@@ -124,7 +125,6 @@ void UdpClient::move_command(int dir)
 	c->type = "POST";
 	c->subtype = "ACCELERATION";
 	c->numValue = dir;
-
 	send_command(c, NUM_MODE);
 
 	delete c;

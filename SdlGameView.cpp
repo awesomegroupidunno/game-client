@@ -39,8 +39,9 @@ int SdlGameView::initGL(){
 	// DO NOT CHANGE!! -- Rendering relies on this version of OpenGL
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-	 */
+
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	 */
 
 
 
