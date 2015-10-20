@@ -27,16 +27,22 @@ int SdlGameView::init(){
 		std::cout << "Error: OpenGL with SDL failed to initialize" << std::endl;
 	}
 
+
 	return 1;
 }
 
 int SdlGameView::initGL(){
 	// Set our OpenGL attributes.
+	/*
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
 	// DO NOT CHANGE!! -- Rendering relies on this version of OpenGL
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	 */
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+
 
 	// Create GL context buffer for window
 	context = SDL_GL_CreateContext(window);
@@ -62,6 +68,7 @@ int SdlGameView::initGL(){
 	glLoadIdentity();
 
 	SDL_GL_SwapWindow(window);
+
 }
 
 void SdlGameView::drawSquare(){
