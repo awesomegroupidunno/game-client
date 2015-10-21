@@ -4,33 +4,55 @@
 
 #include "SdlInputAdapter.h"
 
-SdlInputAdapter::SdlInputAdapter(GameController* gc){
-    gameController = gc;
+SdlInputAdapter::SdlInputAdapter(GameController* gc)
+{
+	gameController = gc;
+	keys = new std::set<SDL_Keycode>();
 }
-// Listens for input from user, responds with calls to GameController
-void SdlInputAdapter::inputListener(SDL_Event event){
-            SDL_Keycode keyPressed = event.key.keysym.sym;
-            switch (keyPressed) {
-                // ARROW KEYS
-                case SDLK_UP:
-                    // handle forward motion
-                    gameController->moveVehicle(1);
-                    printf("input up\n");
-                    break;
-                case SDLK_DOWN:
-                    // handle reverse motion
-                    gameController->moveVehicle(-1);
-                    printf("input down\n");
-                    break;
-                case SDLK_LEFT:
-                    // handle turning left
-                    gameController->turnVehicle(1);
-                    printf("input left\n");
-                    break;
-                case SDLK_RIGHT:
-                    // handle turning right
-                    gameController->turnVehicle(-1);
-                    printf("input right\n");
-                    break;
-            }
+
+void SdlInputAdapter::check_keys()
+{
+	for (std::set<SDL_Keycode>::iterator itr = keys->begin(); itr != keys->end(); ++itr)
+	{
+		switch (*itr)
+		{
+			// ARROW KEYS
+			case SDLK_UP:
+				// handle forward motion
+				printf("input up\n");
+				gameController->moveVehicle(1);
+				break;
+			case SDLK_DOWN:
+				// handle reverse motion
+				printf("input down\n");
+				gameController->moveVehicle(-1);
+				break;
+			case SDLK_LEFT:
+				// handle turning left
+				printf("input left\n");
+				gameController->turnVehicle(1);
+				break;
+			case SDLK_RIGHT:
+				// handle turning right
+				printf("input right\n");
+				gameController->turnVehicle(-1);
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+// Responds to a key down event
+void SdlInputAdapter::key_down(SDL_Event event)
+{
+	SDL_Keycode keyPressed = event.key.keysym.sym;
+	keys->insert(keyPressed);
+}
+
+// Responds to a key up event
+void SdlInputAdapter::key_up(SDL_Event event)
+{
+	SDL_Keycode keyPressed = event.key.keysym.sym;
+	keys->erase(keyPressed);
 }

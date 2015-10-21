@@ -106,13 +106,25 @@ int SdlGameView::drawView(){
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
 		{
-			if (event.type == SDL_KEYDOWN) {
-				// Listen for new user input
-				inputAdapter->inputListener(event);
+			if (event.type == SDL_KEYDOWN)
+			{
+				// The user pressed a key
+				inputAdapter->key_down(event);
+			}
+			if (event.type == SDL_KEYUP)
+			{
+				// The user released a key
+				inputAdapter->key_up(event);
 			}
 			if (event.type == SDL_QUIT)
+			{
+				// The application was quit (clicked X or pressed alt+f4)
 				gameRunning = false;
+			}
 		}
+
+		// React to any keys that are currently being held down
+		inputAdapter->check_keys();
 
 		std::vector<Vehicle*>* vehicles = gameViewAdapter->getVehicles();
 		int numCars = (int) vehicles->size();

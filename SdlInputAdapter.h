@@ -5,15 +5,22 @@
 #ifndef GAME_CLIENT_SDLINPUTADAPTER_H
 #define GAME_CLIENT_SDLINPUTADAPTER_H
 
+#include <set>
 #include "SDL2/SDL.h"
 #include "GameController.h"
 
-class SdlInputAdapter {
+class SdlInputAdapter
+{
 private:
-    GameController* gameController;
+	GameController* gameController;
+	std::set<SDL_Keycode>* keys;
+
 public:
-    SdlInputAdapter(GameController* gc);
-    void inputListener(SDL_Event event);
+	SdlInputAdapter(GameController* gc);
+
+	void check_keys();
+	void key_down(SDL_Event event);
+	void key_up(SDL_Event event);
 };
 
 
