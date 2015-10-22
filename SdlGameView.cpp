@@ -152,7 +152,7 @@ int SdlGameView::drawView(){
 
 		for (int j = 0; j < numCars; j++) {
 			glPushMatrix();
-				drawVehicle(&cars[j], angle);
+				drawVehicle(&cars[j], vehicles->at(j)->frontAngle);
 			glPopMatrix();
 		}
 
