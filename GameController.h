@@ -13,15 +13,17 @@
 class NetworkClient;
 
 class GameController {
+private:
     //TODO: List methods to be used in GameController.cpp
     //methods to handle player input will be containers for vehicle methods
     //GameController will not actually handle input, but instead be called from
     //a separate InputAdapter class
     GameState* state;
     NetworkClient* client;
+    pthread_mutex_t* game_state_mutex;
 
 public:
-	GameController(GameState* state, NetworkClient* client);
+	GameController(GameState* state, NetworkClient* client, pthread_mutex_t* game_state_mutex);
 
 	void update(GameState* new_state);
     std::vector<Vehicle*>* getVehicles();

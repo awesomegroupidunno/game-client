@@ -22,18 +22,21 @@ void* listen(void* args)
 			recvline[endPos] = 0;
 
 			// Update client
+			pthread_mutex_lock(data->game_state_mutex);
 			data->client->update(recvline);
+			pthread_mutex_unlock(data->game_state_mutex);
 		}
 	}
 
 	return NULL;
 }
 
-int Listener::create_listener(int sockfd, NetworkClient* client)
+int Listener::create_listener(int sockfd, NetworkClient* client, pthread_mutex_t* game_state_mutex)
 {
 	// Set data to pass to thread
 	data.sockfd = sockfd;
 	data.client = client;
+	data.game_state_mutex = game_state_mutex;
 
 	// Create thread
 	if (pthread_create(&listen_thread, NULL, listen, (void*) &data) != 0)

@@ -13,6 +13,7 @@ struct Data
 {
 	NetworkClient* client;
 	int sockfd;
+	pthread_mutex_t* game_state_mutex;
 };
 
 class Listener
@@ -21,7 +22,7 @@ private:
 	pthread_t listen_thread;
 	struct Data data;
 public:
-	int create_listener(int sockfd, NetworkClient* client);
+	int create_listener(int sockfd, NetworkClient* client, pthread_mutex_t* game_state_mutex);
 };
 
 

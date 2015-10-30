@@ -9,10 +9,11 @@
  */
 
 // Constructor
-GameController::GameController(GameState* state, NetworkClient* client)
+GameController::GameController(GameState* state, NetworkClient* client, pthread_mutex_t* game_state_mutex)
 {
 	this->state = state;
 	this->client = client;
+	this->game_state_mutex = game_state_mutex;
 	client->set_controller(this);
 }
 
@@ -22,8 +23,15 @@ void GameController::update(GameState* new_state)
 	state = new_state;
 }
 
-std::vector<Vehicle*>* GameController::getVehicles(){
-    return state->getPlayers();
+std::vector<Vehicle*>* GameController::getVehicles()
+{
+	std::vector<Vehicle*>* vehicles;
+
+	pthread_mutex_lock(game_state_mutex);
+    vehicles = state->getPlayers();
+	pthread_mutex_unlock(game_state_mutex);
+
+	return vehicles;
 }
 
 // passes call to move vehicle to network client

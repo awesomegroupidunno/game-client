@@ -68,10 +68,10 @@ int UdpClient::send_command(Command* c, int mode)
 	return 0;
 }
 
-int UdpClient::start_listening()
+int UdpClient::start_listening(pthread_mutex_t* game_state_mutex)
 {
 	Listener* listener = new Listener;
-	listener->create_listener(sockfd, this);
+	listener->create_listener(sockfd, this, game_state_mutex);
 
 	return 0;
 }

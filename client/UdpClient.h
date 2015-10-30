@@ -19,7 +19,7 @@ public:
 	void set_controller(GameController* controller);
 	int connect_to_server(const char* host, const char* port);
 	int send_command(Command* c, int mode);
-	int start_listening();
+	int start_listening(pthread_mutex_t* game_state_mutex);
 	void update(char* update);
 	int close_connection();
 
