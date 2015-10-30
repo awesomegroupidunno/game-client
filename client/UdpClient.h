@@ -25,8 +25,8 @@ public:
 
 	// Commands
 	void connect_command();
-	void move_command(int dir);
-	void turn_command(int dir);
+	void move_command(double dir);
+	void turn_command(double dir);
 };
 
 #endif //GAME_CLIENT_UDPCLIENT_H

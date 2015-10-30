@@ -35,13 +35,13 @@ std::vector<Vehicle*>* GameController::getVehicles()
 }
 
 // passes call to move vehicle to network client
-void GameController::moveVehicle(int direction)
+void GameController::moveVehicle(double direction)
 {
     client->move_command(direction);
 }
 
 // passes call to turn vehicle to network client
-void GameController::turnVehicle(int direction)
+void GameController::turnVehicle(double direction)
 {
     client->turn_command(direction);
 }

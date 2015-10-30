@@ -6,6 +6,6 @@ struct Command
 {
 	char const* type;
 	char const* subtype;
-	int numValue;
+	double numValue;
 	char const* strValue;
 };

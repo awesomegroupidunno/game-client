@@ -27,8 +27,8 @@ public:
 
 	void update(GameState* new_state);
     std::vector<Vehicle*>* getVehicles();
-    void moveVehicle(int direction);
-    void turnVehicle(int direction);
+    void moveVehicle(double direction);
+    void turnVehicle(double direction);
 };
 
 

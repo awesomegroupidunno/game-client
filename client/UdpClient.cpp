@@ -118,7 +118,7 @@ void UdpClient::connect_command()
 	delete c;
 }
 
-void UdpClient::move_command(int dir)
+void UdpClient::move_command(double dir)
 {
 	Command* c = new Command;
 
@@ -130,7 +130,7 @@ void UdpClient::move_command(int dir)
 	delete c;
 }
 
-void UdpClient::turn_command(int dir)
+void UdpClient::turn_command(double dir)
 {
 	Command* c = new Command;
 
