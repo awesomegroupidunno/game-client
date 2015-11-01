@@ -14,7 +14,7 @@ const char* JsonEncodeDecode::encode(Command* c, int mode)
 	if (mode == NUM_MODE)
 	{
 		writer.String("Value");
-		writer.Int(c->numValue);
+		writer.Double(c->numValue);
 	}
 	if (mode == STRING_MODE)
 	{
@@ -76,7 +76,10 @@ GameState* JsonEncodeDecode::decode(char* buffer)
 int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 {
 	// Vehicle vars
-	double x = 0, y = 0, velocity = 0, angle = 0, endurance = 0;
+	double x, y, velocity, angle;
+	x = y = velocity = angle = 0;
+	int width, height, team, health;
+	width = height = team = health = 0;
 
 	// Iterate through JSON vehicle object
 	const char* check;
@@ -94,6 +97,16 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 			y = itr->value.GetDouble();
 			continue;
 		}
+		if (strcmp(check, "Width") == 0)
+		{
+			width = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "Height") == 0)
+		{
+			height = itr->value.GetInt();
+			continue;
+		}
 		if (strcmp(check, "Velocity") == 0)
 		{
 			velocity = itr->value.GetDouble();
@@ -104,15 +117,20 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 			angle = itr->value.GetDouble();
 			continue;
 		}
-		if (strcmp(check, "Endurance") == 0)
+		if (strcmp(check, "CurrentHealth") == 0)
 		{
-			endurance = itr->value.GetDouble();
+			health = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "TeamId") == 0)
+		{
+			team = itr->value.GetInt();
 			continue;
 		}
 	}
 
 	// Create a new Vehicle
-	Vehicle* new_vehicle = new Vehicle((int) x, (int) y, (int) endurance, angle, velocity);
+	Vehicle* new_vehicle = new Vehicle((int) x, (int) y, health, angle, velocity, team, width, height);
 
 	// Push it to the GameState
 	state->addPlayer(new_vehicle);
