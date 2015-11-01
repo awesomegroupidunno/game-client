@@ -57,7 +57,9 @@ GameState* JsonEncodeDecode::decode(char* buffer)
 				return NULL;
 			}
 
-			// Iterate through Vehicle array
+			/*
+			 * VEHICLES
+			 */
 			const Value& array = itr->value;
 			for (SizeType i = 0; i < array.Size(); i++)
 			{
@@ -69,6 +71,20 @@ GameState* JsonEncodeDecode::decode(char* buffer)
 			}
 		}
 	}
+
+	/*
+	 * BASES
+	 * TODO: replace with actual decoding when the server returns bases
+	 */
+	double x, y;
+	x = 100, y = 100;
+	int health, team, width, height;
+	health = 100000, team = 0, width = height = 100;
+	Base* new_base = new Base((int) x, (int) y, health, team, width, height);
+	state->addBase(new_base);
+	x = 300, y = 100, health = 109, team = 1;
+	new_base = new Base((int) x, (int) y, health, team, width, height);
+	state->addBase(new_base);
 
 	return state;
 }
