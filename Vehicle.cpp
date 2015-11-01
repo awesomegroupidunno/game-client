@@ -4,13 +4,14 @@
 #include "Vehicle.h"
 
 //constructor
-Vehicle::Vehicle(int cX, int cY, int end, double ang, double vel){
-    //values will be passed to GameState
-    //values are placeholders for testing purposes
-    velocity = vel;        //current velocity
-    x = cX;
-    y = cY;               //coordinates on game board
-    frontAngle = ang;      //current angle the vehicle is facing
-    endurance = end;          //vehicle health
+Vehicle::Vehicle(int x, int y, int curHealth, double frontAngle, double velocity, int team, int width, int height){
+    this->velocity = velocity;          //current velocity
+    this->x = x;
+    this->y = y;                        //coordinates on game board
+    this->frontAngle = frontAngle;      //current angle the vehicle is facing
+    this->curHealth = curHealth;        //vehicle health
+    this->team = team;                  //vehicle team ID (0 = red, 1 = blue)
+    this->width = width;
+    this->height = height;              //vehicle width and height
     //TODO: possibly include powerup classes / objects
 }

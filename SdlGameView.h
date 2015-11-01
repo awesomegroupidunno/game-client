@@ -20,15 +20,15 @@ private:
     SdlInputAdapter* inputAdapter;
     SdlGameViewAdapter* gameViewAdapter;
     GLfloat sqr[4][2] = {{1.0f,1.0f},{-1.0f,1.0f},{-1.0f,-1.0f},{1.0f,-1.0f}};
-    const int carWidth = 50;
-    const int carHeight = 75;
+    //const int carWidth = 50;
+    //const int carHeight = 75;
 public:
     SdlGameView(SdlGameViewAdapter* gva, SdlInputAdapter* ia);
     int init();
     int initGL();
     void exit();
     void drawSquare();
-    void drawVehicle(SDL_Rect* vehicle, double angle);
+    void drawVehicle(SDL_Rect* vehicle, double angle, int teamColor);
     int drawView();
 };
 

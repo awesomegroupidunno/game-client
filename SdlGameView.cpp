@@ -81,14 +81,15 @@ void SdlGameView::drawSquare(){
 	glEnd();
 }
 
-void SdlGameView::drawVehicle(SDL_Rect *vehicle, double angle){
-	// TODO: switch to OpenGL, delete SDL renderer code remnants
-	// SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
-	// SDL_RenderFillRect(renderer, vehicle);
+void SdlGameView::drawVehicle(SDL_Rect *vehicle, double angle, int teamColor){
 	glTranslatef(vehicle->x, vehicle->y, 0);
 	glRotatef(angle, 0, 0, 1);
 	glScalef(vehicle->h/2, vehicle->w/2, 1);
-	glColor3f(1.0, 0.0, 0.0);
+	if(teamColor == 0) {
+		glColor3f(1.0, 0.0, 0.0);
+	}else if(teamColor == 1){
+		glColor3f(0.0, 0.0, 1.0);
+	}
 	drawSquare();
 }
 
@@ -99,7 +100,6 @@ int SdlGameView::drawView(){
 
 	// Rendering loop
 	bool gameRunning = true;
-	int tick = 0;
 	while (gameRunning) {
 
 		// Listen for user input
@@ -126,46 +126,33 @@ int SdlGameView::drawView(){
 		// React to any keys that are currently being held down
 		inputAdapter->check_keys();
 
+		//initialize queue of vehicles to be drawn
 		std::vector<Vehicle*>* vehicles = gameViewAdapter->getVehicles();
 		int numCars = (int) vehicles->size();
-		//printf("number of cars = %i\n", numCars);
 		SDL_Rect* cars = new SDL_Rect[numCars];
-		double angle;
-		// Take the vehicles from the vehicle vector
-		// Use their values to begin drawing
-		//printf("SETTING CARS FROM VEHICLE VECTOR\n");
 		for (unsigned long i = 0; i < numCars; i++){
 			cars[i].x = vehicles->at(i)->x;
 			cars[i].y = vehicles->at(i)->y;
-			cars[i].w = carWidth;
-			cars[i].h = carHeight;
-			angle = vehicles->at(i)->frontAngle;
+			cars[i].w = vehicles->at(i)->width;
+			cars[i].h = vehicles->at(i)->height;
 		}
 
 		// Make background white and clear renderer
-		// TODO: switch to OpenGL, delete SDL renderer code remnants
-		//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		//SDL_RenderClear(renderer);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//printf("DRAWING: tick %i\n", tick);
-
+		//draw vehicles
 		for (int j = 0; j < numCars; j++) {
 			glPushMatrix();
-				drawVehicle(&cars[j], vehicles->at(j)->frontAngle);
+				drawVehicle(&cars[j], vehicles->at(j)->frontAngle, vehicles->at(j)->team);
 			glPopMatrix();
 		}
 
 		// Update the screen
-		//SDL_RenderPresent(renderer);
 		glFlush();
 		SDL_GL_SwapWindow(window);
 
 		// Take a quick break after all that hard work
-		SDL_Delay(40);
-
-		// Next tick
-		tick++;
+		// SDL_Delay(40);
 	}
 
 	// Clean up
