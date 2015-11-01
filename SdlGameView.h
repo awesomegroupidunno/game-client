@@ -27,6 +27,7 @@ public:
     void exit();
     void drawSquare();
     void drawVehicle(SDL_Rect* vehicle, double angle, int teamColor);
+    void drawBase(SDL_Rect* base, int teamColor);
     int drawView();
 };
 

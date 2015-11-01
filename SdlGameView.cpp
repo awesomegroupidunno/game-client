@@ -32,19 +32,6 @@ int SdlGameView::init(){
 }
 
 int SdlGameView::initGL(){
-	// Set our OpenGL attributes.
-	/*
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-	// DO NOT CHANGE!! -- Rendering relies on this version of OpenGL
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	 */
-
-
-
 	// Create GL context buffer for window
 	context = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(1);
@@ -85,6 +72,17 @@ void SdlGameView::drawVehicle(SDL_Rect *vehicle, double angle, int teamColor){
 	glTranslatef(vehicle->x, vehicle->y, 0);
 	glRotatef(angle, 0, 0, 1);
 	glScalef(vehicle->h/2, vehicle->w/2, 1);
+	if(teamColor == 0) {
+		glColor3f(1.0, 0.0, 0.0);
+	}else if(teamColor == 1){
+		glColor3f(0.0, 0.0, 1.0);
+	}
+	drawSquare();
+}
+
+void SdlGameView::drawBase(SDL_Rect *base, int teamColor){
+	glTranslatef(base->x, base->y, 0);
+	glScalef(base->h/2, base->w/2, 1);
 	if(teamColor == 0) {
 		glColor3f(1.0, 0.0, 0.0);
 	}else if(teamColor == 1){
@@ -137,6 +135,17 @@ int SdlGameView::drawView(){
 			cars[i].h = vehicles->at(i)->height;
 		}
 
+		//initialize queue of bases to be drawn
+		std::vector<Base*>* bases = gameViewAdapter->getBases();
+		int numBases = (int) bases->size();
+		SDL_Rect* baseRects = new SDL_Rect[numBases];
+		for (unsigned long i = 0; i < numBases; i++){
+			baseRects[i].x = bases->at(i)->x;
+			baseRects[i].y = bases->at(i)->y;
+			baseRects[i].w = bases->at(i)->width;
+			baseRects[i].h = bases->at(i)->height;
+		}
+
 		// Make background white and clear renderer
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -144,6 +153,13 @@ int SdlGameView::drawView(){
 		for (int j = 0; j < numCars; j++) {
 			glPushMatrix();
 				drawVehicle(&cars[j], vehicles->at(j)->frontAngle, vehicles->at(j)->team);
+			glPopMatrix();
+		}
+
+		//draw bases
+		for (int j = 0; j < numBases; j++) {
+			glPushMatrix();
+				drawBase(&baseRects[j], bases->at(j)->team);
 			glPopMatrix();
 		}
 
