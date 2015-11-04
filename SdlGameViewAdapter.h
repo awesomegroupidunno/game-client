@@ -17,6 +17,7 @@ public:
     SdlGameViewAdapter(GameController* gc);
     std::vector<Vehicle*>* getVehicles();
     std::vector<Base*>* getBases();
+    std::vector<Bullet*>* getBullets();
 };
 
 #endif //GAME_CLIENT_SDLGAMEVIEWADAPTER_H

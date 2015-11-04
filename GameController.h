@@ -25,6 +25,7 @@ public:
 	void update(GameState* new_state);
     std::vector<Vehicle*>* getVehicles();
     std::vector<Base*>* getBases();
+	std::vector<Bullet*>* getBullets();
 
     // Respond to input
     void moveVehicle(double direction);

@@ -71,7 +71,7 @@ void SdlGameView::drawSquare(){
 void SdlGameView::drawVehicle(SDL_Rect *vehicle, double angle, int teamColor){
 	glTranslatef(vehicle->x, vehicle->y, 0);
 	glRotatef(angle, 0, 0, 1);
-	glScalef(vehicle->h/2, vehicle->w/2, 1);
+	glScalef(vehicle->h, vehicle->w, 1);
 	if(teamColor == 0) {
 		glColor3f(1.0, 0.0, 0.0);
 	}else if(teamColor == 1){
@@ -82,12 +82,20 @@ void SdlGameView::drawVehicle(SDL_Rect *vehicle, double angle, int teamColor){
 
 void SdlGameView::drawBase(SDL_Rect *base, int teamColor){
 	glTranslatef(base->x, base->y, 0);
-	glScalef(base->h/2, base->w/2, 1);
+	glScalef(base->h, base->w, 1);
 	if(teamColor == 0) {
 		glColor3f(1.0, 0.0, 0.0);
 	}else if(teamColor == 1){
 		glColor3f(0.0, 0.0, 1.0);
 	}
+	drawSquare();
+}
+
+void SdlGameView::drawBullet(SDL_Rect* bullet)
+{
+	glTranslatef(bullet->x, bullet->y, 0);
+	glScalef(bullet->h, bullet->w, 1.0f);
+	glColor3f(0.8f, 0.6f, 0.6f);
 	drawSquare();
 }
 
@@ -126,13 +134,13 @@ int SdlGameView::drawView(){
 
 		//initialize queue of vehicles to be drawn
 		std::vector<Vehicle*>* vehicles = gameViewAdapter->getVehicles();
-		int numCars = (int) vehicles->size();
-		SDL_Rect* cars = new SDL_Rect[numCars];
-		for (unsigned long i = 0; i < numCars; i++){
-			cars[i].x = vehicles->at(i)->x;
-			cars[i].y = vehicles->at(i)->y;
-			cars[i].w = vehicles->at(i)->width;
-			cars[i].h = vehicles->at(i)->height;
+		int numVehicles = (int) vehicles->size();
+		SDL_Rect*vehicleRects = new SDL_Rect[numVehicles];
+		for (unsigned long i = 0; i < numVehicles; i++){
+			vehicleRects[i].x = vehicles->at(i)->x;
+			vehicleRects[i].y = vehicles->at(i)->y;
+			vehicleRects[i].w = vehicles->at(i)->width;
+			vehicleRects[i].h = vehicles->at(i)->height;
 		}
 
 		//initialize queue of bases to be drawn
@@ -146,13 +154,25 @@ int SdlGameView::drawView(){
 			baseRects[i].h = bases->at(i)->height;
 		}
 
+		// Init bullets to be drawn
+		std::vector<Bullet*>* bullets = gameViewAdapter->getBullets();
+		int numBullets = (int) bullets->size();
+		SDL_Rect* bulletRects = new SDL_Rect[numBullets];
+		for (unsigned long i = 0; i < numBullets; i++)
+		{
+			bulletRects[i].x = bullets->at(i)->x;
+			bulletRects[i].y = bullets->at(i)->y;
+			bulletRects[i].w = bullets->at(i)->radius;
+			bulletRects[i].h = bullets->at(i)->radius;
+		}
+
 		// Make background white and clear renderer
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//draw vehicles
-		for (int j = 0; j < numCars; j++) {
+		for (int j = 0; j < numVehicles; j++) {
 			glPushMatrix();
-				drawVehicle(&cars[j], vehicles->at(j)->frontAngle, vehicles->at(j)->team);
+				drawVehicle(&vehicleRects[j], vehicles->at(j)->frontAngle, vehicles->at(j)->team);
 			glPopMatrix();
 		}
 
@@ -160,6 +180,14 @@ int SdlGameView::drawView(){
 		for (int j = 0; j < numBases; j++) {
 			glPushMatrix();
 				drawBase(&baseRects[j], bases->at(j)->team);
+			glPopMatrix();
+		}
+
+		// Draw bullets
+		for (int j = 0; j < numBullets; j++)
+		{
+			glPushMatrix();
+				drawBullet(&bulletRects[j]);
 			glPopMatrix();
 		}
 

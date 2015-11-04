@@ -4,7 +4,7 @@ void* listen(void* args)
 {
 	struct Data* data;
 	data = (struct Data*) args;
-	int maxBufferSize = 1000;
+	int maxBufferSize = 10000;
 	char recvline[maxBufferSize];
 	ssize_t endPos;
 	bool conn = true;

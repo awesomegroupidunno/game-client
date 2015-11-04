@@ -18,3 +18,7 @@ std::vector<Vehicle*>* SdlGameViewAdapter::getVehicles(){
 std::vector<Base*>* SdlGameViewAdapter::getBases(){
     return gameController->getBases();
 }
+
+std::vector<Bullet*>* SdlGameViewAdapter::getBullets(){
+    return gameController->getBullets();
+}

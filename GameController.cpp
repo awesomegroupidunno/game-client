@@ -45,6 +45,17 @@ std::vector<Base*>* GameController::getBases()
 	return bases;
 }
 
+std::vector<Bullet*>* GameController::getBullets()
+{
+	std::vector<Bullet*>* bullets;
+
+	pthread_mutex_lock(game_state_mutex);
+	bullets = state->getBullets();
+	pthread_mutex_unlock(game_state_mutex);
+
+	return bullets;
+}
+
 // passes call to move vehicle to network client
 void GameController::moveVehicle(double direction)
 {

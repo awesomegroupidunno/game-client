@@ -47,7 +47,9 @@ GameState* JsonEncodeDecode::decode(char* buffer)
 	// Iterate through JSON document
 	for (Value::ConstMemberIterator itr = doc.MemberBegin(); itr != doc.MemberEnd(); ++itr)
 	{
-		// Grab the updated Vehicles
+		/*
+		 * VEHICLES
+		 */
 		if (strcmp(itr->name.GetString(), "Vehicles") == 0)
 		{
 			// If Vehicles is not an array, something went wrong
@@ -57,15 +59,35 @@ GameState* JsonEncodeDecode::decode(char* buffer)
 				return NULL;
 			}
 
-			/*
-			 * VEHICLES
-			 */
-			const Value& array = itr->value;
-			for (SizeType i = 0; i < array.Size(); i++)
+			const Value& vehicleArray = itr->value;
+			for (SizeType i = 0; i < vehicleArray.Size(); i++)
 			{
-				if (decodeVehicle(state, array[i]) == -1)
+				if (decodeVehicle(state, vehicleArray[i]) == -1)
 				{
 					printf("\n----------\nError decoding vehicles\n----------\n");
+					return NULL;
+				}
+			}
+		}
+
+		/*
+		 * BULLETS
+		 */
+		if (strcmp(itr->name.GetString(), "Bullets") == 0)
+		{
+			// If Bullets is not an array, something went wrong
+			if (!itr->value.IsArray())
+			{
+				printf("\n----------\nError: Bullets array is not array\n----------\n");
+				return NULL;
+			}
+
+			const Value& bulletArray = itr->value;
+			for (SizeType i = 0; i < bulletArray.Size(); i++)
+			{
+				if (decodeBullet(state, bulletArray[i]) == -1)
+				{
+					printf("\n----------\nError decoding bullets\n----------\n");
 					return NULL;
 				}
 			}
@@ -150,6 +172,46 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 
 	// Push it to the GameState
 	state->addPlayer(new_vehicle);
+
+	return 1;
+}
+
+int JsonEncodeDecode::decodeBullet(GameState *state, const Value &bullet)
+{
+	// Bullet vars
+	double x, y;
+	x = y = 0;
+	int radius;
+	radius = 0;
+
+	// Iterate through JSON bullet object
+	const char* check;
+	for (Value::ConstMemberIterator itr = bullet.MemberBegin(); itr != bullet.MemberEnd(); ++itr)
+	{
+		check = itr->name.GetString();
+
+		if (strcmp(check, "X") == 0)
+		{
+			x = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Y") == 0)
+		{
+			y = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Width") == 0)
+		{
+			radius = itr->value.GetInt();
+			continue;
+		}
+	}
+
+	// Create a new Bullet
+	Bullet* new_bullet = new Bullet((int) x, (int) y, radius);
+
+	// Push it to the GameState
+	state->addBullet(new_bullet);
 
 	return 1;
 }
