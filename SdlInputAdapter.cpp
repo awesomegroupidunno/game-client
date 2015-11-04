@@ -37,6 +37,11 @@ void SdlInputAdapter::check_keys()
 				printf("input right\n");
 				gameController->turnVehicle(-1.0);
 				break;
+			case SDLK_SPACE:
+				// handle firing weapon
+				printf("input fire\n");
+				gameController->fireWeapon();
+				break;
 
 			// Any other keys
 			default:

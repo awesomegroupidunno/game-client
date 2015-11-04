@@ -125,6 +125,7 @@ void UdpClient::move_command(double dir)
 	c->type = "POST";
 	c->subtype = "ACCELERATION";
 	c->numValue = dir;
+
 	send_command(c, NUM_MODE);
 
 	delete c;
@@ -139,6 +140,18 @@ void UdpClient::turn_command(double dir)
 	c->numValue = dir;
 
 	send_command(c, NUM_MODE);
+
+	delete c;
+}
+
+void UdpClient::fire_command()
+{
+	Command* c = new Command;
+
+	c->type = "POST";
+	c->subtype = "FIRE";
+
+	send_command(c, NO_VAL_MODE);
 
 	delete c;
 }

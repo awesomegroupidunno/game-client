@@ -35,6 +35,7 @@ public:
 	virtual void connect_command() = 0;
 	virtual void move_command(double dir) = 0;
 	virtual void turn_command(double dir) = 0;
+	virtual void fire_command() = 0;
 };
 
 #endif //GAME_CLIENT_NETWORKCLIENT_H

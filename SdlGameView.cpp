@@ -167,8 +167,8 @@ int SdlGameView::drawView(){
 		glFlush();
 		SDL_GL_SwapWindow(window);
 
-		// Take a quick break after all that hard work
-		// SDL_Delay(40);
+		// Add a 20 ms delay to reduce render load
+		SDL_Delay(20);
 	}
 
 	// Clean up

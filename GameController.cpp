@@ -56,3 +56,9 @@ void GameController::turnVehicle(double direction)
 {
     client->turn_command(direction);
 }
+
+// passes call to fire weapon to network client
+void GameController::fireWeapon()
+{
+	client->fire_command();
+}
