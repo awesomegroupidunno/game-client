@@ -23,8 +23,10 @@ const char* JsonEncodeDecode::encode(Command* c, int mode)
 	}
 
 	writer.EndObject();
-	char *str = (char*)malloc(strlen(s.GetString()) * (sizeof(char)));
+	size_t len = 1 + strlen(s.GetString()) * (sizeof(char));
+	char *str = (char*)malloc(len);
 	str = strcpy(str, s.GetString());
+	str[len-1] = '\0';
 	return str;
 }
 
