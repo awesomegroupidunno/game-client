@@ -27,7 +27,6 @@ int SdlGameView::init(){
 		std::cout << "Error: OpenGL with SDL failed to initialize" << std::endl;
 	}
 
-
 	return 1;
 }
 
@@ -97,6 +96,20 @@ void SdlGameView::drawBullet(SDL_Rect* bullet)
 	glScalef(bullet->h, bullet->w, 1.0f);
 	glColor3f(0.8f, 0.6f, 0.6f);
 	drawSquare();
+}
+
+// TODO: implement drawHealthBar and test it out
+void SdlGameView::drawHealthBar(int curHealth, int maxHealth){
+	glPopMatrix();
+		glScalef(1.5, (float)maxHealth, 1.0);
+		glColor3f(0.0, 0.0, 0.0);	//black background bar based on max health
+		drawSquare();
+	glPushMatrix();
+	glPopMatrix();
+		glScalef(1.0, (float)curHealth, 1.0);
+		glColor3f(0.0, 0.0, 0.0);	//green foreground bar based on current health
+		drawSquare();
+	glPushMatrix();
 }
 
 int SdlGameView::drawView(){

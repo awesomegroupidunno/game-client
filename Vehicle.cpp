@@ -4,7 +4,7 @@
 #include "Vehicle.h"
 
 //constructor
-Vehicle::Vehicle(int x, int y, int curHealth, double frontAngle, double velocity, int team, int width, int height){
+Vehicle::Vehicle(int x, int y, int curHealth, double frontAngle, double velocity, int team, int width, int height, bool isMe){
     this->velocity = velocity;          //current velocity
     this->x = x;
     this->y = y;                        //coordinates on game board
@@ -13,5 +13,6 @@ Vehicle::Vehicle(int x, int y, int curHealth, double frontAngle, double velocity
     this->team = team;                  //vehicle team ID (0 = red, 1 = blue)
     this->width = width;
     this->height = height;              //vehicle width and height
+    this->isMe = isMe;
     //TODO: possibly include powerup classes / objects
 }
