@@ -22,3 +22,11 @@ std::vector<Base*>* SdlGameViewAdapter::getBases(){
 std::vector<Bullet*>* SdlGameViewAdapter::getBullets(){
     return gameController->getBullets();
 }
+
+std::vector<Shield*>* SdlGameViewAdapter::getShields(){
+    return gameController->getShields();
+}
+
+std::vector<Generator*>* SdlGameViewAdapter::getGenerators(){
+    return gameController->getGenerators();
+}

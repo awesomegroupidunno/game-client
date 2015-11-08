@@ -181,6 +181,9 @@ int SdlGameView::drawView(){
 			bulletRects[i].h = bullets->at(i)->radius;
 		}
 
+		// TODO: draw shields and generators using getShields and getGenerators from gameViewAdapter
+		// server side MUST be communicating with shield / generator packets first
+
 		// Make background white and clear renderer
 		glClear(GL_COLOR_BUFFER_BIT);
 

@@ -56,6 +56,26 @@ std::vector<Bullet*>* GameController::getBullets()
 	return bullets;
 }
 
+std::vector<Shield*> *GameController::getShields() {
+	std::vector<Shield*>* shields;
+
+	pthread_mutex_lock(game_state_mutex);
+	shields = state->getShields();
+	pthread_mutex_unlock(game_state_mutex);
+
+	return shields;
+}
+
+std::vector<Generator*> *GameController::getGenerators() {
+	std::vector<Generator*>* gens;
+
+	pthread_mutex_lock(game_state_mutex);
+	gens = state->getGenerators();
+	pthread_mutex_unlock(game_state_mutex);
+
+	return gens;
+}
+
 // passes call to move vehicle to network client
 void GameController::moveVehicle(double direction)
 {

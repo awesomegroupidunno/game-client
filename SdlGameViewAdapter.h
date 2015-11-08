@@ -5,8 +5,8 @@
 #ifndef GAME_CLIENT_SDLGAMEVIEWADAPTER_H
 #define GAME_CLIENT_SDLGAMEVIEWADAPTER_H
 
-#include "Vehicle.h"
-#include "Base.h"
+//#include "Vehicle.h"
+//#include "Base.h"
 #include "GameController.h"
 #include <iostream>
 #include <vector>
@@ -18,6 +18,8 @@ public:
     std::vector<Vehicle*>* getVehicles();
     std::vector<Base*>* getBases();
     std::vector<Bullet*>* getBullets();
+    std::vector<Shield*>* getShields();
+    std::vector<Generator*>* getGenerators();
 };
 
 #endif //GAME_CLIENT_SDLGAMEVIEWADAPTER_H

@@ -8,7 +8,7 @@
 
 class Base {
 public:
-    int x, y, curHealth, maxHealth, team, width, height;    //coordinates on game board, front facing angle, health
+    int x, y, curHealth, maxHealth, team, width, height;    //coordinates on game board, health, team color
     Base(int x, int y, int curHealth, int team, int width, int height);
 };
 

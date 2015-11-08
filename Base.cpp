@@ -4,7 +4,6 @@
 
 #include "Base.h"
 
-//constructor
 Base::Base(int x, int y, int curHealth, int team, int width, int height){
     this->x = x;
     this->y = y;                        //coordinates on game board
