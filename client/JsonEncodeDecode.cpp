@@ -168,9 +168,11 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 			continue;
 		}
 	}
+	// TODO: replace with decoding from serverside to find isMe field
+	bool isMe = false;
 
 	// Create a new Vehicle
-	Vehicle* new_vehicle = new Vehicle((int) x, (int) y, health, angle, velocity, team, width, height);
+	Vehicle* new_vehicle = new Vehicle((int) x, (int) y, health, angle, velocity, team, width, height, isMe);
 
 	// Push it to the GameState
 	state->addPlayer(new_vehicle);
