@@ -29,6 +29,7 @@ public:
     void drawVehicle(SDL_Rect* vehicle, double angle, int teamColor);
     void drawBase(SDL_Rect* base, int teamColor);
     void drawBullet(SDL_Rect* bullet);
+    void drawHealthBar(int curHealth, int maxHealth, float x, float y);
     int drawView();
 };
 
