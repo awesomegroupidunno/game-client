@@ -76,18 +76,10 @@ int UdpClient::start_listening(pthread_mutex_t* game_state_mutex)
 	return 0;
 }
 
-void UdpClient::update(char* update)
+void UdpClient::update(GameState *update)
 {
-	// Create a new GameState
-	GameState* new_state = encodeDecode->decode(update);
-
 	// Replace old with new
-	if (new_state != NULL)
-	{
-		controller->update(new_state);
-	}
-
-	printf("recv:\n%s\n", update);
+	controller->update(update);
 }
 
 int UdpClient::close_connection()

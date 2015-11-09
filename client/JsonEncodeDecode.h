@@ -19,7 +19,7 @@ private:
 
 public:
 	const char* encode(Command* c, int mode);
-	GameState* decode(char* buffer);
+	GameState* decode(const char *buffer);
 };
 
 #endif //GAME_CLIENT_JSONENCODEDECODE_H

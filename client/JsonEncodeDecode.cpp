@@ -30,7 +30,7 @@ const char* JsonEncodeDecode::encode(Command* c, int mode)
 	return str;
 }
 
-GameState* JsonEncodeDecode::decode(char* buffer)
+GameState* JsonEncodeDecode::decode(const char *buffer)
 {
 	Document doc;
 
