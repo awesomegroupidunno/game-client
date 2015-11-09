@@ -4,9 +4,7 @@ void* listen(void* args)
 {
 	struct Data *data;
 	data = (struct Data *) args;
-	int maxBufferSize = 100000;
-	char recvline[maxBufferSize];
-	std::string recvstring;
+	int maxBufferSize = 10;
 	ssize_t endPos;
 	GameState* new_state;
 	bool conn = true;
@@ -17,26 +15,23 @@ void* listen(void* args)
 	// Listen forever
 	while (conn)
 	{
-		/*// Clear out buffer
-		recvstring.clear();
+		// Create buffer
+		char recvline[maxBufferSize];
 
-		// Attempt receiving from host
-		do
-		{
-			endPos = recv(data->sockfd, recvline, (size_t) maxBufferSize, 0);
-			recvline[endPos] = 0;
-			recvstring += recvline;
-
-			//printf("recv: %s\nrecv size: %i\n", recvstring.c_str(), (int) endPos);
-		}
-		while (endPos >= maxBufferSize);
-
-		// Update client
-		pthread_mutex_lock(data->game_state_mutex);
-		data->client->update(recvstring.c_str());
-		pthread_mutex_unlock(data->game_state_mutex);*/
-
+		// Receive data
 		endPos = recv(data->sockfd, recvline, (size_t) maxBufferSize, 0);
+
+		// If recv throws an error or is empty, try again
+		if (endPos <= 0)
+		{
+			continue;
+		}
+
+		// If the packet is larger than the buffer, try again with a bigger buffer
+		if (endPos >= maxBufferSize)
+		{
+			maxBufferSize *= 2;
+		}
 
 		// Ignore unless a message was received
 		if (endPos > 0)
@@ -56,6 +51,12 @@ void* listen(void* args)
 			}
 
 			printf("recv:\n%s\n", recvline);
+		}
+
+		// If the packet is significantly smaller than maxBufferSize, make it smaller
+		if (endPos < maxBufferSize / 3)
+		{
+			maxBufferSize /= 2;
 		}
 	}
 
