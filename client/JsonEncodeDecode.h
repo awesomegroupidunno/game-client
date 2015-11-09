@@ -16,6 +16,7 @@ class JsonEncodeDecode : public EncodeDecode
 private:
 	int decodeVehicle(GameState* state, const Value& vehicle);
 	int decodeBullet(GameState* state, const Value& bullet);
+	int decodeBase(GameState* state, const Value& base);
 
 public:
 	const char* encode(Command* c, int mode);

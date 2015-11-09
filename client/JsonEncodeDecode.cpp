@@ -94,21 +94,44 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 				}
 			}
 		}
+
+		/*
+		 * BASES
+		 */
+		if (strcmp(itr->name.GetString(), "Bases") == 0)
+		{
+			// If Bullets is not an array, something went wrong
+			if (!itr->value.IsArray())
+			{
+				printf("\n----------\nError: Bases array is not array\n----------\n");
+				return NULL;
+			}
+
+			const Value& basesArray = itr->value;
+			for (SizeType i = 0; i < basesArray.Size(); i++)
+			{
+				if (decodeBase(state, basesArray[i]) == -1)
+				{
+					printf("\n----------\nError decoding bases\n----------\n");
+					return NULL;
+				}
+			}
+		}
 	}
 
 	/*
 	 * BASES
 	 * TODO: replace with actual decoding when the server returns bases
-	 */
+	 *//*
 	double x, y;
 	x = 100, y = 100;
 	int health, team, width, height;
 	health = 100000, team = 0, width = height = 100;
-	Base* new_base = new Base((int) x, (int) y, health, team, width, height);
+	Base* new_base = new Base((int) x, (int) y, health, 0, team, width, height);
 	state->addBase(new_base);
 	x = 300, y = 100, health = 109, team = 1;
-	new_base = new Base((int) x, (int) y, health, team, width, height);
-	state->addBase(new_base);
+	new_base = new Base((int) x, (int) y, health, 0, team, width, height);
+	state->addBase(new_base);*/
 
 	return state;
 }
@@ -118,8 +141,9 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 	// Vehicle vars
 	double x, y, velocity, angle;
 	x = y = velocity = angle = 0;
-	int width, height, team, health;
-	width = height = team = health = 0;
+	int width, height, team, health, maxHealth;
+	width = height = team = health = maxHealth = 0;
+	bool isMe = false;
 
 	// Iterate through JSON vehicle object
 	const char* check;
@@ -162,17 +186,25 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 			health = itr->value.GetInt();
 			continue;
 		}
+		if (strcmp(check, "MaxHealth") == 0)
+		{
+			maxHealth = itr->value.GetInt();
+			continue;
+		}
 		if (strcmp(check, "TeamId") == 0)
 		{
 			team = itr->value.GetInt();
 			continue;
 		}
+		if (strcmp(check, "IsMe") == 0)
+		{
+			isMe = itr->value.GetBool();
+			continue;
+		}
 	}
-	// TODO: replace with decoding from serverside to find isMe field
-	bool isMe = false;
 
 	// Create a new Vehicle
-	Vehicle* new_vehicle = new Vehicle((int) x, (int) y, health, angle, velocity, team, width, height, isMe);
+	Vehicle* new_vehicle = new Vehicle((int) x, (int) y, health, maxHealth, angle, velocity, team, width, height, isMe);
 
 	// Push it to the GameState
 	state->addPlayer(new_vehicle);
@@ -216,6 +248,61 @@ int JsonEncodeDecode::decodeBullet(GameState *state, const Value &bullet)
 
 	// Push it to the GameState
 	state->addBullet(new_bullet);
+
+	return 1;
+}
+
+int JsonEncodeDecode::decodeBase(GameState *state, const Value &base)
+{
+	// Base vars
+	double x, y;
+	x = y = 0;
+	int health, maxHealth, width, id;
+	health = maxHealth = width = id = 0;
+
+	// Iterate through JSON bullet object
+	const char* check;
+	for (Value::ConstMemberIterator itr = base.MemberBegin(); itr != base.MemberEnd(); ++itr)
+	{
+		check = itr->name.GetString();
+
+		if (strcmp(check, "X") == 0)
+		{
+			x = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Y") == 0)
+		{
+			y = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Width") == 0)
+		{
+			width = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "CurrentHealth") == 0)
+		{
+			health = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "MaxHealth") == 0)
+		{
+			maxHealth = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "TeamId") == 0)
+		{
+			id = itr->value.GetInt();
+			continue;
+		}
+	}
+
+	// Create a new Bullet
+	Base* new_base = new Base((int) x, (int) y, health, maxHealth, id, width, width);
+
+	// Push it to the GameState
+	state->addBase(new_base);
 
 	return 1;
 }
