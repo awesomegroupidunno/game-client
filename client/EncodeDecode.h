@@ -10,7 +10,7 @@ class EncodeDecode
 {
 public:
 	virtual const char* encode(Command* c, int mode) = 0;
-	virtual GameState* decode(char* buffer) = 0;
+	virtual GameState* decode(const char *buffer) = 0;
 };
 
 

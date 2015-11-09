@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "NetworkClient.h"
+#include "EncodeDecode.h"
 
 class NetworkClient;
 
