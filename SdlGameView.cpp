@@ -100,18 +100,17 @@ void SdlGameView::drawBullet(SDL_Rect* bullet)
 
 void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
 	glTranslatef(x, y, 0.0);
-	float healthPercent = (curHealth/maxHealth)*100;
-	glPopMatrix();
-		glScalef(1.5, 50, 1.0);		//scales from the center, scales Y by 50 (100%)
+	float healthPercent = ((float)curHealth/(float)maxHealth)*50;
+	glPushMatrix();
+		glScalef(50, 5, 1.0);		//scales from the center, scales Y by 50 (100%)
 		glColor3f(0.0, 0.0, 0.0);	//black background bar based on max health
 		drawSquare();
-	glPushMatrix();
 	glPopMatrix();
-		glScalef(1.0, healthPercent, 1.0);	//scales from the left, scales Y by the percentage of curHealth
-		glTranslatef(-(x/2), 0.0, 0.0);
-		glColor3f(0.0, 0.0, 0.0);	//green foreground bar based on current health
-		drawSquare();
 	glPushMatrix();
+		glScalef(healthPercent, 5, 1.0);	//scales from the left, scales Y by the percentage of curHealth
+		glColor3f(0.0, 1.0, 0.0);	//green foreground bar based on current health
+		drawSquare();
+	glPopMatrix();
 }
 
 int SdlGameView::drawView(){
@@ -187,14 +186,13 @@ int SdlGameView::drawView(){
 		// Make background white and clear renderer
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// TODO: work on drawHealthBar() implementation and uncomment the calls for it
-		//drawHealthBar(50, 100, 200, 200);	//test drawing predefined health bar
-
 		//draw vehicles and their health bars
 		for (int j = 0; j < numVehicles; j++) {
 			glPushMatrix();
 				drawVehicle(&vehicleRects[j], vehicles->at(j)->frontAngle, vehicles->at(j)->team);
-				//drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height);
+			glPopMatrix();
+			glPushMatrix();
+				drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height);
 			glPopMatrix();
 		}
 
@@ -202,7 +200,9 @@ int SdlGameView::drawView(){
 		for (int j = 0; j < numBases; j++) {
 			glPushMatrix();
 				drawBase(&baseRects[j], bases->at(j)->team);
-				//drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, bases->at(j)->y + bases->at(j)->height);
+			glPopMatrix();
+			glPushMatrix();
+				drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, bases->at(j)->y + bases->at(j)->height);
 			glPopMatrix();
 		}
 
