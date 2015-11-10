@@ -20,12 +20,14 @@ private:
     SdlInputAdapter* inputAdapter;
     SdlGameViewAdapter* gameViewAdapter;
     GLfloat sqr[4][2] = { {0.5f, 0.5f }, { -0.5f, 0.5f }, { -0.5f, -0.5f }, { 0.5f, -0.5f } };
+    GLfloat tri[3][2] = { {0.5f, -0.5f }, { -0.5f, -0.5f }, { 0.0f, 0.5f } };
 public:
     SdlGameView(SdlGameViewAdapter* gva, SdlInputAdapter* ia);
     int init();
     int initGL();
     void exit();
     void drawSquare();
+    void drawTriangle();
     void drawVehicle(SDL_Rect* vehicle, double angle, int teamColor);
     void drawBase(SDL_Rect* base, int teamColor);
     void drawBullet(SDL_Rect* bullet);

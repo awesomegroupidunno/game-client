@@ -67,6 +67,14 @@ void SdlGameView::drawSquare(){
 	glEnd();
 }
 
+void SdlGameView::drawTriangle() {
+	glBegin(GL_POLYGON);
+		glVertex2f(tri[0][0], tri[0][1]);
+		glVertex2f(tri[1][0], tri[1][1]);
+		glVertex2f(tri[2][0], tri[2][1]);
+	glEnd();
+}
+
 void SdlGameView::drawVehicle(SDL_Rect *vehicle, double angle, int teamColor){
 	glTranslatef(vehicle->x, vehicle->y, 0);
 	glRotatef(angle, 0, 0, 1);
@@ -100,7 +108,7 @@ void SdlGameView::drawBullet(SDL_Rect* bullet)
 
 void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
 	glTranslatef(x, y, 0.0);
-	float healthPercent = ((float)curHealth/(float)maxHealth)*50;
+	float healthPercent = (((float)curHealth/(float)maxHealth)*100)/2;
 	glPushMatrix();
 		glScalef(50, 5, 1.0);		//scales from the center, scales Y by 50 (100%)
 		glColor3f(0.0, 0.0, 0.0);	//black background bar based on max health
