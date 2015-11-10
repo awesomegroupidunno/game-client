@@ -30,6 +30,8 @@ public:
     void drawTriangle();
     void drawVehicle(SDL_Rect* vehicle, double angle, int teamColor);
     void drawBase(SDL_Rect* base, int teamColor);
+    void drawShield(SDL_Rect* shield, int teamColor);
+    void drawGenerator(Generator* generator);
     void drawBullet(SDL_Rect* bullet);
     void drawHealthBar(int curHealth, int maxHealth, float x, float y);
     int drawView();

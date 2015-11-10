@@ -98,6 +98,30 @@ void SdlGameView::drawBase(SDL_Rect *base, int teamColor){
 	drawSquare();
 }
 
+void SdlGameView::drawGenerator(Generator *generator)
+{
+	glTranslatef(generator->x, generator->y, 0.0);
+	glScalef(generator->height, generator->width, 1);
+	if(generator->team == 0) {
+		glColor3f(1.0, 0.0, 0.0);
+	}else if(generator->team == 1) {
+		glColor3f(0.0, 0.0, 1.0);
+	}
+	drawTriangle();
+}
+
+void SdlGameView::drawShield(SDL_Rect *shield, int teamColor)
+{
+	glTranslatef(shield->x, shield->y, 0);
+	glScalef(shield->h, shield->w, 1);
+	if(teamColor == 0) {
+		glColor3f(0.5, 0.0, 0.0);
+	}else if(teamColor == 1){
+		glColor3f(0.0, 0.0, 0.5);
+	}
+	drawSquare();
+}
+
 void SdlGameView::drawBullet(SDL_Rect* bullet)
 {
 	glTranslatef(bullet->x, bullet->y, 0);
@@ -176,6 +200,21 @@ int SdlGameView::drawView(){
 			baseRects[i].h = bases->at(i)->height;
 		}
 
+		// initialize queue of shields to be drawn
+		std::vector<Shield*>* shields = gameViewAdapter->getShields();
+		int numShields = (int) shields->size();
+		SDL_Rect* shieldRects = new SDL_Rect[numShields];
+		for (unsigned long i = 0; i < numShields; i++)
+		{
+			shieldRects[i].x = shields->at(i)->x;
+			shieldRects[i].y = shields->at(i)->y;
+			shieldRects[i].w = shields->at(i)->width;
+			shieldRects[i].h = shields->at(i)->height;
+		}
+
+		// initialize vector of generators to be drawn
+		std::vector<Generator*>* generators = gameViewAdapter->getGenerators();
+
 		// Init bullets to be drawn
 		std::vector<Bullet*>* bullets = gameViewAdapter->getBullets();
 		int numBullets = (int) bullets->size();
@@ -187,9 +226,6 @@ int SdlGameView::drawView(){
 			bulletRects[i].w = bullets->at(i)->radius;
 			bulletRects[i].h = bullets->at(i)->radius;
 		}
-
-		// TODO: draw shields and generators using getShields and getGenerators from gameViewAdapter
-		// server side MUST be communicating with shield / generator packets first
 
 		// Make background white and clear renderer
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -211,6 +247,20 @@ int SdlGameView::drawView(){
 			glPopMatrix();
 			glPushMatrix();
 				drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, bases->at(j)->y + bases->at(j)->height);
+			glPopMatrix();
+		}
+
+		//draw shields
+		for (int j = 0; j < numShields; j++){
+			glPushMatrix();
+				drawShield(&shieldRects[j], shields->at(j)->team);
+			glPopMatrix();
+		}
+
+		//draw generators
+		for (int j = 0; j < generators->size(); j++){
+			glPushMatrix();
+				drawGenerator(generators->at(j));
 			glPopMatrix();
 		}
 
