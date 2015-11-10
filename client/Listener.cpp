@@ -31,6 +31,7 @@ void* listen(void* args)
 		if (endPos >= maxBufferSize)
 		{
 			maxBufferSize *= 2;
+			continue;
 		}
 
 		// Ignore unless a message was received

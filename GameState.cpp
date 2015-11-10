@@ -6,6 +6,7 @@ GameState::GameState()
 	this->bases = new std::vector<Base*>();
 	this->bullets = new std::vector<Bullet*>();
 	this->shields = new std::vector<Shield*>();
+	this->generators = new std::vector<Generator*>();
 }
 /*
  * add objects to the GameState

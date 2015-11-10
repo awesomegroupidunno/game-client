@@ -17,6 +17,7 @@ private:
 	int decodeVehicle(GameState* state, const Value& vehicle);
 	int decodeBullet(GameState* state, const Value& bullet);
 	int decodeBase(GameState* state, const Value& base);
+	int decodeShieldGen(GameState* state, const Value& shieldGen);
 
 public:
 	const char* encode(Command* c, int mode);

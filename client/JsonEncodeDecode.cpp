@@ -100,7 +100,7 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 		 */
 		if (strcmp(itr->name.GetString(), "Bases") == 0)
 		{
-			// If Bullets is not an array, something went wrong
+			// If Bases is not an array, something went wrong
 			if (!itr->value.IsArray())
 			{
 				printf("\n----------\nError: Bases array is not array\n----------\n");
@@ -117,21 +117,55 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 				}
 			}
 		}
-	}
 
-	/*
-	 * BASES
-	 * TODO: replace with actual decoding when the server returns bases
-	 *//*
-	double x, y;
-	x = 100, y = 100;
-	int health, team, width, height;
-	health = 100000, team = 0, width = height = 100;
-	Base* new_base = new Base((int) x, (int) y, health, 0, team, width, height);
-	state->addBase(new_base);
-	x = 300, y = 100, health = 109, team = 1;
-	new_base = new Base((int) x, (int) y, health, 0, team, width, height);
-	state->addBase(new_base);*/
+		/*
+		 * SHIELDS
+		 */
+		/*
+		if (strcmp(itr->name.GetString(), "Shields") == 0)
+		{
+			// If Shields is not an array, something went wrong
+			if (!itr->value.IsArray())
+			{
+				printf("\n----------\nError: Shields array is not array\n----------\n");
+				return NULL;
+			}
+
+			const Value& shieldsArray = itr->value;
+			for (SizeType i = 0; i < shieldsArray.Size(); i++)
+			{
+				if (decodeShield(state, shieldsArray[i]) == -1)
+				{
+					printf("\n----------\nError decoding shields\n----------\n");
+					return NULL;
+				}
+			}
+		}
+		*/
+
+		/*
+		 * SHIELD GENERATORS
+		 */
+		if (strcmp(itr->name.GetString(), "ShieldGenerators") == 0)
+		{
+			// If ShieldGenerators is not an array, something went wrong
+			if (!itr->value.IsArray())
+			{
+				printf("\n----------\nError: Shield gens array is not array\n----------\n");
+				return NULL;
+			}
+
+			const Value& shieldGenArray = itr->value;
+			for (SizeType i = 0; i < shieldGenArray.Size(); i++)
+			{
+				if (decodeShieldGen(state, shieldGenArray[i]) == -1)
+				{
+					printf("\n----------\nError decoding shield gens\n----------\n");
+					return NULL;
+				}
+			}
+		}
+	}
 
 	return state;
 }
@@ -303,6 +337,61 @@ int JsonEncodeDecode::decodeBase(GameState *state, const Value &base)
 
 	// Push it to the GameState
 	state->addBase(new_base);
+
+	return 1;
+}
+
+int JsonEncodeDecode::decodeShieldGen(GameState *state, const Value &base)
+{
+	// Base vars
+	double x, y;
+	x = y = 0;
+	int health, maxHealth, width, id;
+	health = maxHealth = width = id = 0;
+
+	// Iterate through JSON bullet object
+	const char* check;
+	for (Value::ConstMemberIterator itr = base.MemberBegin(); itr != base.MemberEnd(); ++itr)
+	{
+		check = itr->name.GetString();
+
+		if (strcmp(check, "X") == 0)
+		{
+			x = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Y") == 0)
+		{
+			y = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Width") == 0)
+		{
+			width = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "CurrentHealth") == 0)
+		{
+			health = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "MaxHealth") == 0)
+		{
+			maxHealth = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "TeamId") == 0)
+		{
+			id = itr->value.GetInt();
+			continue;
+		}
+	}
+
+	// Create a new Bullet
+	Generator* new_gen = new Generator((int) x, (int) y, health, maxHealth, id, width, width);
+
+	// Push it to the GameState
+	state->addGenerator(new_gen);
 
 	return 1;
 }

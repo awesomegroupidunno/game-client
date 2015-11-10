@@ -9,7 +9,7 @@
 class Generator {
 public:
     int x, y, curHealth, maxHealth, team, width, height;    //coordinates on game board, health, team color
-    Generator(int x, int y, int curHealth, int team, int width, int height);
+    Generator(int x, int y, int curHealth, int maxHealth, int team, int width, int height);
 };
 
 
