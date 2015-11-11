@@ -262,6 +262,9 @@ int SdlGameView::drawView(){
 			glPushMatrix();
 				drawGenerator(generators->at(j));
 			glPopMatrix();
+			glPushMatrix();
+				drawHealthBar(generators->at(j)->curHealth, generators->at(j)->maxHealth, generators->at(j)->x, generators->at(j)->y + generators->at(j)->height);
+			glPopMatrix();
 		}
 
 		// Draw bullets
