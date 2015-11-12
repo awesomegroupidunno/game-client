@@ -75,24 +75,24 @@ void SdlGameView::drawTriangle() {
 	glEnd();
 }
 
-void SdlGameView::drawVehicle(SDL_Rect *vehicle, double angle, int teamColor){
+void SdlGameView::drawVehicle(Vehicle *vehicle){
 	glTranslatef(vehicle->x, vehicle->y, 0);
-	glRotatef(angle, 0, 0, 1);
-	glScalef(vehicle->h, vehicle->w, 1);
-	if(teamColor == 0) {
+	glRotatef((GLfloat)vehicle->frontAngle, 0, 0, 1);
+	glScalef(vehicle->height, vehicle->width, 1);
+	if(vehicle->team == 0) {
 		glColor3f(1.0, 0.0, 0.0);
-	}else if(teamColor == 1){
+	}else if(vehicle->team == 1){
 		glColor3f(0.0, 0.0, 1.0);
 	}
 	drawSquare();
 }
 
-void SdlGameView::drawBase(SDL_Rect *base, int teamColor){
+void SdlGameView::drawBase(Base *base){
 	glTranslatef(base->x, base->y, 0);
-	glScalef(base->h, base->w, 1);
-	if(teamColor == 0) {
+	glScalef(base->height, base->width, 1);
+	if(base->team == 0) {
 		glColor3f(1.0, 0.0, 0.0);
-	}else if(teamColor == 1){
+	}else if(base->team == 1){
 		glColor3f(0.0, 0.0, 1.0);
 	}
 	drawSquare();
@@ -110,22 +110,22 @@ void SdlGameView::drawGenerator(Generator *generator)
 	drawTriangle();
 }
 
-void SdlGameView::drawShield(SDL_Rect *shield, int teamColor)
+void SdlGameView::drawShield(Shield *shield)
 {
 	glTranslatef(shield->x, shield->y, 0);
-	glScalef(shield->h, shield->w, 1);
-	if(teamColor == 0) {
+	glScalef(shield->height, shield->width, 1);
+	if(shield->team == 0) {
 		glColor3f(0.5, 0.0, 0.0);
-	}else if(teamColor == 1){
+	}else if(shield->team == 1){
 		glColor3f(0.0, 0.0, 0.5);
 	}
 	drawSquare();
 }
 
-void SdlGameView::drawBullet(SDL_Rect* bullet)
+void SdlGameView::drawBullet(Bullet *bullet)
 {
 	glTranslatef(bullet->x, bullet->y, 0);
-	glScalef(bullet->h, bullet->w, 1.0f);
+	glScalef(bullet->radius, bullet->radius, 1.0f);
 	glColor3f(0.8f, 0.6f, 0.6f);
 	drawSquare();
 }
@@ -145,6 +145,9 @@ void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
 	glPopMatrix();
 }
 
+/*
+ * MAIN DRAWING LOOP
+ */
 int SdlGameView::drawView(){
 	if(!init()){
 		return 0;
@@ -178,62 +181,25 @@ int SdlGameView::drawView(){
 		// React to any keys that are currently being held down
 		inputAdapter->check_keys();
 
-		//initialize queue of vehicles to be drawn
+		//initialize vector lists (queue) of objects to be drawn, and get their sizes
 		std::vector<Vehicle*>* vehicles = gameViewAdapter->getVehicles();
 		int numVehicles = (int) vehicles->size();
-		SDL_Rect*vehicleRects = new SDL_Rect[numVehicles];
-		for (unsigned long i = 0; i < numVehicles; i++){
-			vehicleRects[i].x = vehicles->at(i)->x;
-			vehicleRects[i].y = vehicles->at(i)->y;
-			vehicleRects[i].w = vehicles->at(i)->width;
-			vehicleRects[i].h = vehicles->at(i)->height;
-		}
-
-		//initialize queue of bases to be drawn
 		std::vector<Base*>* bases = gameViewAdapter->getBases();
 		int numBases = (int) bases->size();
-		SDL_Rect* baseRects = new SDL_Rect[numBases];
-		for (unsigned long i = 0; i < numBases; i++){
-			baseRects[i].x = bases->at(i)->x;
-			baseRects[i].y = bases->at(i)->y;
-			baseRects[i].w = bases->at(i)->width;
-			baseRects[i].h = bases->at(i)->height;
-		}
-
-		// initialize queue of shields to be drawn
 		std::vector<Shield*>* shields = gameViewAdapter->getShields();
 		int numShields = (int) shields->size();
-		SDL_Rect* shieldRects = new SDL_Rect[numShields];
-		for (unsigned long i = 0; i < numShields; i++)
-		{
-			shieldRects[i].x = shields->at(i)->x;
-			shieldRects[i].y = shields->at(i)->y;
-			shieldRects[i].w = shields->at(i)->width;
-			shieldRects[i].h = shields->at(i)->height;
-		}
-
-		// initialize vector of generators to be drawn
 		std::vector<Generator*>* generators = gameViewAdapter->getGenerators();
-
-		// Init bullets to be drawn
+		int numGenerators = (int) generators->size();
 		std::vector<Bullet*>* bullets = gameViewAdapter->getBullets();
 		int numBullets = (int) bullets->size();
-		SDL_Rect* bulletRects = new SDL_Rect[numBullets];
-		for (unsigned long i = 0; i < numBullets; i++)
-		{
-			bulletRects[i].x = bullets->at(i)->x;
-			bulletRects[i].y = bullets->at(i)->y;
-			bulletRects[i].w = bullets->at(i)->radius;
-			bulletRects[i].h = bullets->at(i)->radius;
-		}
 
 		// Make background white and clear renderer
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//draw vehicles and their health bars
-		for (int j = 0; j < numVehicles; j++) {
+		for (unsigned long j = 0; j < numVehicles; j++) {
 			glPushMatrix();
-				drawVehicle(&vehicleRects[j], vehicles->at(j)->frontAngle, vehicles->at(j)->team);
+				drawVehicle(vehicles->at(j));
 			glPopMatrix();
 			glPushMatrix();
 				drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height);
@@ -241,9 +207,9 @@ int SdlGameView::drawView(){
 		}
 
 		//draw bases and their health bars
-		for (int j = 0; j < numBases; j++) {
+		for (unsigned long j = 0; j < numBases; j++) {
 			glPushMatrix();
-				drawBase(&baseRects[j], bases->at(j)->team);
+				drawBase(bases->at(j));
 			glPopMatrix();
 			glPushMatrix();
 				drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, bases->at(j)->y + bases->at(j)->height);
@@ -251,14 +217,14 @@ int SdlGameView::drawView(){
 		}
 
 		//draw shields
-		for (int j = 0; j < numShields; j++){
+		for (unsigned long j = 0; j < numShields; j++){
 			glPushMatrix();
-				drawShield(&shieldRects[j], shields->at(j)->team);
+				drawShield(shields->at(j));
 			glPopMatrix();
 		}
 
 		//draw generators
-		for (int j = 0; j < generators->size(); j++){
+		for (unsigned long j = 0; j < numGenerators; j++){
 			glPushMatrix();
 				drawGenerator(generators->at(j));
 			glPopMatrix();
@@ -268,10 +234,10 @@ int SdlGameView::drawView(){
 		}
 
 		// Draw bullets
-		for (int j = 0; j < numBullets; j++)
+		for (unsigned long j = 0; j < numBullets; j++)
 		{
 			glPushMatrix();
-				drawBullet(&bulletRects[j]);
+				drawBullet(bullets->at(j));
 			glPopMatrix();
 		}
 
