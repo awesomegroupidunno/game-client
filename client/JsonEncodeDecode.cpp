@@ -121,7 +121,6 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 		/*
 		 * SHIELDS
 		 */
-		/*
 		if (strcmp(itr->name.GetString(), "Shields") == 0)
 		{
 			// If Shields is not an array, something went wrong
@@ -141,7 +140,6 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 				}
 			}
 		}
-		*/
 
 		/*
 		 * SHIELD GENERATORS
@@ -337,6 +335,56 @@ int JsonEncodeDecode::decodeBase(GameState *state, const Value &base)
 
 	// Push it to the GameState
 	state->addBase(new_base);
+
+	return 1;
+}
+
+int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
+{
+	// Shield vars
+	double x, y;
+	x = y = 0;
+	int width, height, id;
+	width = height = id = 0;
+
+	// Iterate through JSON shield object
+	const char* check;
+	for (Value::ConstMemberIterator itr = shield.MemberBegin(); itr != shield.MemberEnd(); ++itr)
+	{
+		check = itr->name.GetString();
+
+		if (strcmp(check, "X") == 0)
+		{
+			x = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Y") == 0)
+		{
+			y = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Width") == 0)
+		{
+			width = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "Height") == 0)
+		{
+			height = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "TeamId") == 0)
+		{
+			id = itr->value.GetInt();
+			continue;
+		}
+	}
+
+	// Create a new Shield
+	Shield* new_shield = new Shield((int) x, (int) y, id, width, height);
+
+	// Push it to the GameState
+	state->addShield(new_shield);
 
 	return 1;
 }

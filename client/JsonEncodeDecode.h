@@ -17,6 +17,7 @@ private:
 	int decodeVehicle(GameState* state, const Value& vehicle);
 	int decodeBullet(GameState* state, const Value& bullet);
 	int decodeBase(GameState* state, const Value& base);
+	int decodeShield(GameState* state, const Value& shield);
 	int decodeShieldGen(GameState* state, const Value& shieldGen);
 
 public:
