@@ -381,7 +381,7 @@ int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 	}
 
 	// Create a new Shield
-	Shield* new_shield = new Shield((int) x, (int) y, id, width, height);
+	Shield* new_shield = new Shield((int) x, (int) y, id, width, width);
 
 	// Push it to the GameState
 	state->addShield(new_shield);
