@@ -112,14 +112,19 @@ void SdlGameView::drawGenerator(Generator *generator)
 
 void SdlGameView::drawShield(Shield *shield)
 {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glTranslatef(shield->x, shield->y, 0);
 	glScalef(shield->height, shield->width, 1);
 	if(shield->team == 0) {
-		glColor3f(0.5, 0.0, 0.0);
+		glColor4f(0.5, 0.0, 0.0, 0.5);
 	}else if(shield->team == 1){
-		glColor3f(0.0, 0.0, 0.5);
+		glColor4f(0.0, 0.0, 0.5, 0.5);
 	}
 	drawSquare();
+
+	glDisable(GL_BLEND);
 }
 
 void SdlGameView::drawBullet(Bullet *bullet)
