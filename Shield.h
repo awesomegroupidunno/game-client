@@ -9,7 +9,8 @@
 class Shield {
 public:
     int x, y, team, width, height;    //coordinates on game board, team color, etc
-    Shield(int x, int y, int team, int width, int height);
+    bool isEnabled;
+    Shield(int x, int y, int team, int width, int height, bool isEnabled);
 };
 
 

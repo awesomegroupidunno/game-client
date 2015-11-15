@@ -223,9 +223,11 @@ int SdlGameView::drawView(){
 
 		//draw shields
 		for (unsigned long j = 0; j < numShields; j++){
-			glPushMatrix();
-				drawShield(shields->at(j));
-			glPopMatrix();
+			if (shields->at(j)->isEnabled) {
+				glPushMatrix();
+					drawShield(shields->at(j));
+				glPopMatrix();
+			}
 		}
 
 		//draw generators

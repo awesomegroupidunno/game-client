@@ -346,6 +346,7 @@ int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 	x = y = 0;
 	int width, height, id;
 	width = height = id = 0;
+	bool isEnabled;
 
 	// Iterate through JSON shield object
 	const char* check;
@@ -378,10 +379,15 @@ int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 			id = itr->value.GetInt();
 			continue;
 		}
+		if (strcmp(check, "IsEnabled") == 0)
+		{
+			isEnabled = itr->value.GetBool();
+			continue;
+		}
 	}
 
 	// Create a new Shield
-	Shield* new_shield = new Shield((int) x, (int) y, id, width, width);
+	Shield* new_shield = new Shield((int) x, (int) y, id, width, width, isEnabled);
 
 	// Push it to the GameState
 	state->addShield(new_shield);

@@ -14,10 +14,11 @@
  * Shields and generators will be paired according
  * to their team int.
  */
-Shield::Shield(int x, int y, int team, int width, int height) {
+Shield::Shield(int x, int y, int team, int width, int height, bool isEnabled) {
     this->x = x;
     this->y = y;
     this->team = team;
     this->width = width;
     this->height = height;
+    this->isEnabled = isEnabled;
 }
