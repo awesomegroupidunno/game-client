@@ -35,6 +35,12 @@ void GameState::addGenerator(Generator *add)
 {
 	generators->push_back(add);
 }
+
+void GameState::addPowerup(Powerup *add)
+{
+	powerups->push_back(add);
+}
+
 /*
  * pass objects from the GameState
  */
@@ -61,4 +67,9 @@ std::vector<Shield*>* GameState::getShields()
 std::vector<Generator*>* GameState::getGenerators()
 {
 	return generators;
+}
+
+std::vector<Powerup*>* GameState::getPowerups()
+{
+	return powerups;
 }

@@ -33,6 +33,7 @@ public:
     void drawShield(Shield* shield);
     void drawGenerator(Generator* generator);
     void drawBullet(Bullet* bullet);
+    void drawPowerup(Powerup* powerup);
     void drawHealthBar(int curHealth, int maxHealth, float x, float y);
     int drawView();
 };

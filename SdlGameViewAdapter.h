@@ -20,6 +20,7 @@ public:
     std::vector<Bullet*>* getBullets();
     std::vector<Shield*>* getShields();
     std::vector<Generator*>* getGenerators();
+    std::vector<Powerup*>* getPowerups();
 };
 
 #endif //GAME_CLIENT_SDLGAMEVIEWADAPTER_H

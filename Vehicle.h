@@ -8,6 +8,7 @@
 
 class Vehicle{
 public:
+    // TODO: fields for storing a powerup a vehicle has collected
     int x, y, curHealth, maxHealth, team, width, height;    //coordinates on game board, front facing angle, health
     double frontAngle, velocity;                            //current angle the vehicle is , vehicle velocity
     bool isMe;

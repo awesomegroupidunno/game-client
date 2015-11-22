@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(game-client)
 
-add_executable(game-client Main.cpp GameController.cpp GameController.h include/SDLutil.h GameState.cpp Vehicle.cpp Vehicle.h SdlGameView.cpp SdlGameViewAdapter.cpp SdlGameViewAdapter.h client/UdpClient.cpp client/UdpClient.h client/EncodeDecode.h client/JsonEncodeDecode.cpp client/JsonEncodeDecode.h client/NetworkClient.h client/Listener.cpp client/Listener.h SdlInputAdapter.cpp SdlInputAdapter.h SdlGameView.h client/Command.h GameState.h Base.cpp Base.h Bullet.cpp Bullet.h Shield.cpp Shield.h Generator.cpp Generator.h)
+add_executable(game-client Main.cpp GameController.cpp GameController.h include/SDLutil.h GameState.cpp Vehicle.cpp Vehicle.h SdlGameView.cpp SdlGameViewAdapter.cpp SdlGameViewAdapter.h client/UdpClient.cpp client/UdpClient.h client/EncodeDecode.h client/JsonEncodeDecode.cpp client/JsonEncodeDecode.h client/NetworkClient.h client/Listener.cpp client/Listener.h SdlInputAdapter.cpp SdlInputAdapter.h SdlGameView.h client/Command.h GameState.h Base.cpp Base.h Bullet.cpp Bullet.h Shield.cpp Shield.h Generator.cpp Generator.h Powerup.cpp Powerup.h)
 
 # Add header files
 include_directories(include client)

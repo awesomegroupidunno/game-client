@@ -135,6 +135,24 @@ void SdlGameView::drawBullet(Bullet *bullet)
 	drawSquare();
 }
 
+void SdlGameView::drawPowerup(Powerup *powerup)
+{
+	glTranslatef(powerup->x, powerup->y, 0);
+	glScalef(powerup->radius, powerup->radius, 1.0f);
+	//change colors to differentiate types of powerups
+	if(powerup->type == 0)
+	{
+		glColor3f(0.0f, 1.0f, 0.0f);
+	}else if(powerup->type == 1)
+	{
+		glColor3f(1.0f, 1.0f, 0.0f);
+	}else if(powerup->type == 2)
+	{
+		glColor3f(0.0f, 1.0f, 1.0f);
+	}
+	drawSquare();
+}
+
 void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
 	glTranslatef(x, y, 0.0);
 	float healthPercent = (((float)curHealth/(float)maxHealth)*100)/2;
@@ -197,6 +215,8 @@ int SdlGameView::drawView(){
 		int numGenerators = (int) generators->size();
 		std::vector<Bullet*>* bullets = gameViewAdapter->getBullets();
 		int numBullets = (int) bullets->size();
+		std::vector<Powerup*>* powerups = gameViewAdapter->getPowerups();
+		int numPowerups = (int) powerups->size();
 
 		// Make background white and clear renderer
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -245,6 +265,14 @@ int SdlGameView::drawView(){
 		{
 			glPushMatrix();
 				drawBullet(bullets->at(j));
+			glPopMatrix();
+		}
+
+		// Draw powerups
+		for (unsigned long j = 0; j < numPowerups; j++)
+		{
+			glPushMatrix();
+				drawPowerup(powerups->at(j));
 			glPopMatrix();
 		}
 

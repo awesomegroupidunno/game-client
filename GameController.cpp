@@ -76,6 +76,16 @@ std::vector<Generator*> *GameController::getGenerators() {
 	return gens;
 }
 
+std::vector<Powerup*> *GameController::getPowerups() {
+	std::vector<Powerup*>* powerups;
+
+	pthread_mutex_lock(game_state_mutex);
+	powerups = state->getPowerups();
+	pthread_mutex_unlock(game_state_mutex);
+
+	return powerups;
+}
+
 // passes call to move vehicle to network client
 void GameController::moveVehicle(double direction)
 {

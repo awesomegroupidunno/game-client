@@ -30,3 +30,7 @@ std::vector<Shield*>* SdlGameViewAdapter::getShields(){
 std::vector<Generator*>* SdlGameViewAdapter::getGenerators(){
     return gameController->getGenerators();
 }
+
+std::vector<Powerup*>* SdlGameViewAdapter::getPowerups(){
+    return gameController->getPowerups();
+}
