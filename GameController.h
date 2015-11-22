@@ -34,6 +34,7 @@ public:
     void moveVehicle(double direction);
     void turnVehicle(double direction);
 	void fireWeapon();
+	void activatePowerup();
 };
 
 

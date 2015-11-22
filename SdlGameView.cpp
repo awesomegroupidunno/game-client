@@ -139,15 +139,15 @@ void SdlGameView::drawBullet(Bullet *bullet)
 void SdlGameView::drawPowerup(Powerup *powerup)
 {
 	glTranslatef(powerup->x, powerup->y, 0);
-	glScalef(powerup->radius, powerup->radius, 1.0f);
+	glScalef(powerup->width, powerup->height, 1.0f);
 	//change colors to differentiate types of powerups
-	if(powerup->type == 0)
+	if(powerup->type == 1)
 	{
 		glColor3f(0.0f, 1.0f, 0.0f);
-	}else if(powerup->type == 1)
+	}else if(powerup->type == 2)
 	{
 		glColor3f(1.0f, 1.0f, 0.0f);
-	}else if(powerup->type == 2)
+	}else if(powerup->type == 3)
 	{
 		glColor3f(0.0f, 1.0f, 1.0f);
 	}

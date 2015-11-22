@@ -28,6 +28,7 @@ public:
 	void move_command(double dir);
 	void turn_command(double dir);
 	void fire_command();
+	void activate_powerup_command();
 };
 
 #endif //GAME_CLIENT_UDPCLIENT_H

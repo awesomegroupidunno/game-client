@@ -4,10 +4,11 @@
 
 #include "Powerup.h"
 
-Powerup::Powerup(int x, int y, int type, int radius)
+Powerup::Powerup(int x, int y, int type, int width, int height)
 {
     this->x = x;
     this->y = y;                        //coordinates on game board
     this->type = type;                  //type of powerup
-    this->radius = radius;              //size of powerup on the field
+    this->width = width;                //size of powerup on the field
+    this->height = height;
 }

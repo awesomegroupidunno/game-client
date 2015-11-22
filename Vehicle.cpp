@@ -4,10 +4,9 @@
 #include "Vehicle.h"
 
 //constructor
-Vehicle::Vehicle(int x, int y, int curHealth, int maxHealth, double frontAngle, double velocity, int team, int width,
+Vehicle::Vehicle(int x, int y, int curHealth, int maxHealth, double frontAngle, int team, int width,
 			int height, bool isMe)
 {
-    this->velocity = velocity;          //current velocity
     this->x = x;
     this->y = y;                        //coordinates on game board
     this->frontAngle = frontAngle;      //current angle the vehicle is facing

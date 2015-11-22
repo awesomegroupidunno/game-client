@@ -147,3 +147,15 @@ void UdpClient::fire_command()
 
 	delete c;
 }
+
+void UdpClient::activate_powerup_command()
+{
+	Command *c = new Command;
+
+	c->type = "POST";
+	c->subtype = "POWERUP";
+
+	send_command(c, NO_VAL_MODE);
+
+	delete c;
+}

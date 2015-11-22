@@ -6,13 +6,15 @@
 #define GAME_CLIENT_POWERUP_H
 
 // The different types of powerups (P for powerup)
-#define P_ROCKET       	0
-#define P_HEALTH_UP     1
+#define NO_POWERUP -1
+#define HEAL 1
+#define SPEEDUP 2
+#define ROCKET 3
 
 class Powerup {
 public:
-    int x, y, type, radius;    //coordinates on game board, health, team color
-    Powerup(int x, int y, int type, int radius);
+    int x, y, type, width, height;    //coordinates on game board, health, team color
+    Powerup(int x, int y, int type, int width, int height);
 };
 
 

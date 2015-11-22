@@ -103,3 +103,8 @@ void GameController::fireWeapon()
 {
 	client->fire_command();
 }
+// passes call to activate powerup to network client
+void GameController::activatePowerup()
+{
+	client->activate_powerup_command();
+}

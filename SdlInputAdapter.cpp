@@ -42,6 +42,12 @@ void SdlInputAdapter::check_keys()
 				printf("input fire\n");
 				gameController->fireWeapon();
 				break;
+			case SDLK_LSHIFT:
+			case SDLK_RSHIFT:
+				// handle activating stored powerup
+				printf("input activate powerup\n");
+				gameController->activatePowerup();
+				break;
 
 			// Any other keys
 			default:

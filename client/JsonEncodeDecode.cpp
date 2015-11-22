@@ -167,7 +167,7 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 		/*
 		 * POWERUPS
 		 */
-		if (strcmp(itr->name.GetString(), "Powerups") == 0)
+		if (strcmp(itr->name.GetString(), "PowerUps") == 0)
 		{
 			// If Powerups is not an array, something went wrong
 			if (!itr->value.IsArray())
@@ -194,8 +194,8 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 {
 	// Vehicle vars
-	double x, y, velocity, angle;
-	x = y = velocity = angle = 0;
+	double x, y, angle;
+	x = y = angle = 0;
 	int width, height, team, health, maxHealth;
 	width = height = team = health = maxHealth = 0;
 	bool isMe = false;
@@ -226,11 +226,6 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 			height = itr->value.GetInt();
 			continue;
 		}
-		if (strcmp(check, "Velocity") == 0)
-		{
-			velocity = itr->value.GetDouble();
-			continue;
-		}
 		if (strcmp(check, "Angle") == 0)
 		{
 			angle = itr->value.GetDouble();
@@ -259,7 +254,7 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 	}
 
 	// Create a new Vehicle
-	Vehicle* new_vehicle = new Vehicle((int) x, (int) y, health, maxHealth, angle, velocity, team, width, height, isMe);
+	Vehicle* new_vehicle = new Vehicle((int) x, (int) y, health, maxHealth, angle, team, width, height, isMe);
 
 	// Push it to the GameState
 	state->addPlayer(new_vehicle);
@@ -474,8 +469,8 @@ int JsonEncodeDecode::decodePowerup(GameState *state, const Value &powerup)
 	// Powerup vars
 	double x, y;
 	x = y = 0;
-	int type, radius;
-	type = radius = 0;
+	int type, width, height;
+	type = width = height = 0;
 
 	// Iterate through JSON powerup object
 	const char* check;
@@ -498,15 +493,20 @@ int JsonEncodeDecode::decodePowerup(GameState *state, const Value &powerup)
 			type = itr->value.GetInt();
 			continue;
 		}
-		if (strcmp(check, "Radius") == 0)
+		if (strcmp(check, "Width") == 0)
 		{
-			radius = itr->value.GetInt();
+			width = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "Height") == 0)
+		{
+			height = itr->value.GetInt();
 			continue;
 		}
 	}
 
 	// Create a new Powerup
-	Powerup* new_powerup = new Powerup((int) x, (int) y, type, radius);
+	Powerup* new_powerup = new Powerup((int) x, (int) y, type, width, height);
 
 	// Push it to the GameState
 	state->addPowerup(new_powerup);
