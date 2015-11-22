@@ -18,7 +18,8 @@ private:
 	int decodeBullet(GameState* state, const Value& bullet);
 	int decodeBase(GameState* state, const Value& base);
 	int decodeShield(GameState* state, const Value& shield);
-	int decodeShieldGen(GameState* state, const Value& shieldGen);
+	int decodeShieldGen(GameState* state, const Value& shield_gen);
+	int decodePowerup(GameState* state, const Value& powerup);
 
 public:
 	const char* encode(Command* c, int mode);

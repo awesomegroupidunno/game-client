@@ -163,6 +163,29 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 				}
 			}
 		}
+
+		/*
+		 * POWERUPS
+		 */
+		if (strcmp(itr->name.GetString(), "Powerups") == 0)
+		{
+			// If Powerups is not an array, something went wrong
+			if (!itr->value.IsArray())
+			{
+				printf("\n----------\nError: Powerups array is not array\n----------\n");
+				return NULL;
+			}
+
+			const Value& powerupArray = itr->value;
+			for (SizeType i = 0; i < powerupArray.Size(); i++)
+			{
+				if (decodePowerup(state, powerupArray[i]) == -1)
+				{
+					printf("\n----------\nError decoding powerups\n----------\n");
+					return NULL;
+				}
+			}
+		}
 	}
 
 	return state;
@@ -344,9 +367,10 @@ int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 	// Shield vars
 	double x, y;
 	x = y = 0;
-	int width, height, id;
-	width = height = id = 0;
+	int width, id;
+	width = id = 0;
 	bool isEnabled;
+	isEnabled = false;
 
 	// Iterate through JSON shield object
 	const char* check;
@@ -367,11 +391,6 @@ int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 		if (strcmp(check, "Width") == 0)
 		{
 			width = itr->value.GetInt();
-			continue;
-		}
-		if (strcmp(check, "Height") == 0)
-		{
-			height = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "TeamId") == 0)
@@ -395,17 +414,17 @@ int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 	return 1;
 }
 
-int JsonEncodeDecode::decodeShieldGen(GameState *state, const Value &base)
+int JsonEncodeDecode::decodeShieldGen(GameState *state, const Value &shield_gen)
 {
-	// Base vars
+	// Generator vars
 	double x, y;
 	x = y = 0;
 	int health, maxHealth, width, id;
 	health = maxHealth = width = id = 0;
 
-	// Iterate through JSON bullet object
+	// Iterate through JSON shield generator object
 	const char* check;
-	for (Value::ConstMemberIterator itr = base.MemberBegin(); itr != base.MemberEnd(); ++itr)
+	for (Value::ConstMemberIterator itr = shield_gen.MemberBegin(); itr != shield_gen.MemberEnd(); ++itr)
 	{
 		check = itr->name.GetString();
 
@@ -441,11 +460,56 @@ int JsonEncodeDecode::decodeShieldGen(GameState *state, const Value &base)
 		}
 	}
 
-	// Create a new Bullet
+	// Create a new Generator
 	Generator* new_gen = new Generator((int) x, (int) y, health, maxHealth, id, width, width);
 
 	// Push it to the GameState
 	state->addGenerator(new_gen);
+
+	return 1;
+}
+
+int JsonEncodeDecode::decodePowerup(GameState *state, const Value &powerup)
+{
+	// Powerup vars
+	double x, y;
+	x = y = 0;
+	int type, radius;
+	type = radius = 0;
+
+	// Iterate through JSON powerup object
+	const char* check;
+	for (Value::ConstMemberIterator itr = powerup.MemberBegin(); itr != powerup.MemberEnd(); ++itr)
+	{
+		check = itr->name.GetString();
+
+		if (strcmp(check, "X") == 0)
+		{
+			x = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Y") == 0)
+		{
+			y = itr->value.GetDouble();
+			continue;
+		}
+		if (strcmp(check, "Type") == 0)
+		{
+			type = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "Radius") == 0)
+		{
+			radius = itr->value.GetInt();
+			continue;
+		}
+	}
+
+	// Create a new Powerup
+	Powerup* new_powerup = new Powerup((int) x, (int) y, type, radius);
+
+	// Push it to the GameState
+	state->addPowerup(new_powerup);
 
 	return 1;
 }

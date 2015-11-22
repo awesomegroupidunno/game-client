@@ -5,6 +5,9 @@
 #ifndef GAME_CLIENT_POWERUP_H
 #define GAME_CLIENT_POWERUP_H
 
+// The different types of powerups (P for powerup)
+#define P_ROCKET       	0
+#define P_HEALTH_UP     1
 
 class Powerup {
 public:

@@ -56,6 +56,7 @@ int SdlGameView::initGL(){
 
 	SDL_GL_SwapWindow(window);
 
+	return 1;
 }
 
 void SdlGameView::drawSquare(){
