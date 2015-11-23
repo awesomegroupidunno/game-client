@@ -86,6 +86,10 @@ void SdlGameView::drawVehicle(Vehicle *vehicle){
 		glColor3f(0.0, 0.0, 1.0);
 	}
 	drawSquare();
+	glTranslatef(0.3, 0, 0);
+	glScalef(0.3, 0.3, 1);
+	glColor3f(0.0, 0.0, 0.0);
+	drawSquare();
 }
 
 void SdlGameView::drawBase(Base *base){
