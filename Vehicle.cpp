@@ -4,8 +4,8 @@
 #include "Vehicle.h"
 
 //constructor
-Vehicle::Vehicle(int x, int y, int curHealth, int maxHealth, double frontAngle, int team, int width,
-			int height, bool isMe)
+Vehicle::Vehicle(int x, int y, int curHealth, int maxHealth, int frontAngle, int team, int width,
+                 int height, bool isMe)
 {
     this->x = x;
     this->y = y;                        //coordinates on game board

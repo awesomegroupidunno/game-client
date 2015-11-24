@@ -194,10 +194,8 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 {
 	// Vehicle vars
-	double x, y, angle;
-	x = y = angle = 0;
-	int width, height, team, health, maxHealth;
-	width = height = team = health = maxHealth = 0;
+	int x, y, angle, width, height, team, health, maxHealth;
+	x = y = angle = width = height = team = health = maxHealth = 0;
 	bool isMe = false;
 
 	// Iterate through JSON vehicle object
@@ -208,12 +206,12 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 
 		if (strcmp(check, "X") == 0)
 		{
-			x = itr->value.GetDouble();
+			x = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Y") == 0)
 		{
-			y = itr->value.GetDouble();
+			y = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Width") == 0)
@@ -228,7 +226,7 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 		}
 		if (strcmp(check, "Angle") == 0)
 		{
-			angle = itr->value.GetDouble();
+			angle = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "CurrentHealth") == 0)
@@ -254,7 +252,7 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 	}
 
 	// Create a new Vehicle
-	Vehicle* new_vehicle = new Vehicle((int) x, (int) y, health, maxHealth, angle, team, width, height, isMe);
+	Vehicle* new_vehicle = new Vehicle(x, y, health, maxHealth, angle, team, width, height, isMe);
 
 	// Push it to the GameState
 	state->addPlayer(new_vehicle);
@@ -265,10 +263,8 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 int JsonEncodeDecode::decodeBullet(GameState *state, const Value &bullet)
 {
 	// Bullet vars
-	double x, y;
-	x = y = 0;
-	int radius;
-	radius = 0;
+	int x, y, radius;
+	x = y = radius = 0;
 
 	// Iterate through JSON bullet object
 	const char* check;
@@ -278,12 +274,12 @@ int JsonEncodeDecode::decodeBullet(GameState *state, const Value &bullet)
 
 		if (strcmp(check, "X") == 0)
 		{
-			x = itr->value.GetDouble();
+			x = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Y") == 0)
 		{
-			y = itr->value.GetDouble();
+			y = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Width") == 0)
@@ -294,7 +290,7 @@ int JsonEncodeDecode::decodeBullet(GameState *state, const Value &bullet)
 	}
 
 	// Create a new Bullet
-	Bullet* new_bullet = new Bullet((int) x, (int) y, radius);
+	Bullet* new_bullet = new Bullet(x, y, radius);
 
 	// Push it to the GameState
 	state->addBullet(new_bullet);
@@ -305,10 +301,8 @@ int JsonEncodeDecode::decodeBullet(GameState *state, const Value &bullet)
 int JsonEncodeDecode::decodeBase(GameState *state, const Value &base)
 {
 	// Base vars
-	double x, y;
-	x = y = 0;
-	int health, maxHealth, width, id;
-	health = maxHealth = width = id = 0;
+	int x, y, health, maxHealth, width, id;
+	x = y = health = maxHealth = width = id = 0;
 
 	// Iterate through JSON bullet object
 	const char* check;
@@ -318,12 +312,12 @@ int JsonEncodeDecode::decodeBase(GameState *state, const Value &base)
 
 		if (strcmp(check, "X") == 0)
 		{
-			x = itr->value.GetDouble();
+			x = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Y") == 0)
 		{
-			y = itr->value.GetDouble();
+			y = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Width") == 0)
@@ -349,7 +343,7 @@ int JsonEncodeDecode::decodeBase(GameState *state, const Value &base)
 	}
 
 	// Create a new Bullet
-	Base* new_base = new Base((int) x, (int) y, health, maxHealth, id, width, width);
+	Base* new_base = new Base(x, y, health, maxHealth, id, width, width);
 
 	// Push it to the GameState
 	state->addBase(new_base);
@@ -360,10 +354,8 @@ int JsonEncodeDecode::decodeBase(GameState *state, const Value &base)
 int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 {
 	// Shield vars
-	double x, y;
-	x = y = 0;
-	int width, id;
-	width = id = 0;
+	int x, y, width, id;
+	x = y = width = id = 0;
 	bool isEnabled;
 	isEnabled = false;
 
@@ -375,12 +367,12 @@ int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 
 		if (strcmp(check, "X") == 0)
 		{
-			x = itr->value.GetDouble();
+			x = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Y") == 0)
 		{
-			y = itr->value.GetDouble();
+			y = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Width") == 0)
@@ -401,7 +393,7 @@ int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 	}
 
 	// Create a new Shield
-	Shield* new_shield = new Shield((int) x, (int) y, id, width, width, isEnabled);
+	Shield* new_shield = new Shield(x, y, id, width, width, isEnabled);
 
 	// Push it to the GameState
 	state->addShield(new_shield);
@@ -412,10 +404,8 @@ int JsonEncodeDecode::decodeShield(GameState *state, const Value &shield)
 int JsonEncodeDecode::decodeShieldGen(GameState *state, const Value &shield_gen)
 {
 	// Generator vars
-	double x, y;
-	x = y = 0;
-	int health, maxHealth, width, id;
-	health = maxHealth = width = id = 0;
+	int x, y, health, maxHealth, width, id;
+	x = y = health = maxHealth = width = id = 0;
 
 	// Iterate through JSON shield generator object
 	const char* check;
@@ -425,12 +415,12 @@ int JsonEncodeDecode::decodeShieldGen(GameState *state, const Value &shield_gen)
 
 		if (strcmp(check, "X") == 0)
 		{
-			x = itr->value.GetDouble();
+			x = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Y") == 0)
 		{
-			y = itr->value.GetDouble();
+			y = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Width") == 0)
@@ -456,7 +446,7 @@ int JsonEncodeDecode::decodeShieldGen(GameState *state, const Value &shield_gen)
 	}
 
 	// Create a new Generator
-	Generator* new_gen = new Generator((int) x, (int) y, health, maxHealth, id, width, width);
+	Generator* new_gen = new Generator(x, y, health, maxHealth, id, width, width);
 
 	// Push it to the GameState
 	state->addGenerator(new_gen);
@@ -467,10 +457,8 @@ int JsonEncodeDecode::decodeShieldGen(GameState *state, const Value &shield_gen)
 int JsonEncodeDecode::decodePowerup(GameState *state, const Value &powerup)
 {
 	// Powerup vars
-	double x, y;
-	x = y = 0;
-	int type, width, height;
-	type = width = height = 0;
+	int x, y, type, width, height;
+	x = y = type = width = height = 0;
 
 	// Iterate through JSON powerup object
 	const char* check;
@@ -480,12 +468,12 @@ int JsonEncodeDecode::decodePowerup(GameState *state, const Value &powerup)
 
 		if (strcmp(check, "X") == 0)
 		{
-			x = itr->value.GetDouble();
+			x = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Y") == 0)
 		{
-			y = itr->value.GetDouble();
+			y = itr->value.GetInt();
 			continue;
 		}
 		if (strcmp(check, "Type") == 0)
@@ -506,7 +494,7 @@ int JsonEncodeDecode::decodePowerup(GameState *state, const Value &powerup)
 	}
 
 	// Create a new Powerup
-	Powerup* new_powerup = new Powerup((int) x, (int) y, type, width, height);
+	Powerup* new_powerup = new Powerup(x, y, type, width, height);
 
 	// Push it to the GameState
 	state->addPowerup(new_powerup);
