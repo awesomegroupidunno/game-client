@@ -8,12 +8,18 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
-#include <GL/glut.h>
 //#include <GL/glew.h>
 #include <SDL_opengl.h>
 #include <SDL2/SDL.h>
 #include "SdlGameViewAdapter.h"
 #include "SdlInputAdapter.h"
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#define __gl_h_
+#else
+#include <GL/glut.h>
+#endif
 
 class SdlGameView{
 private:
