@@ -194,8 +194,8 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 {
 	// Vehicle vars
-	int x, y, angle, width, height, team, health, maxHealth;
-	x = y = angle = width = height = team = health = maxHealth = 0;
+	int x, y, angle, width, height, team, health, maxHealth, stored, active;
+	x = y = angle = width = height = team = health = maxHealth = stored = active = 0;
 	bool isMe = false;
 
 	// Iterate through JSON vehicle object
@@ -249,10 +249,18 @@ int JsonEncodeDecode::decodeVehicle(GameState* state, const Value& vehicle)
 			isMe = itr->value.GetBool();
 			continue;
 		}
+		if (strcmp(check, "StoredPowerup") == 0)
+		{
+			stored = itr->value.GetInt();
+		}
+		if (strcmp(check, "ActivePowerup") == 0)
+		{
+			active = itr->value.GetInt();
+		}
 	}
 
 	// Create a new Vehicle
-	Vehicle* new_vehicle = new Vehicle(x, y, health, maxHealth, angle, team, width, height, isMe);
+	Vehicle* new_vehicle = new Vehicle(x, y, health, maxHealth, angle, team, width, height, stored, active, isMe);
 
 	// Push it to the GameState
 	state->addPlayer(new_vehicle);

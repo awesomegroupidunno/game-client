@@ -9,10 +9,10 @@
 class Vehicle{
 public:
     // TODO: fields for storing a powerup a vehicle has collected
-    int x, y, curHealth, maxHealth, team, width, height, frontAngle;    //coordinates on game board, front facing angle, health
+    int x, y, curHealth, maxHealth, team, width, height, frontAngle, storedPower, activePowerup;
     bool isMe;
     Vehicle(int x, int y, int curHealth, int maxHealth, int frontAngle, int team, int width,
-			int height, bool isMe);
+			int height, int storedPowerup, int activePowerup, bool isMe);
 };
 
 
