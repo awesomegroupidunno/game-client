@@ -145,16 +145,20 @@ void SdlGameView::drawPowerup(Powerup *powerup)
 	glTranslatef(powerup->x, powerup->y, 0);
 	glScalef(powerup->width, powerup->height, 1.0f);
 	//change colors to differentiate types of powerups
-	if(powerup->type == 1)
-	{
-		glColor3f(0.0f, 1.0f, 0.0f);
-	}else if(powerup->type == 2)
-	{
-		glColor3f(1.0f, 1.0f, 0.0f);
-	}else if(powerup->type == 3)
-	{
-		glColor3f(0.0f, 1.0f, 1.0f);
-	}
+    switch (powerup->type)
+    {
+        case HEAL:
+            glColor3f(0.0f, 1.0f, 0.0f);
+            break;
+        case SPEEDUP:
+            glColor3f(1.0f, 1.0f, 0.0f);
+            break;
+        case ROCKET:
+            glColor3f(0.0f, 1.0f, 1.0f);
+            break;
+        default:
+            glColor3f(0.0f, 0.0f, 0.0f);
+    }
 	drawSquare();
 }
 

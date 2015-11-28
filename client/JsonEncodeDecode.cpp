@@ -476,7 +476,7 @@ int JsonEncodeDecode::decodePowerup(GameState *state, const Value &powerup)
 			y = itr->value.GetInt();
 			continue;
 		}
-		if (strcmp(check, "Type") == 0)
+		if (strcmp(check, "PowerupType") == 0)
 		{
 			type = itr->value.GetInt();
 			continue;
