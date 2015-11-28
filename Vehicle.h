@@ -5,6 +5,8 @@
 #ifndef GAME_CLIENT_VEHICLE_H
 #define GAME_CLIENT_VEHICLE_H
 
+#include "Powerup.h"
+
 
 class Vehicle{
 public:

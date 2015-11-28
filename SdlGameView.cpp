@@ -183,8 +183,29 @@ void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
 }
 
 void SdlGameView::drawHUD(Vehicle* client){
-	// draw client players health
 	glColor3f(0.0f,0.0f,0.0f);
+	switch (client->storedPower)
+	{
+		case NO_POWERUP:
+			sprintf(strPowerup, "Powerup: NONE");
+			break;
+		case HEAL:
+			sprintf(strPowerup, "Powerup: HEAL");
+			break;
+		case SPEEDUP:
+			sprintf(strPowerup, "Powerup: SPEED BOOST");
+			break;
+		case ROCKET:
+			sprintf(strPowerup, "Powerup: HOMING ROCKET");
+			break;
+		default:
+			sprintf(strPowerup, "Powerup: NONE");
+	}
+	glRasterPos2f(10.0f, 20.0f);
+	for (unsigned int i = 0; i<strlen(strPowerup); i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, strPowerup[i]);
+	}
 	glRasterPos2f(300.0f, 20.0f);
 	sprintf(strHealth, "Health: %i / %i", client->curHealth, client->maxHealth);
 	for (unsigned int i = 0; i<strlen(strHealth); i++)
