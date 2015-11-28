@@ -7,7 +7,9 @@
 
 #include <iostream>
 #include <vector>
-#include <GL/glew.h>
+#include <string.h>
+#include <GL/glut.h>
+//#include <GL/glew.h>
 #include <SDL_opengl.h>
 #include <SDL2/SDL.h>
 #include "SdlGameViewAdapter.h"
@@ -21,6 +23,8 @@ private:
     SdlGameViewAdapter* gameViewAdapter;
     GLfloat sqr[4][2] = { {0.5f, 0.5f }, { -0.5f, 0.5f }, { -0.5f, -0.5f }, { 0.5f, -0.5f } };
     GLfloat tri[3][2] = { {0.5f, -0.5f }, { -0.5f, -0.5f }, { 0.0f, 0.5f } };
+    char strPowerup[32];
+    char strHealth[32];
 public:
     SdlGameView(SdlGameViewAdapter* gva, SdlInputAdapter* ia);
     int init();
@@ -35,6 +39,7 @@ public:
     void drawBullet(Bullet* bullet);
     void drawPowerup(Powerup* powerup);
     void drawHealthBar(int curHealth, int maxHealth, float x, float y);
+    void drawHUD(Vehicle* client);
     int drawView();
 };
 

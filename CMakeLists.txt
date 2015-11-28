@@ -27,6 +27,11 @@ find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIR})
 target_link_libraries(game-client ${GLEW_LIBRARIES})
 
+# Link to GLUT
+find_package(GLUT REQUIRED)
+include_directories(${GLUT_INCLUDE_DIR})
+target_link_libraries(game-client ${GLUT_LIBRARY})
+
 # Link to RapidJSON
 find_package(RapidJSON)
 include_directories(${RapidJSON_INCLUDE_DIR})

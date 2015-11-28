@@ -8,8 +8,7 @@ Install RapidJSON
 
 * https://github.com/miloyip/rapidjson/
 
-FakeNetworkClient is merely to test updating GameState in GameController without
-having the actual NetworkClient running yet.  When our actual NetworkClient is
-finished, FakeNetworkClient should be deleted and any calls to FakeNetworkClient
-should be replaced with the real NetworkClient.  They should functionally work the
-same however from the perspective of GameController.
+Install the following in the terminal (Ubuntu / Linux):
+^^ this fixes an issue where some glut libraries can't be found by CMAKE
+
+* sudo apt-get install libxmu-dev libxi-dev

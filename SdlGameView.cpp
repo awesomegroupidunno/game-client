@@ -36,8 +36,9 @@ int SdlGameView::initGL(){
 	SDL_GL_SetSwapInterval(1);
 
 	// Initialize GLEW
-	glewExperimental = GL_TRUE;
-	glewInit();
+	// TODO: may not be needed, if so, remove glew calls
+	//glewExperimental = GL_TRUE;
+	//glewInit();
 
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
@@ -177,6 +178,17 @@ void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
 	glPopMatrix();
 }
 
+void SdlGameView::drawHUD(Vehicle* client){
+	// draw client players health
+	glColor3f(0.0f,0.0f,0.0f);
+	glRasterPos2f(300.0f, 1.0f);
+	sprintf(strHealth, "Health: %i / %i", client->curHealth, client->maxHealth);
+	for (unsigned int i = 0; i<strlen(strHealth); i++)
+	{
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, strHealth[i]);
+	}
+}
+
 /*
  * MAIN DRAWING LOOP
  */
@@ -232,6 +244,9 @@ int SdlGameView::drawView(){
 
 		//draw vehicles and their health bars
 		for (unsigned long j = 0; j < numVehicles; j++) {
+			if(vehicles->at(j)->isMe == true){
+				drawHUD(vehicles->at(j));
+			}
 			glPushMatrix();
 				drawVehicle(vehicles->at(j));
 			glPopMatrix();
