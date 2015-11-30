@@ -97,6 +97,18 @@ void SdlGameView::drawVehicle(Vehicle *vehicle){
 	drawSquare();
 }
 
+void SdlGameView::highlightVehicle(Vehicle *vehicle){
+	glTranslatef(vehicle->x, vehicle->y, 0);
+	glRotatef((GLfloat)vehicle->frontAngle, 0, 0, 1);
+	glScalef(vehicle->height*1.2, vehicle->width*1.2, 1);
+	if(vehicle->team == 0) {
+		glColor4f(1.0, 0.0, 0.0, highlight);
+	}else if(vehicle->team == 1){
+		glColor4f(0.0, 0.0, 1.0, highlight);
+	}
+	drawSquare();
+}
+
 void SdlGameView::drawBase(Base *base){
 	glTranslatef(base->x, base->y, 0);
 	glScalef(base->height, base->width, 1);
@@ -222,6 +234,7 @@ int SdlGameView::drawView(){
 		return 0;
 	}
 
+	highlight = 0.8;
 	// Rendering loop
 	bool gameRunning = true;
 	while (gameRunning) {
@@ -269,9 +282,12 @@ int SdlGameView::drawView(){
 
 		//draw vehicles and their health bars
 		for (unsigned long j = 0; j < numVehicles; j++) {
-			if(vehicles->at(j)->isMe == true){
+			if(vehicles->at(j)->isMe){
 				glPushMatrix();
 					drawHUD(vehicles->at(j));
+				glPopMatrix();
+				glPushMatrix();
+					highlightVehicle(vehicles->at(j));
 				glPopMatrix();
 			}
 			glPushMatrix();
