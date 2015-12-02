@@ -35,10 +35,6 @@ int SdlGameView::initGL(){
 	context = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(1);
 
-	// Initialize GLEW
-	// TODO: may not be needed, if so, remove glew calls
-	//glewExperimental = GL_TRUE;
-	//glewInit();
 	// Initialize GLUT -- use dummy values since args aren't needed
 	int argc = 1;
 	char *argv[1] = {(char*)"init"};
@@ -97,16 +93,16 @@ void SdlGameView::drawVehicle(Vehicle *vehicle){
 	drawSquare();
 }
 
-void SdlGameView::highlightVehicle(Vehicle *vehicle){
-	glTranslatef(vehicle->x, vehicle->y, 0);
-	glRotatef((GLfloat)vehicle->frontAngle, 0, 0, 1);
-	glScalef(vehicle->height*1.2, vehicle->width*1.2, 1);
-	if(vehicle->team == 0) {
-		glColor4f(1.0, 0.0, 0.0, highlight);
-	}else if(vehicle->team == 1){
-		glColor4f(0.0, 0.0, 1.0, highlight);
-	}
-	drawSquare();
+void SdlGameView::pointToVehicle(Vehicle *vehicle){
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// create an arrow that points to clients vehicle
+	glTranslatef(vehicle->x, (GLfloat)vehicle->y-(vehicle->height/1.1), -1);
+	glScalef(15, 15, 1);
+	glColor4f(0.0f, 0.0f, 0.0f, highlight);
+	drawTriangle();
+
+	glDisable(GL_BLEND);
 }
 
 void SdlGameView::drawBase(Base *base){
@@ -140,9 +136,9 @@ void SdlGameView::drawShield(Shield *shield)
 	glTranslatef(shield->x, shield->y, 0);
 	glScalef(shield->height, shield->width, 1);
 	if(shield->team == 0) {
-		glColor4f(0.5, 0.0, 0.0, 0.5);
+		glColor4f(0.5, 0.0, 0.0, highlight);
 	}else if(shield->team == 1){
-		glColor4f(0.0, 0.0, 0.5, 0.5);
+		glColor4f(0.0, 0.0, 0.5, highlight);
 	}
 	drawSquare();
 
@@ -233,8 +229,9 @@ int SdlGameView::drawView(){
 	if(!init()){
 		return 0;
 	}
-
-	highlight = 0.8;
+	// initialize variables used for pulsating effect
+	highlight = 0.5;
+	delta = -0.01;
 	// Rendering loop
 	bool gameRunning = true;
 	while (gameRunning) {
@@ -287,14 +284,14 @@ int SdlGameView::drawView(){
 					drawHUD(vehicles->at(j));
 				glPopMatrix();
 				glPushMatrix();
-					highlightVehicle(vehicles->at(j));
+				pointToVehicle(vehicles->at(j));
 				glPopMatrix();
 			}
 			glPushMatrix();
 				drawVehicle(vehicles->at(j));
 			glPopMatrix();
 			glPushMatrix();
-				drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height);
+				drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height/1.3);
 			glPopMatrix();
 		}
 
@@ -304,7 +301,7 @@ int SdlGameView::drawView(){
 				drawBase(bases->at(j));
 			glPopMatrix();
 			glPushMatrix();
-				drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, bases->at(j)->y + bases->at(j)->height);
+				drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, bases->at(j)->y + bases->at(j)->height/1.1);
 			glPopMatrix();
 		}
 
@@ -317,13 +314,21 @@ int SdlGameView::drawView(){
 			}
 		}
 
+		// pulsating effect for shields / vehicle arrow
+		highlight += delta;
+		if(highlight >= 0.5){
+			delta = -0.01f;
+		}else if(highlight <=0.2){
+			delta = 0.01f;
+		}
+
 		//draw generators
 		for (unsigned long j = 0; j < numGenerators; j++){
 			glPushMatrix();
 				drawGenerator(generators->at(j));
 			glPopMatrix();
 			glPushMatrix();
-				drawHealthBar(generators->at(j)->curHealth, generators->at(j)->maxHealth, generators->at(j)->x, generators->at(j)->y + generators->at(j)->height);
+				drawHealthBar(generators->at(j)->curHealth, generators->at(j)->maxHealth, generators->at(j)->x, generators->at(j)->y + generators->at(j)->height/1.1);
 			glPopMatrix();
 		}
 

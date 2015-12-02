@@ -32,6 +32,7 @@ private:
     char strPowerup[32];
     char strHealth[32];
     GLfloat highlight;
+    GLfloat delta;  // used with highlight to create a "pulsate" effect with highlighting
 public:
     SdlGameView(SdlGameViewAdapter* gva, SdlInputAdapter* ia);
     int init();
@@ -40,7 +41,7 @@ public:
     void drawSquare();
     void drawTriangle();
     void drawVehicle(Vehicle* vehicle);
-    void highlightVehicle(Vehicle* vehicle);
+    void pointToVehicle(Vehicle *vehicle);
     void drawBase(Base* base);
     void drawShield(Shield* shield);
     void drawGenerator(Generator* generator);
