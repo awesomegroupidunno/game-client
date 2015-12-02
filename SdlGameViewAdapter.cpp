@@ -34,3 +34,8 @@ std::vector<Generator*>* SdlGameViewAdapter::getGenerators(){
 std::vector<Powerup*>* SdlGameViewAdapter::getPowerups(){
     return gameController->getPowerups();
 }
+
+int SdlGameViewAdapter::getGameOver()
+{
+	return gameController->getGameOver();
+}

@@ -21,6 +21,7 @@ public:
     std::vector<Shield*>* getShields();
     std::vector<Generator*>* getGenerators();
     std::vector<Powerup*>* getPowerups();
+	int getGameOver();
 };
 
 #endif //GAME_CLIENT_SDLGAMEVIEWADAPTER_H

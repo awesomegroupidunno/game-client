@@ -29,6 +29,7 @@ public:
     std::vector<Shield*>* getShields();
     std::vector<Generator*>* getGenerators();
     std::vector<Powerup*>* getPowerups();
+	int getGameOver();
 
     // Respond to input
     void moveVehicle(double direction);

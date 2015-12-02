@@ -85,9 +85,9 @@ void SdlGameView::drawVehicle(Vehicle *vehicle){
 	glTranslatef(vehicle->x, vehicle->y, 0);
 	glRotatef((GLfloat)vehicle->frontAngle, 0, 0, 1);
 	glScalef(vehicle->height, vehicle->width, 1);
-	if(vehicle->team == 0) {
+	if(vehicle->team == RED_TEAM) {
 		glColor3f(1.0, 0.0, 0.0);
-	}else if(vehicle->team == 1){
+	}else if(vehicle->team == BLUE_TEAM){
 		glColor3f(0.0, 0.0, 1.0);
 	}
 	drawSquare();
@@ -100,9 +100,9 @@ void SdlGameView::drawVehicle(Vehicle *vehicle){
 void SdlGameView::drawBase(Base *base){
 	glTranslatef(base->x, base->y, 0);
 	glScalef(base->height, base->width, 1);
-	if(base->team == 0) {
+	if(base->team == RED_TEAM) {
 		glColor3f(1.0, 0.0, 0.0);
-	}else if(base->team == 1){
+	}else if(base->team == BLUE_TEAM){
 		glColor3f(0.0, 0.0, 1.0);
 	}
 	drawSquare();
@@ -112,9 +112,9 @@ void SdlGameView::drawGenerator(Generator *generator)
 {
 	glTranslatef(generator->x, generator->y, 0.0);
 	glScalef(generator->height, generator->width, 1);
-	if(generator->team == 0) {
+	if(generator->team == RED_TEAM) {
 		glColor3f(1.0, 0.0, 0.0);
-	}else if(generator->team == 1) {
+	}else if(generator->team == BLUE_TEAM) {
 		glColor3f(0.0, 0.0, 1.0);
 	}
 	drawTriangle();
@@ -127,9 +127,9 @@ void SdlGameView::drawShield(Shield *shield)
 
 	glTranslatef(shield->x, shield->y, 0);
 	glScalef(shield->height, shield->width, 1);
-	if(shield->team == 0) {
+	if(shield->team == RED_TEAM) {
 		glColor4f(0.5, 0.0, 0.0, 0.5);
-	}else if(shield->team == 1){
+	}else if(shield->team == BLUE_TEAM){
 		glColor4f(0.0, 0.0, 0.5, 0.5);
 	}
 	drawSquare();
@@ -184,6 +184,8 @@ void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
 
 void SdlGameView::drawHUD(Vehicle* client){
 	glColor3f(0.0f,0.0f,0.0f);
+
+	// Power up
 	switch (client->storedPower)
 	{
 		case NO_POWERUP:
@@ -201,16 +203,19 @@ void SdlGameView::drawHUD(Vehicle* client){
 		default:
 			sprintf(strPowerup, "Powerup: NONE");
 	}
-	glRasterPos2f(10.0f, 20.0f);
-	for (unsigned int i = 0; i<strlen(strPowerup); i++)
-	{
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, strPowerup[i]);
-	}
-	glRasterPos2f(300.0f, 20.0f);
+	drawText(10.0f, 20.0f, strPowerup, GLUT_BITMAP_HELVETICA_18);
+
+	// Health
 	sprintf(strHealth, "Health: %i / %i", client->curHealth, client->maxHealth);
-	for (unsigned int i = 0; i<strlen(strHealth); i++)
+	drawText(300.0f, 20.0f, strHealth, GLUT_BITMAP_HELVETICA_18);
+}
+
+void SdlGameView::drawText(float x, float y, char *text, void *font)
+{
+	glRasterPos2f(x, y);
+	for (unsigned int i = 0; i < strlen(text); i++)
 	{
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, strHealth[i]);
+		glutBitmapCharacter(font, text[i]);
 	}
 }
 
@@ -224,6 +229,7 @@ int SdlGameView::drawView(){
 
 	// Rendering loop
 	bool gameRunning = true;
+	int gameOver = -1;
 	while (gameRunning) {
 
 		// Listen for user input
@@ -333,6 +339,55 @@ int SdlGameView::drawView(){
 
 		// Add a 20 ms delay to reduce render load
 		SDL_Delay(20);
+
+		// Detect game over state
+		gameOver =  gameViewAdapter->getGameOver();
+		if (gameOver != -1)
+		{
+			gameRunning = false;
+		}
+	}
+
+	// Game over render loop
+	char gameOverText[30];
+	while (gameOver != -1)
+	{
+		// Listen for user input
+		SDL_Event event;
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_KEYDOWN)
+			{
+				// The user pressed a key
+				gameOver = -1;
+			}
+			if (event.type == SDL_QUIT)
+			{
+				// The application was quit (clicked X or pressed alt+f4)
+				gameOver = -1;
+			}
+		}
+
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Set color and text based on winning team
+		if (gameOver == RED_TEAM)
+		{
+			glColor3f(0.0f, 0.0f, 1.0f);
+			sprintf(gameOverText, "BLUE TEAM WON! Press any key to quit");
+		}
+		if (gameOver == BLUE_TEAM)
+		{
+			glColor3f(1.0f, 0.0f, 0.0f);
+			sprintf(gameOverText, "RED TEAM WON! Press any key to quit");
+		}
+
+		// Draw text
+		drawText(200.0f, 200.0f, gameOverText, GLUT_BITMAP_HELVETICA_18);
+
+		// Update the screen
+		glFlush();
+		SDL_GL_SwapWindow(window);
 	}
 
 	// Clean up
