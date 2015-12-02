@@ -42,6 +42,11 @@ void GameState::addPowerup(Powerup *add)
 	powerups->push_back(add);
 }
 
+void GameState::setGameOver(int gameOver)
+{
+	this->gameOver = gameOver;
+}
+
 /*
  * pass objects from the GameState
  */
@@ -73,4 +78,9 @@ std::vector<Generator*>* GameState::getGenerators()
 std::vector<Powerup*>* GameState::getPowerups()
 {
 	return powerups;
+}
+
+int GameState::getGameOver()
+{
+	return gameOver;
 }

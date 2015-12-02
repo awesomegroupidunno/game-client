@@ -86,6 +86,17 @@ std::vector<Powerup*> *GameController::getPowerups() {
 	return powerups;
 }
 
+int GameController::getGameOver()
+{
+	int gameOver;
+
+	pthread_mutex_lock(game_state_mutex);
+	gameOver = state->getGameOver();
+	pthread_mutex_unlock(game_state_mutex);
+
+	return gameOver;
+}
+
 // passes call to move vehicle to network client
 void GameController::moveVehicle(double direction)
 {

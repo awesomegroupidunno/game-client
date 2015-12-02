@@ -50,6 +50,15 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 	for (Value::ConstMemberIterator itr = doc.MemberBegin(); itr != doc.MemberEnd(); ++itr)
 	{
 		/*
+		 * GAME OVER STATE
+		 */
+		if (strcmp(itr->name.GetString(), "GameOver") == 0)
+		{
+			int gameOver = itr->value.GetInt();
+			state->setGameOver(gameOver);
+		}
+
+		/*
 		 * VEHICLES
 		 */
 		if (strcmp(itr->name.GetString(), "Vehicles") == 0)

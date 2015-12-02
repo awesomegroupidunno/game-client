@@ -49,6 +49,7 @@ public:
     void drawPowerup(Powerup* powerup);
     void drawHealthBar(int curHealth, int maxHealth, float x, float y);
     void drawHUD(Vehicle* client);
+	void drawText(float x, float y, char *text, void *font);
     int drawView();
 };
 
