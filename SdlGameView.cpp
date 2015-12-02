@@ -250,6 +250,10 @@ int SdlGameView::drawView(){
 			{
 				// The user pressed a key
 				inputAdapter->key_down(event);
+				if (event.key.keysym.sym == SDLK_ESCAPE)
+				{
+					gameRunning = false;
+				}
 			}
 			if (event.type == SDL_KEYUP)
 			{
@@ -380,7 +384,10 @@ int SdlGameView::drawView(){
 			if (event.type == SDL_KEYDOWN)
 			{
 				// The user pressed a key
-				gameOver = -1;
+				if (event.key.keysym.sym == SDLK_ESCAPE)
+				{
+					gameOver = -1;
+				}
 			}
 			if (event.type == SDL_QUIT)
 			{
@@ -395,12 +402,12 @@ int SdlGameView::drawView(){
 		if (gameOver == RED_TEAM)
 		{
 			glColor3f(0.0f, 0.0f, 1.0f);
-			sprintf(gameOverText, "BLUE TEAM WON! Press any key to quit");
+			sprintf(gameOverText, "BLUE TEAM WON! Press ESC to quit");
 		}
 		if (gameOver == BLUE_TEAM)
 		{
 			glColor3f(1.0f, 0.0f, 0.0f);
-			sprintf(gameOverText, "RED TEAM WON! Press any key to quit");
+			sprintf(gameOverText, "RED TEAM WON! Press ESC to quit");
 		}
 
 		// Draw text
