@@ -234,128 +234,26 @@ int SdlGameView::drawView(){
 	if(!init()){
 		return 0;
 	}
+
 	// initialize variables used for pulsating effect
 	highlight = 0.5;
 	delta = -0.01;
+
 	// Rendering loop
 	bool gameRunning = true;
-	int gameOver = -1;
+	int gameOver;
 	while (gameRunning) {
 
-		// Listen for user input
-		SDL_Event event;
-		while (SDL_PollEvent(&event))
+		// Detect game over state
+		gameOver =  gameViewAdapter->getGameOver();
+
+		if (gameOver == -1)
 		{
-			if (event.type == SDL_KEYDOWN)
-			{
-				// The user pressed a key
-				inputAdapter->key_down(event);
-				if (event.key.keysym.sym == SDLK_ESCAPE)
-				{
-					gameRunning = false;
-				}
-			}
-			if (event.type == SDL_KEYUP)
-			{
-				// The user released a key
-				inputAdapter->key_up(event);
-			}
-			if (event.type == SDL_QUIT)
-			{
-				// The application was quit (clicked X or pressed alt+f4)
-				gameRunning = false;
-			}
+			gameRunning = drawPlayScreen();
 		}
-
-		// React to any keys that are currently being held down
-		inputAdapter->check_keys();
-
-		//initialize vector lists (queue) of objects to be drawn, and get their sizes
-		std::vector<Vehicle*>* vehicles = gameViewAdapter->getVehicles();
-		int numVehicles = (int) vehicles->size();
-		std::vector<Base*>* bases = gameViewAdapter->getBases();
-		int numBases = (int) bases->size();
-		std::vector<Shield*>* shields = gameViewAdapter->getShields();
-		int numShields = (int) shields->size();
-		std::vector<Generator*>* generators = gameViewAdapter->getGenerators();
-		int numGenerators = (int) generators->size();
-		std::vector<Bullet*>* bullets = gameViewAdapter->getBullets();
-		int numBullets = (int) bullets->size();
-		std::vector<Powerup*>* powerups = gameViewAdapter->getPowerups();
-		int numPowerups = (int) powerups->size();
-
-		// Make background white and clear renderer
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		//draw vehicles and their health bars
-		for (unsigned long j = 0; j < numVehicles; j++) {
-			if(vehicles->at(j)->isMe){
-				glPushMatrix();
-					drawHUD(vehicles->at(j));
-				glPopMatrix();
-				glPushMatrix();
-				pointToVehicle(vehicles->at(j));
-				glPopMatrix();
-			}
-			glPushMatrix();
-				drawVehicle(vehicles->at(j));
-			glPopMatrix();
-			glPushMatrix();
-				drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height/1.3);
-			glPopMatrix();
-		}
-
-		//draw bases and their health bars
-		for (unsigned long j = 0; j < numBases; j++) {
-			glPushMatrix();
-				drawBase(bases->at(j));
-			glPopMatrix();
-			glPushMatrix();
-				drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, bases->at(j)->y + bases->at(j)->height/1.1);
-			glPopMatrix();
-		}
-
-		//draw shields
-		for (unsigned long j = 0; j < numShields; j++){
-			if (shields->at(j)->isEnabled) {
-				glPushMatrix();
-					drawShield(shields->at(j));
-				glPopMatrix();
-			}
-		}
-
-		// pulsating effect for shields / vehicle arrow
-		highlight += delta;
-		if(highlight >= 0.5){
-			delta = -0.01f;
-		}else if(highlight <=0.2){
-			delta = 0.01f;
-		}
-
-		//draw generators
-		for (unsigned long j = 0; j < numGenerators; j++){
-			glPushMatrix();
-				drawGenerator(generators->at(j));
-			glPopMatrix();
-			glPushMatrix();
-				drawHealthBar(generators->at(j)->curHealth, generators->at(j)->maxHealth, generators->at(j)->x, generators->at(j)->y + generators->at(j)->height/1.1);
-			glPopMatrix();
-		}
-
-		// Draw bullets
-		for (unsigned long j = 0; j < numBullets; j++)
+		else
 		{
-			glPushMatrix();
-				drawBullet(bullets->at(j));
-			glPopMatrix();
-		}
-
-		// Draw powerups
-		for (unsigned long j = 0; j < numPowerups; j++)
-		{
-			glPushMatrix();
-				drawPowerup(powerups->at(j));
-			glPopMatrix();
+			gameRunning = drawEndScreen(gameOver);
 		}
 
 		// Update the screen
@@ -364,64 +262,177 @@ int SdlGameView::drawView(){
 
 		// Add a 20 ms delay to reduce render load
 		SDL_Delay(20);
-
-		// Detect game over state
-		gameOver =  gameViewAdapter->getGameOver();
-		if (gameOver != -1)
-		{
-			gameRunning = false;
-		}
-	}
-
-	// Game over render loop
-	char gameOverText[30];
-	while (gameOver != -1)
-	{
-		// Listen for user input
-		SDL_Event event;
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_KEYDOWN)
-			{
-				// The user pressed a key
-				if (event.key.keysym.sym == SDLK_ESCAPE)
-				{
-					gameOver = -1;
-				}
-			}
-			if (event.type == SDL_QUIT)
-			{
-				// The application was quit (clicked X or pressed alt+f4)
-				gameOver = -1;
-			}
-		}
-
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		// Set color and text based on winning team
-		if (gameOver == RED_TEAM)
-		{
-			glColor3f(0.0f, 0.0f, 1.0f);
-			sprintf(gameOverText, "BLUE TEAM WON! Press ESC to quit");
-		}
-		if (gameOver == BLUE_TEAM)
-		{
-			glColor3f(1.0f, 0.0f, 0.0f);
-			sprintf(gameOverText, "RED TEAM WON! Press ESC to quit");
-		}
-
-		// Draw text
-		drawText(200.0f, 200.0f, gameOverText, GLUT_BITMAP_HELVETICA_18);
-
-		// Update the screen
-		glFlush();
-		SDL_GL_SwapWindow(window);
 	}
 
 	// Clean up
 	exit();
 
 	return 0;
+}
+
+bool SdlGameView::drawPlayScreen()
+{
+	// Listen for user input
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_KEYDOWN)
+		{
+			// The user pressed a key
+			inputAdapter->key_down(event);
+
+			// The user pressed escape
+			if (event.key.keysym.sym == SDLK_ESCAPE)
+			{
+				return false;
+			}
+		}
+		if (event.type == SDL_KEYUP)
+		{
+			// The user released a key
+			inputAdapter->key_up(event);
+		}
+		if (event.type == SDL_QUIT)
+		{
+			// The application was quit (clicked X or pressed alt+f4)
+			return false;;
+		}
+	}
+
+	// React to any keys that are currently being held down
+	inputAdapter->check_keys();
+
+	//initialize vector lists (queue) of objects to be drawn, and get their sizes
+	std::vector<Vehicle*>* vehicles = gameViewAdapter->getVehicles();
+	int numVehicles = (int) vehicles->size();
+	std::vector<Base*>* bases = gameViewAdapter->getBases();
+	int numBases = (int) bases->size();
+	std::vector<Shield*>* shields = gameViewAdapter->getShields();
+	int numShields = (int) shields->size();
+	std::vector<Generator*>* generators = gameViewAdapter->getGenerators();
+	int numGenerators = (int) generators->size();
+	std::vector<Bullet*>* bullets = gameViewAdapter->getBullets();
+	int numBullets = (int) bullets->size();
+	std::vector<Powerup*>* powerups = gameViewAdapter->getPowerups();
+	int numPowerups = (int) powerups->size();
+
+	// Make background white and clear renderer
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	//draw vehicles and their health bars
+	for (unsigned long j = 0; j < numVehicles; j++) {
+		if(vehicles->at(j)->isMe){
+			glPushMatrix();
+			drawHUD(vehicles->at(j));
+			glPopMatrix();
+			glPushMatrix();
+			pointToVehicle(vehicles->at(j));
+			glPopMatrix();
+		}
+		glPushMatrix();
+		drawVehicle(vehicles->at(j));
+		glPopMatrix();
+		glPushMatrix();
+		drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height/1.3);
+		glPopMatrix();
+	}
+
+	//draw bases and their health bars
+	for (unsigned long j = 0; j < numBases; j++) {
+		glPushMatrix();
+		drawBase(bases->at(j));
+		glPopMatrix();
+		glPushMatrix();
+		drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, bases->at(j)->y + bases->at(j)->height/1.1);
+		glPopMatrix();
+	}
+
+	//draw shields
+	for (unsigned long j = 0; j < numShields; j++){
+		if (shields->at(j)->isEnabled) {
+			glPushMatrix();
+			drawShield(shields->at(j));
+			glPopMatrix();
+		}
+	}
+
+	// pulsating effect for shields / vehicle arrow
+	highlight += delta;
+	if(highlight >= 0.5){
+		delta = -0.01f;
+	}else if(highlight <=0.2){
+		delta = 0.01f;
+	}
+
+	//draw generators
+	for (unsigned long j = 0; j < numGenerators; j++){
+		glPushMatrix();
+		drawGenerator(generators->at(j));
+		glPopMatrix();
+		glPushMatrix();
+		drawHealthBar(generators->at(j)->curHealth, generators->at(j)->maxHealth, generators->at(j)->x, generators->at(j)->y + generators->at(j)->height/1.1);
+		glPopMatrix();
+	}
+
+	// Draw bullets
+	for (unsigned long j = 0; j < numBullets; j++)
+	{
+		glPushMatrix();
+		drawBullet(bullets->at(j));
+		glPopMatrix();
+	}
+
+	// Draw powerups
+	for (unsigned long j = 0; j < numPowerups; j++)
+	{
+		glPushMatrix();
+		drawPowerup(powerups->at(j));
+		glPopMatrix();
+	}
+
+	return true;
+}
+
+bool SdlGameView::drawEndScreen(int losingTeam)
+{
+	// Listen for user input
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_KEYDOWN)
+		{
+			// The user pressed escape
+			if (event.key.keysym.sym == SDLK_ESCAPE)
+			{
+				return false;
+			}
+		}
+		if (event.type == SDL_QUIT)
+		{
+			// The application was quit (clicked X or pressed alt+f4)
+			return false;
+		}
+	}
+
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	// Set color and text based on winning team
+	char gameOverText[30];
+	if (losingTeam == RED_TEAM)
+	{
+		glColor3f(0.0f, 0.0f, 1.0f);
+		sprintf(gameOverText, "BLUE TEAM WON! Press ESC to quit");
+	}
+	if (losingTeam == BLUE_TEAM)
+	{
+		glColor3f(1.0f, 0.0f, 0.0f);
+		sprintf(gameOverText, "RED TEAM WON! Press ESC to quit");
+	}
+
+	// Draw text
+	drawText(200.0f, 200.0f, gameOverText, GLUT_BITMAP_HELVETICA_18);
+
+	return true;
 }
 
 void SdlGameView::exit(){

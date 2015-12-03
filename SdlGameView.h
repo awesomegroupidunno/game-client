@@ -50,7 +50,10 @@ public:
     void drawHealthBar(int curHealth, int maxHealth, float x, float y);
     void drawHUD(Vehicle* client);
 	void drawText(float x, float y, char *text, void *font);
+
     int drawView();
+	bool drawPlayScreen();
+	bool drawEndScreen(int losingTeam);
 };
 
 #endif //GAME_CLIENT_SDLGAMEVIEW_H
