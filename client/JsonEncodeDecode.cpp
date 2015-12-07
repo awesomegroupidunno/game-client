@@ -642,7 +642,7 @@ int JsonEncodeDecode::decodeGravWell(GameState *state, const Value &gravWell){
 	}
 
 	// Create a new GravityWell
-	GravityWell* new_gravitywell = new GravityWell(x, y, 500);
+	GravityWell* new_gravitywell = new GravityWell(x, y, 100);
 
 	// Push it to the GameState
 	state->addGravityWell(new_gravitywell);

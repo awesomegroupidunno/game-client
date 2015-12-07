@@ -187,19 +187,24 @@ void SdlGameView::drawRocket(Rocket *rocket){
 }
 
 void SdlGameView::drawGravityWell(GravityWell *gravityWell){
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	for (int i = 0; i < 360; i++) {
 		glLoadIdentity();
 		glTranslatef(gravityWell->x, gravityWell->y, 0);
 		glRotatef(i, 0.0, 0.0, 1.0);
-		glScalef(gravityWell->radius, 0.1, 1.0);
+		glScalef(gravityWell->radius, 50.0, 1.0);
 		glBegin(GL_POLYGON);
-			glColor4f(0.0, 0.0, 0.0, 1.0);
+			glColor4f(0.0, 0.0, 0.0, 0.8);
 			glVertex2f(triFan[0][0], triFan[0][1]);
 			glColor4f(0.0, 0.0, 0.0, 0.0);
 			glVertex2f(triFan[1][0], triFan[1][1]);
 			glVertex2f(triFan[2][0], triFan[2][1]);
 		glEnd();
 	}
+
+	glDisable(GL_BLEND);
 }
 
 void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
