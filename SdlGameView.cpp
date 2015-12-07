@@ -169,14 +169,18 @@ void SdlGameView::drawPowerup(Powerup *powerup)
         case ROCKET:
             glColor3f(0.0f, 1.0f, 1.0f);
             break;
+		case GRAVWELL:
+			glColor3f(0.0f, 0.0f, 0.0f);
+			break;
         default:
-            glColor3f(0.0f, 0.0f, 0.0f);
+            glColor3f(0.5f, 0.5f, 0.5f);
     }
 	drawSquare();
 }
 
 void SdlGameView::drawRocket(Rocket *rocket){
 	glTranslatef(rocket->x, rocket->y, 0);
+	glRotatef((GLfloat)rocket->angle, 0, 0, 1);
 	glScalef(rocket->width, rocket->height, 1.0f);
 	glColor3f(0.8f, 0.6f, 0.6f);
 	drawSquare();
