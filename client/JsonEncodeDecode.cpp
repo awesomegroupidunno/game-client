@@ -568,10 +568,8 @@ int JsonEncodeDecode::decodePowerup(GameState *state, const Value &powerup)
 int JsonEncodeDecode::decodeRocket(GameState *state, const Value &rocket)
 {
 	// Rocket vars
-	int x, y, width, height;
-	x = y = width = height = 0;
-	double angle;
-	angle = 0;
+	int x, y, width, height, angle;
+	x = y = width = height = angle = 0;
 
 	// Iterate through JSON rocket object
 	const char *check;
@@ -581,33 +579,33 @@ int JsonEncodeDecode::decodeRocket(GameState *state, const Value &rocket)
 
 		if (strcmp(check, "X") == 0)
 		{
-			x = itr->value.GetInt();
+			x = (int)itr->value.GetDouble();
 			continue;
 		}
 		if (strcmp(check, "Y") == 0)
 		{
-			y = itr->value.GetInt();
+			y = (int)itr->value.GetDouble();
 			continue;
 		}
 		if (strcmp(check, "Width") == 0)
 		{
-			width = itr->value.GetInt();
+			width = (int)itr->value.GetDouble();
 			continue;
 		}
 		if (strcmp(check, "Height") == 0)
 		{
-			height = itr->value.GetInt();
+			height = (int)itr->value.GetDouble();
 			continue;
 		}
 		if (strcmp(check, "Angle") == 0)
 		{
-			angle = itr->value.GetDouble();
+			angle = (int)itr->value.GetDouble();
 			continue;
 		}
 	}
 
 	// Create a new Rocket
-	Rocket* new_rocket = new Rocket(x, y, width, height);
+	Rocket* new_rocket = new Rocket(x, y, width, height, angle);
 
 	// Push it to the GameState
 	state->addRocket(new_rocket);
