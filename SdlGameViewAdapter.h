@@ -21,6 +21,8 @@ public:
     std::vector<Shield*>* getShields();
     std::vector<Generator*>* getGenerators();
     std::vector<Powerup*>* getPowerups();
+    std::vector<Rocket*>* getRockets();
+    std::vector<GravityWell*>* getGravityWells();
 	int getGameOver();
 };
 

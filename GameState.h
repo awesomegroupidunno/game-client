@@ -7,6 +7,8 @@
 #include "Shield.h"
 #include "Generator.h"
 #include "Powerup.h"
+#include "Rocket.h"
+#include "GravityWell.h"
 #include <iostream>
 #include <vector>
 
@@ -22,6 +24,9 @@ private:
 	std::vector<Shield*>* shields;
 	std::vector<Generator*>* generators;
 	std::vector<Powerup*>* powerups;
+	std::vector<Rocket*>* rockets;
+	std::vector<GravityWell*>* gravityWells;
+
 	int gameOver;
 public:
 	GameState();
@@ -31,6 +36,8 @@ public:
 	void addShield(Shield* add);
 	void addGenerator(Generator* add);
 	void addPowerup(Powerup* add);
+	void addRocket(Rocket* add);
+	void addGravityWell(GravityWell* add);
 	void setGameOver(int gameOver);
 	std::vector<Vehicle*>* getPlayers();
 	std::vector<Base*>* getBases();
@@ -38,6 +45,8 @@ public:
 	std::vector<Shield*>* getShields();
 	std::vector<Generator*>* getGenerators();
 	std::vector<Powerup*>* getPowerups();
+	std::vector<Rocket*>* getRockets();
+	std::vector<GravityWell*>* getGravityWells();
 	int getGameOver();
 };
 

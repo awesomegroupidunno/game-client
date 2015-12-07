@@ -35,6 +35,14 @@ std::vector<Powerup*>* SdlGameViewAdapter::getPowerups(){
     return gameController->getPowerups();
 }
 
+std::vector<Rocket*>* SdlGameViewAdapter::getRockets(){
+    return gameController->getRockets();
+}
+
+std::vector<GravityWell*>* SdlGameViewAdapter::getGravityWells(){
+    return gameController->getGravityWells();
+}
+
 int SdlGameViewAdapter::getGameOver()
 {
 	return gameController->getGameOver();

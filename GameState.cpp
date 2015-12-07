@@ -42,6 +42,16 @@ void GameState::addPowerup(Powerup *add)
 	powerups->push_back(add);
 }
 
+void GameState::addRocket(Rocket *add)
+{
+	rockets->push_back(add);
+}
+
+void GameState::addGravityWell(GravityWell *add)
+{
+	gravityWells->push_back(add);
+}
+
 void GameState::setGameOver(int gameOver)
 {
 	this->gameOver = gameOver;
@@ -78,6 +88,16 @@ std::vector<Generator*>* GameState::getGenerators()
 std::vector<Powerup*>* GameState::getPowerups()
 {
 	return powerups;
+}
+
+std::vector<Rocket*>* GameState::getRockets()
+{
+	return rockets;
+}
+
+std::vector<GravityWell*>* GameState::getGravityWells()
+{
+	return gravityWells;
 }
 
 int GameState::getGameOver()
