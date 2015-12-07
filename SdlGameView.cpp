@@ -319,24 +319,6 @@ bool SdlGameView::drawPlayScreen()
 	// Make background white and clear renderer
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	//draw vehicles and their health bars
-	for (unsigned long j = 0; j < numVehicles; j++) {
-		if(vehicles->at(j)->isMe){
-			glPushMatrix();
-			drawHUD(vehicles->at(j));
-			glPopMatrix();
-			glPushMatrix();
-			pointToVehicle(vehicles->at(j));
-			glPopMatrix();
-		}
-		glPushMatrix();
-		drawVehicle(vehicles->at(j));
-		glPopMatrix();
-		glPushMatrix();
-		drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height/1.3);
-		glPopMatrix();
-	}
-
 	//draw bases and their health bars
 	for (unsigned long j = 0; j < numBases; j++) {
 		glPushMatrix();
@@ -388,6 +370,24 @@ bool SdlGameView::drawPlayScreen()
 		glPushMatrix();
 		drawPowerup(powerups->at(j));
 		glPopMatrix();
+	}
+
+	//draw vehicles and their health bars
+	for (unsigned long j = 0; j < numVehicles; j++) {
+		glPushMatrix();
+		drawVehicle(vehicles->at(j));
+		glPopMatrix();
+		glPushMatrix();
+		drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height/1.3);
+		glPopMatrix();
+		if(vehicles->at(j)->isMe){
+			glPushMatrix();
+			pointToVehicle(vehicles->at(j));
+			glPopMatrix();
+			glPushMatrix();
+			drawHUD(vehicles->at(j));
+			glPopMatrix();
+		}
 	}
 
 	return true;
