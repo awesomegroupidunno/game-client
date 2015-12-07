@@ -8,6 +8,8 @@ GameState::GameState()
 	this->shields = new std::vector<Shield*>();
 	this->generators = new std::vector<Generator*>();
 	this->powerups = new std::vector<Powerup*>();
+	this->rockets = new std::vector<Rocket*>();
+	this->gravityWells = new std::vector<GravityWell*>();
 }
 /*
  * add objects to the GameState

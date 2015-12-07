@@ -607,8 +607,10 @@ int JsonEncodeDecode::decodeRocket(GameState *state, const Value &rocket)
 	}
 
 	// Create a new Rocket
+	Rocket* new_rocket = new Rocket(x, y, width, height);
 
 	// Push it to the GameState
+	state->addRocket(new_rocket);
 
 	return 1;
 }
@@ -642,8 +644,10 @@ int JsonEncodeDecode::decodeGravWell(GameState *state, const Value &gravWell){
 	}
 
 	// Create a new GravityWell
+	GravityWell* new_gravitywell = new GravityWell(x, y, 500);
 
 	// Push it to the GameState
+	state->addGravityWell(new_gravitywell);
 
 	return 1;
 }

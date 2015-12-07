@@ -10,6 +10,7 @@
 #define HEAL 1
 #define SPEEDUP 2
 #define ROCKET 3
+#define GRAVWELL 4
 
 class Powerup {
 public:

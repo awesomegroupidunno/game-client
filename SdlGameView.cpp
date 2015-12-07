@@ -231,6 +231,9 @@ void SdlGameView::drawHUD(Vehicle* client){
 		case ROCKET:
 			sprintf(strPowerup, "Powerup: HOMING ROCKET");
 			break;
+		case GRAVWELL:
+			sprintf(strPowerup, "Powerup: GRAVITY WELL");
+			break;
 		default:
 			sprintf(strPowerup, "Powerup: NONE");
 	}
