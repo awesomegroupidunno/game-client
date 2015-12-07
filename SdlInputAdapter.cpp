@@ -10,6 +10,11 @@ SdlInputAdapter::SdlInputAdapter(GameController* gc)
 	keys = new std::set<SDL_Keycode>();
 }
 
+void SdlInputAdapter::clear_keys()
+{
+	keys->clear();
+}
+
 void SdlInputAdapter::check_keys()
 {
 	for (std::set<SDL_Keycode>::iterator itr = keys->begin(); itr != keys->end(); ++itr)

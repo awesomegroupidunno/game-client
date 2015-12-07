@@ -253,6 +253,7 @@ int SdlGameView::drawView(){
 		}
 		else
 		{
+			inputAdapter->clear_keys();
 			gameRunning = drawEndScreen(gameOver);
 		}
 

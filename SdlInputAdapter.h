@@ -18,6 +18,7 @@ private:
 public:
 	SdlInputAdapter(GameController* gc);
 
+	void clear_keys();
 	void check_keys();
 	void key_down(SDL_Event event);
 	void key_up(SDL_Event event);
