@@ -169,10 +169,42 @@ void SdlGameView::drawPowerup(Powerup *powerup)
         case ROCKET:
             glColor3f(0.0f, 1.0f, 1.0f);
             break;
+		case GRAVWELL:
+			glColor3f(0.0f, 0.0f, 0.0f);
+			break;
         default:
-            glColor3f(0.0f, 0.0f, 0.0f);
+            glColor3f(0.5f, 0.5f, 0.5f);
     }
 	drawSquare();
+}
+
+void SdlGameView::drawRocket(Rocket *rocket){
+	glTranslatef(rocket->x, rocket->y, 0);
+	glRotatef((GLfloat)rocket->angle, 0, 0, 1);
+	glScalef(rocket->width, rocket->height, 1.0f);
+	glColor3f(0.8f, 0.6f, 0.6f);
+	drawSquare();
+}
+
+void SdlGameView::drawGravityWell(GravityWell *gravityWell){
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	for (int i = 0; i < 360; i++) {
+		glLoadIdentity();
+		glTranslatef(gravityWell->x, gravityWell->y, 0);
+		glRotatef(i, 0.0, 0.0, 1.0);
+		glScalef(gravityWell->radius, 50.0, 1.0);
+		glBegin(GL_POLYGON);
+			glColor4f(0.0, 0.0, 0.0, 0.8);
+			glVertex2f(triFan[0][0], triFan[0][1]);
+			glColor4f(0.0, 0.0, 0.0, 0.0);
+			glVertex2f(triFan[1][0], triFan[1][1]);
+			glVertex2f(triFan[2][0], triFan[2][1]);
+		glEnd();
+	}
+
+	glDisable(GL_BLEND);
 }
 
 void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
@@ -207,6 +239,9 @@ void SdlGameView::drawHUD(Vehicle* client){
 			break;
 		case ROCKET:
 			sprintf(strPowerup, "Powerup: HOMING ROCKET");
+			break;
+		case GRAVWELL:
+			sprintf(strPowerup, "Powerup: GRAVITY WELL");
 			break;
 		default:
 			sprintf(strPowerup, "Powerup: NONE");
@@ -296,7 +331,7 @@ bool SdlGameView::drawPlayScreen()
 		if (event.type == SDL_QUIT)
 		{
 			// The application was quit (clicked X or pressed alt+f4)
-			return false;;
+			return false;
 		}
 	}
 
@@ -316,9 +351,26 @@ bool SdlGameView::drawPlayScreen()
 	int numBullets = (int) bullets->size();
 	std::vector<Powerup*>* powerups = gameViewAdapter->getPowerups();
 	int numPowerups = (int) powerups->size();
+	std::vector<Rocket*>* rockets = gameViewAdapter->getRockets();
+	int numRockets = (int) rockets->size();
+	std::vector<GravityWell*>* gravityWells = gameViewAdapter->getGravityWells();
+	int numGravityWells = (int) gravityWells->size();
 
 	// Make background white and clear renderer
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	//draw rockets and gravity wells
+	for (unsigned long j = 0; j < numGravityWells; j++) {
+		glPushMatrix();
+			drawGravityWell(gravityWells->at(j));
+		glPopMatrix();
+	}
+
+	for (unsigned long j = 0; j < numRockets; j++) {
+		glPushMatrix();
+			drawRocket(rockets->at(j));
+		glPopMatrix();
+	}
 
 	//draw bases and their health bars
 	for (unsigned long j = 0; j < numBases; j++) {

@@ -29,6 +29,7 @@ private:
     SdlGameViewAdapter* gameViewAdapter;
     GLfloat sqr[4][2] = { {0.5f, 0.5f }, { -0.5f, 0.5f }, { -0.5f, -0.5f }, { 0.5f, -0.5f } };
     GLfloat tri[3][2] = { {0.5f, -0.5f }, { -0.5f, -0.5f }, { 0.0f, 0.5f } };
+    GLfloat triFan[3][2] = { {0.0f, 0.0f }, {-1.0f, -2.0f }, {1.0f,-2.0f} };
     char strPowerup[32];
     char strHealth[32];
     GLfloat highlight;
@@ -47,10 +48,11 @@ public:
     void drawGenerator(Generator* generator);
     void drawBullet(Bullet* bullet);
     void drawPowerup(Powerup* powerup);
+    void drawRocket(Rocket* rocket);
+    void drawGravityWell(GravityWell* gravityWell);
     void drawHealthBar(int curHealth, int maxHealth, float x, float y);
     void drawHUD(Vehicle* client);
 	void drawText(float x, float y, char *text, void *font);
-
     int drawView();
 	bool drawPlayScreen();
 	bool drawEndScreen(int losingTeam);

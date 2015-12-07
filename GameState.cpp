@@ -8,6 +8,8 @@ GameState::GameState()
 	this->shields = new std::vector<Shield*>();
 	this->generators = new std::vector<Generator*>();
 	this->powerups = new std::vector<Powerup*>();
+	this->rockets = new std::vector<Rocket*>();
+	this->gravityWells = new std::vector<GravityWell*>();
 }
 /*
  * add objects to the GameState
@@ -40,6 +42,16 @@ void GameState::addGenerator(Generator *add)
 void GameState::addPowerup(Powerup *add)
 {
 	powerups->push_back(add);
+}
+
+void GameState::addRocket(Rocket *add)
+{
+	rockets->push_back(add);
+}
+
+void GameState::addGravityWell(GravityWell *add)
+{
+	gravityWells->push_back(add);
 }
 
 void GameState::setGameOver(int gameOver)
@@ -78,6 +90,16 @@ std::vector<Generator*>* GameState::getGenerators()
 std::vector<Powerup*>* GameState::getPowerups()
 {
 	return powerups;
+}
+
+std::vector<Rocket*>* GameState::getRockets()
+{
+	return rockets;
+}
+
+std::vector<GravityWell*>* GameState::getGravityWells()
+{
+	return gravityWells;
 }
 
 int GameState::getGameOver()
