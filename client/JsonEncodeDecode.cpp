@@ -195,6 +195,52 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 				}
 			}
 		}
+
+		/*
+		 * ROCKETS
+		 */
+		if (strcmp(itr->name.GetString(), "Rockets") == 0)
+		{
+			// If Rockets is not an array, something went wrong
+			if (!itr->value.IsArray())
+			{
+				printf("\n----------\nError: Rockets array is not array\n----------\n");
+				return NULL;
+			}
+
+			const Value& rocketArray = itr->value;
+			for (SizeType i = 0; i < rocketArray.Size(); i++)
+			{
+				if (decodeRocket(state, rocketArray[i]) == -1)
+				{
+					printf("\n----------\nError decoding rockets\n----------\n");
+					return NULL;
+				}
+			}
+		}
+
+		/*
+		 * GRAVITY WELLS
+		 */
+		if (strcmp(itr->name.GetString(), "GravityWells") == 0)
+		{
+			// If GravityWells is not an array, something went wrong
+			if (!itr->value.IsArray())
+			{
+				printf("\n----------\nError: GravityWells array is not array\n----------\n");
+				return NULL;
+			}
+
+			const Value& gravWellArray = itr->value;
+			for (SizeType i = 0; i < gravWellArray.Size(); i++)
+			{
+				if (decodeGravWell(state, gravWellArray[i]) == -1)
+				{
+					printf("\n----------\nError decoding gravity wells\n----------\n");
+					return NULL;
+				}
+			}
+		}
 	}
 
 	return state;
@@ -515,6 +561,89 @@ int JsonEncodeDecode::decodePowerup(GameState *state, const Value &powerup)
 
 	// Push it to the GameState
 	state->addPowerup(new_powerup);
+
+	return 1;
+}
+
+int JsonEncodeDecode::decodeRocket(GameState *state, const Value &rocket)
+{
+	// Rocket vars
+	int x, y, width, height;
+	x = y = width = height = 0;
+	double angle;
+	angle = 0;
+
+	// Iterate through JSON rocket object
+	const char *check;
+	for (Value::ConstMemberIterator itr = rocket.MemberBegin(); itr != rocket.MemberEnd(); ++itr)
+	{
+		check = itr->name.GetString();
+
+		if (strcmp(check, "X") == 0)
+		{
+			x = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "Y") == 0)
+		{
+			y = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "Width") == 0)
+		{
+			width = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "Height") == 0)
+		{
+			height = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "Angle") == 0)
+		{
+			angle = itr->value.GetDouble();
+			continue;
+		}
+	}
+
+	// Create a new Rocket
+
+	// Push it to the GameState
+
+	return 1;
+}
+
+int JsonEncodeDecode::decodeGravWell(GameState *state, const Value &gravWell){
+	// GravityWell vars
+	int x, y, id;
+	x = y = id = 0;
+
+	// Iterate through JSON GravityWell object
+	const char *check;
+	for (Value::ConstMemberIterator itr = gravWell.MemberBegin(); itr != gravWell.MemberEnd(); ++itr)
+	{
+		check = itr->name.GetString();
+
+		if (strcmp(check, "X") == 0)
+		{
+			x = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "Y") == 0)
+		{
+			y = itr->value.GetInt();
+			continue;
+		}
+		if (strcmp(check, "TeamId") == 0)
+		{
+			id = itr->value.GetInt();
+			continue;
+		}
+	}
+
+	// Create a new GravityWell
+
+	// Push it to the GameState
 
 	return 1;
 }
