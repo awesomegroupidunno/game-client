@@ -175,6 +175,29 @@ void SdlGameView::drawPowerup(Powerup *powerup)
 	drawSquare();
 }
 
+void SdlGameView::drawRocket(Rocket *rocket){
+	glTranslatef(rocket->x, rocket->y, 0);
+	glScalef(rocket->width, rocket->height, 1.0f);
+	glColor3f(0.8f, 0.6f, 0.6f);
+	drawSquare();
+}
+
+void SdlGameView::drawGravityWell(GravityWell *gravityWell){
+	for (int i = 0; i < 360; i++) {
+		glLoadIdentity();
+		glTranslatef(gravityWell->x, gravityWell->y, 0);
+		glRotatef(i, 0.0, 0.0, 1.0);
+		glScalef(gravityWell->radius, 0.1, 1.0);
+		glBegin(GL_POLYGON);
+			glColor4f(0.0, 0.0, 0.0, 1.0);
+			glVertex2f(triFan[0][0], triFan[0][1]);
+			glColor4f(0.0, 0.0, 0.0, 0.0);
+			glVertex2f(triFan[1][0], triFan[1][1]);
+			glVertex2f(triFan[2][0], triFan[2][1]);
+		glEnd();
+	}
+}
+
 void SdlGameView::drawHealthBar(int curHealth, int maxHealth, float x, float y){
 	glTranslatef(x, y, 0.0);
 	float healthPercent = (((float)curHealth/(float)maxHealth)*100)/2;
@@ -295,7 +318,7 @@ bool SdlGameView::drawPlayScreen()
 		if (event.type == SDL_QUIT)
 		{
 			// The application was quit (clicked X or pressed alt+f4)
-			return false;;
+			return false;
 		}
 	}
 
@@ -315,9 +338,26 @@ bool SdlGameView::drawPlayScreen()
 	int numBullets = (int) bullets->size();
 	std::vector<Powerup*>* powerups = gameViewAdapter->getPowerups();
 	int numPowerups = (int) powerups->size();
+	std::vector<Rocket*>* rockets = gameViewAdapter->getRockets();
+	int numRockets = (int) rockets->size();
+	std::vector<GravityWell*>* gravityWells = gameViewAdapter->getGravityWells();
+	int numGravityWells = (int) gravityWells->size();
 
 	// Make background white and clear renderer
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	//draw rockets and gravity wells
+	for (unsigned long j = 0; j < numGravityWells; j++) {
+		glPushMatrix();
+			drawGravityWell(gravityWells->at(j));
+		glPopMatrix();
+	}
+
+	for (unsigned long j = 0; j < numRockets; j++) {
+		glPushMatrix();
+			drawRocket(rockets->at(j));
+		glPopMatrix();
+	}
 
 	//draw bases and their health bars
 	for (unsigned long j = 0; j < numBases; j++) {

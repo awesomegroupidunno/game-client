@@ -86,6 +86,26 @@ std::vector<Powerup*> *GameController::getPowerups() {
 	return powerups;
 }
 
+std::vector<Rocket*> *GameController::getRockets() {
+	std::vector<Rocket*>* rockets;
+
+	pthread_mutex_lock(game_state_mutex);
+	rockets = state->getRockets();
+	pthread_mutex_unlock(game_state_mutex);
+
+	return rockets;
+}
+
+std::vector<GravityWell*> *GameController::getGravityWells() {
+	std::vector<GravityWell*>* gravityWells;
+
+	pthread_mutex_lock(game_state_mutex);
+	gravityWells = state->getGravityWells();
+	pthread_mutex_unlock(game_state_mutex);
+
+	return gravityWells;
+}
+
 int GameController::getGameOver()
 {
 	int gameOver;

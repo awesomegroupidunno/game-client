@@ -13,9 +13,13 @@
       <sourceFolder url="file://$MODULE_DIR$/GameState.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Generator.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Generator.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/GravityWell.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/GravityWell.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Powerup.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Powerup.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Rocket.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Rocket.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SdlGameView.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SdlGameView.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SdlGameViewAdapter.cpp" isTestSource="false" />
