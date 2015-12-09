@@ -622,7 +622,8 @@ int JsonEncodeDecode::decodeRocket(GameState *state, const Value &rocket)
 	return 1;
 }
 
-int JsonEncodeDecode::decodeGravWell(GameState *state, const Value &gravWell){
+int JsonEncodeDecode::decodeGravWell(GameState *state, const Value &gravWell)
+{
 	// GravityWell vars
 	int x, y, id;
 	x = y = id = 0;

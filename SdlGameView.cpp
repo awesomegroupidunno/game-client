@@ -97,7 +97,7 @@ void SdlGameView::pointToVehicle(Vehicle *vehicle){
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// create an arrow that points to clients vehicle
-	glTranslatef(vehicle->x, (GLfloat)vehicle->y-(vehicle->height/1.1), -1);
+	glTranslatef(vehicle->x, (GLfloat) (vehicle->y - (vehicle->height / 1.1) ), -1.0f);
 	glScalef(15, 15, 1);
 	glColor4f(0.0f, 0.0f, 0.0f, highlight);
 	drawTriangle();
@@ -272,7 +272,7 @@ int SdlGameView::drawView(){
 
 	// initialize variables used for pulsating effect
 	highlight = 0.5;
-	delta = -0.01;
+	delta = -0.01f;
 
 	// Rendering loop
 	bool gameRunning = true;
@@ -378,7 +378,7 @@ bool SdlGameView::drawPlayScreen()
 		drawBase(bases->at(j));
 		glPopMatrix();
 		glPushMatrix();
-		drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, bases->at(j)->y + bases->at(j)->height/1.1);
+		drawHealthBar(bases->at(j)->curHealth, bases->at(j)->maxHealth, bases->at(j)->x, (float) (bases->at(j)->y + bases->at(j)->height / 1.1) );
 		glPopMatrix();
 	}
 
@@ -405,7 +405,7 @@ bool SdlGameView::drawPlayScreen()
 		drawGenerator(generators->at(j));
 		glPopMatrix();
 		glPushMatrix();
-		drawHealthBar(generators->at(j)->curHealth, generators->at(j)->maxHealth, generators->at(j)->x, generators->at(j)->y + generators->at(j)->height/1.1);
+		drawHealthBar(generators->at(j)->curHealth, generators->at(j)->maxHealth, generators->at(j)->x, (float) (generators->at(j)->y + generators->at(j)->height / 1.1) );
 		glPopMatrix();
 	}
 
@@ -431,7 +431,7 @@ bool SdlGameView::drawPlayScreen()
 		drawVehicle(vehicles->at(j));
 		glPopMatrix();
 		glPushMatrix();
-		drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, vehicles->at(j)->y + vehicles->at(j)->height/1.3);
+		drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, (float) (vehicles->at(j)->y + vehicles->at(j)->height / 1.3) );
 		glPopMatrix();
 		if(vehicles->at(j)->isMe){
 			glPushMatrix();
