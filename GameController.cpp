@@ -117,6 +117,17 @@ int GameController::getGameOver()
 	return gameOver;
 }
 
+int GameController::getSecToRestart()
+{
+	int secToRestart;
+
+	pthread_mutex_lock(game_state_mutex);
+	secToRestart = state->getSecToRestart();
+	pthread_mutex_unlock(game_state_mutex);
+
+	return secToRestart;
+}
+
 // passes call to move vehicle to network client
 void GameController::moveVehicle(double direction)
 {

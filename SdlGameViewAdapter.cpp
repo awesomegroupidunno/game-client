@@ -47,3 +47,8 @@ int SdlGameViewAdapter::getGameOver()
 {
 	return gameController->getGameOver();
 }
+
+int SdlGameViewAdapter::getSecToRestart()
+{
+	return gameController->getSecToRestart();
+}

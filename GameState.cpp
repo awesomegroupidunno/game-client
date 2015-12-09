@@ -59,6 +59,10 @@ void GameState::setGameOver(int gameOver)
 	this->gameOver = gameOver;
 }
 
+void GameState::setSecToRestart(int secToRestart){
+	this->secToRestart = secToRestart;
+}
+
 /*
  * pass objects from the GameState
  */
@@ -105,4 +109,9 @@ std::vector<GravityWell*>* GameState::getGravityWells()
 int GameState::getGameOver()
 {
 	return gameOver;
+}
+
+int GameState::getSecToRestart()
+{
+	return secToRestart;
 }

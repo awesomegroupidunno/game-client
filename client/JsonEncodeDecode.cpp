@@ -59,6 +59,15 @@ GameState* JsonEncodeDecode::decode(const char *buffer)
 		}
 
 		/*
+		 * TIME TO RESTART
+		 */
+		if (strcmp(itr->name.GetString(), "SecToRestart") == 0)
+		{
+			int secToRestart = itr->value.GetInt();
+			state->setSecToRestart(secToRestart);
+		}
+
+		/*
 		 * VEHICLES
 		 */
 		if (strcmp(itr->name.GetString(), "Vehicles") == 0)

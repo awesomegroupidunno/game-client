@@ -470,20 +470,21 @@ bool SdlGameView::drawEndScreen(int losingTeam)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Set color and text based on winning team
-	char gameOverText[30];
+	char gameOverText[50];
+	int secToRestart = gameViewAdapter->getSecToRestart();
 	if (losingTeam == RED_TEAM)
 	{
 		glColor3f(0.0f, 0.0f, 1.0f);
-		sprintf(gameOverText, "BLUE TEAM WON! Press ESC to quit");
+		sprintf(gameOverText, "BLUE TEAM WON! Press ESC to quit. Restart in %i...", secToRestart);
 	}
 	if (losingTeam == BLUE_TEAM)
 	{
 		glColor3f(1.0f, 0.0f, 0.0f);
-		sprintf(gameOverText, "RED TEAM WON! Press ESC to quit");
+		sprintf(gameOverText, "RED TEAM WON! Press ESC to quit. Restart in %i...", secToRestart);
 	}
 
 	// Draw text
-	drawText(200.0f, 200.0f, gameOverText, GLUT_BITMAP_HELVETICA_18);
+	drawText(100.0f, 200.0f, gameOverText, GLUT_BITMAP_HELVETICA_18);
 
 	return true;
 }

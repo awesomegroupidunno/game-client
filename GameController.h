@@ -32,6 +32,7 @@ public:
     std::vector<Rocket*>* getRockets();
     std::vector<GravityWell*>* getGravityWells();
 	int getGameOver();
+	int getSecToRestart();
 
     // Respond to input
     void moveVehicle(double direction);

@@ -28,6 +28,7 @@ private:
 	std::vector<GravityWell*>* gravityWells;
 
 	int gameOver;
+	int secToRestart;
 public:
 	GameState();
 	void addPlayer(Vehicle* add);
@@ -39,6 +40,8 @@ public:
 	void addRocket(Rocket* add);
 	void addGravityWell(GravityWell* add);
 	void setGameOver(int gameOver);
+	void setSecToRestart(int secToRestart);
+
 	std::vector<Vehicle*>* getPlayers();
 	std::vector<Base*>* getBases();
 	std::vector<Bullet*>* getBullets();
@@ -48,6 +51,7 @@ public:
 	std::vector<Rocket*>* getRockets();
 	std::vector<GravityWell*>* getGravityWells();
 	int getGameOver();
+	int getSecToRestart();
 };
 
 #endif //GAME_CLIENT_GAMESTATE_H

@@ -24,6 +24,7 @@ public:
     std::vector<Rocket*>* getRockets();
     std::vector<GravityWell*>* getGravityWells();
 	int getGameOver();
+	int getSecToRestart();
 };
 
 #endif //GAME_CLIENT_SDLGAMEVIEWADAPTER_H
