@@ -426,7 +426,7 @@ bool SdlGameView::drawPlayScreen()
 	}
 
 	//draw vehicles and their health bars
-	Vehicle *tempVehicle;
+	Vehicle *tempVehicle = NULL;
 	for (unsigned long j = 0; j < numVehicles; j++) {
 		glPushMatrix();
 		drawVehicle(vehicles->at(j));
