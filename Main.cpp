@@ -8,9 +8,9 @@ NetworkClient* run_client(pthread_mutex_t* game_state_mutex)
 	client->close_connection();
 
 	// Connect to server
-//	client->connect_to_server("172.31.1.42", "10001");
+	client->connect_to_server("172.31.1.42", "10001");
 //	client->connect_to_server("172.31.1.41", "10001");
-	client->connect_to_server("127.0.0.1", "10001");
+//	client->connect_to_server("127.0.0.1", "10001");
 //	client->connect_to_server("192.168.251.54", "10001");
 //	client->connect_to_server("10.0.0.252", "10001");
 

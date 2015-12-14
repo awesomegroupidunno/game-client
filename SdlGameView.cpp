@@ -426,6 +426,7 @@ bool SdlGameView::drawPlayScreen()
 	}
 
 	//draw vehicles and their health bars
+	Vehicle *tempVehicle;
 	for (unsigned long j = 0; j < numVehicles; j++) {
 		glPushMatrix();
 		drawVehicle(vehicles->at(j));
@@ -434,14 +435,15 @@ bool SdlGameView::drawPlayScreen()
 		drawHealthBar(vehicles->at(j)->curHealth, vehicles->at(j)->maxHealth, vehicles->at(j)->x, (float) (vehicles->at(j)->y + vehicles->at(j)->height / 1.3) );
 		glPopMatrix();
 		if(vehicles->at(j)->isMe){
+			tempVehicle = vehicles->at(j);
 			glPushMatrix();
 			pointToVehicle(vehicles->at(j));
 			glPopMatrix();
-			glPushMatrix();
-			drawHUD(vehicles->at(j));
-			glPopMatrix();
 		}
 	}
+	glPushMatrix();
+	drawHUD(tempVehicle);
+	glPopMatrix();
 
 	return true;
 }
