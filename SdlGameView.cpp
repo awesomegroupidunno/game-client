@@ -441,9 +441,12 @@ bool SdlGameView::drawPlayScreen()
 			glPopMatrix();
 		}
 	}
-	glPushMatrix();
-	drawHUD(tempVehicle);
-	glPopMatrix();
+	if (tempVehicle != NULL)
+	{
+		glPushMatrix();
+		drawHUD(tempVehicle);
+		glPopMatrix();
+	}
 
 	return true;
 }
