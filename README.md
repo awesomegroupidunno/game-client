@@ -16,5 +16,5 @@ A host player must run the game server found here:
 * https://github.com/awesomegroupidunno/game-server
 
 Connecting players must change the following line in Main.cpp:
-/* client->connect_to_server("172.31.1.42", "10001"); */
+* */ client->connect_to_server("172.31.1.42", "10001"); */
 The IP address must match the IP of the host running the game server
